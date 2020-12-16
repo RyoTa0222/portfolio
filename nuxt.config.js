@@ -1,3 +1,6 @@
+require('dotenv').config()
+
+
 export default {
   // Target (https://go.nuxtjs.dev/config-target)
   target: 'static',
@@ -43,6 +46,8 @@ export default {
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
+    // https://www.npmjs.com/package/@nuxtjs/dotenv
+    '@nuxtjs/dotenv',
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
