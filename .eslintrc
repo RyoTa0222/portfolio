@@ -1,0 +1,14 @@
+{
+    "parser": "vue-eslint-parser", // パーサにvue-eslint-parserを指定しSFCをリント可能に
+    "parserOptions": {
+      "parser": "typescript-eslint-parser" // オプションでTypeScriptをパースできるパーサを指定
+    },
+    "extends": [
+        "eslint:recommended",
+        "typescript" // eslint-config-typescriptのルールを追加
+    ],
+    "plugins": ["typescript"], // eslint-plugin-typescriptを指定
+    "rules": {
+        "semi": ["error", "never"] // 追加ルールでセミコロンの指摘を無視するようにする
+    }
+}
