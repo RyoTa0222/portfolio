@@ -6,3 +6,5 @@ export type pageType = {
     name: pageName,
     path: pagePath
 }
+
+export type CtfContentType = 'roadmap'

@@ -10,8 +10,7 @@ const config: ContentfulConfig = {
     accessToken: process.env.CTF_CDA_ACCESS_TOKEN as string
 }
 
-module.exports = {
-    createClient() {
-        return createClient(config)
-    }
+// https://www.contentful.com/developers/docs/references/content-delivery-api/
+export default function () {
+    return createClient(config)
 }
