@@ -13,7 +13,30 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [
+      {
+        rel: 'icon',
+        type: 'image/svg+xml',
+        href: process.env.BASE_URL + 'favicon.ico'
+      },
+      {
+        rel: 'icon alternate',
+        type: 'image/png',
+        href: process.env.BASE_URL + 'favicon.png'
+      },
+      // apple touch icon
+      {
+        rel: 'apple-touch-icon',
+        sizes: '180x180',
+        href: process.env.BASE_URL + 'img/apple-touch-icon.png'
+      },
+      // android
+      {
+        rel: 'icon',
+        type: 'image/png',
+        href: process.env.BASE_URL + 'img/android-chrome-192x192.png'
+      }
+    ],
     script: [
       {
         src: 'https://use.typekit.net/kpd0goc.js',
