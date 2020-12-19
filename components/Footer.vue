@@ -1,12 +1,12 @@
 <template>
     <footer class="absolute bottom-1.5 right-0 footer-container">
-        <p class="font-fot text-sm">&copy; RyoTa {{computeYear}}</p> 
+        <p class="text-sm">&copy; RyoTa {{computeYear}}</p> 
     </footer>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { DateTime } from 'luxon';
+import { DateTime } from 'luxon'
 
 export default Vue.extend({
     computed: {

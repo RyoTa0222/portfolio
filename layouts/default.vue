@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white container relative">
+  <div class="bg-white relative w-screen min-h-screen box-border">
     <header-component />
     <Nuxt />
     <footer-component />
@@ -18,11 +18,13 @@ export default Vue.extend({
     FooterComponent
   },
   mounted() {
-    // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      document.querySelector('html')?.classList.add('dark')
-    } else {
-      document.querySelector('html')?.classList.remove('dark')
+    if (process.client) {
+      // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector('html')?.classList.add('dark')
+      } else {
+        document.querySelector('html')?.classList.remove('dark')
+      }
     }
   }
 })

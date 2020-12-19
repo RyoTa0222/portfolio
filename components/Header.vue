@@ -1,12 +1,17 @@
 <template>
-    <header class="header" :class="{separate: computeIsTop}">
+    <header
+    class="header"
+    :class="{separate: computeIsTop, 'bg-white': $route.name === 'roadmap'}">
         <span class="logo-container" @click="$router.push('/')">
             <img src="~/assets/images/logo.png" alt="RyoTa" class="logo" />
         </span>
         <div class="nav">
             <ul>
                 <template v-for="(page, idx) in pages">
-                    <li :key="idx" class="font-zooja text-base cursor-pointer">{{ page.name }}</li>
+                    <li
+                    :key="idx"
+                    class="font-zooja text-base cursor-pointer"
+                    @click="$router.push(page.path)">{{ page.name }}</li>
                 </template>
             </ul>
             <div class="icon-container">
@@ -28,7 +33,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import SvgContainer from '~/components/SvgContainer.vue'
-import {pageType} from '~/types/type'
+import {PageType} from '~/types/type'
 
 export default Vue.extend({
     data: () => {
@@ -46,7 +51,7 @@ export default Vue.extend({
                     name: 'ROAMAP',
                     path: '/roadmap'
                 }
-            ] as pageType[],
+            ] as PageType[],
             scrollTop: 0 as number
         }
     },
