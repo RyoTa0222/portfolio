@@ -1,25 +1,30 @@
 <template>
-  <div class="bg-white container">
+  <div class="bg-white relative w-screen min-h-screen box-border">
     <header-component />
     <Nuxt />
+    <footer-component />
   </div>
 </template>
 <script lang="ts">
 import Vue from 'vue'
 import HeaderComponent from '~/components/Header.vue'
+import FooterComponent from '~/components/Footer.vue'
 import Typekit from '~/mixins/typekit'
 
 export default Vue.extend({
   mixins: [Typekit],
   components: {
-    HeaderComponent
+    HeaderComponent,
+    FooterComponent
   },
   mounted() {
-    // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      document.querySelector('html')?.classList.add('dark')
-    } else {
-      document.querySelector('html')?.classList.remove('dark')
+    if (process.client) {
+      // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector('html')?.classList.add('dark')
+      } else {
+        document.querySelector('html')?.classList.remove('dark')
+      }
     }
   }
 })
