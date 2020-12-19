@@ -1,18 +1,21 @@
 <template>
-  <div class="bg-white container">
+  <div class="bg-white container relative">
     <header-component />
     <Nuxt />
+    <footer-component />
   </div>
 </template>
 <script lang="ts">
 import Vue from 'vue'
 import HeaderComponent from '~/components/Header.vue'
+import FooterComponent from '~/components/Footer.vue'
 import Typekit from '~/mixins/typekit'
 
 export default Vue.extend({
   mixins: [Typekit],
   components: {
-    HeaderComponent
+    HeaderComponent,
+    FooterComponent
   },
   mounted() {
     // On page load or when changing themes, best to add inline in `head` to avoid FOUC
