@@ -10,9 +10,13 @@
                 </template>
             </ul>
             <div class="icon-container">
-                <span class="icon twitter">
+                <a
+                class="icon twitter"
+                href="https://twitter.com/RyoTa___0222"
+                target="_blank"
+                rel="noopener noreferrer">
                     <svg-container name="twitter" />
-                </span>
+                </a>
                 <span class="icon cog">
                     <svg-container name="gear" />
                 </span>
