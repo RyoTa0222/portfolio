@@ -13,6 +13,19 @@
             </g>
         </g>
     </svg>
+    <!-- home -->
+    <svg v-else-if="name === 'home'" xmlns="http://www.w3.org/2000/svg" width="26.914" height="22.877" viewBox="0 0 26.914 22.877">
+        <path id="パス_6" data-name="パス 6" d="M12.766,25.877V17.8h5.383v8.074h6.728V15.111h4.037L15.457,3,2,15.111H6.037V25.877Z" transform="translate(-2 -3)"/>
+    </svg>
+    <!-- user -->
+    <svg v-else-if="name === 'user'" xmlns="http://www.w3.org/2000/svg" width="22.877" height="22.877" viewBox="0 0 22.877 22.877">
+        <path id="パス_7" data-name="パス 7" d="M15.438,15.438A5.719,5.719,0,1,0,9.719,9.719,5.718,5.718,0,0,0,15.438,15.438Zm0,2.86C11.621,18.3,4,20.214,4,24.017v2.86H26.877v-2.86C26.877,20.214,19.256,18.3,15.438,18.3Z" transform="translate(-4 -4)"/>
+    </svg>
+    <!-- map -->
+    <svg v-else-if="name === 'map'" xmlns="http://www.w3.org/2000/svg" width="15.716" height="22.452" viewBox="0 0 15.716 22.452">
+        <path id="map-marker" d="M12.858,12.665a2.807,2.807,0,1,1,2.807-2.807,2.807,2.807,0,0,1-2.807,2.807M12.858,2A7.858,7.858,0,0,0,5,9.858c0,5.894,7.858,14.594,7.858,14.594s7.858-8.7,7.858-14.594A7.858,7.858,0,0,0,12.858,2Z" transform="translate(-5 -2)"/>
+    </svg>
+
 </template>
 
 <script lang="ts">

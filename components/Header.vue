@@ -6,14 +6,16 @@
             <img src="~/assets/images/logo.png" alt="RyoTa" class="logo" />
         </span>
         <div class="nav">
-            <ul>
-                <template v-for="(page, idx) in pages">
-                    <li
-                    :key="idx"
-                    class="font-zooja text-base cursor-pointer"
-                    @click="$router.push(page.path)">{{ page.name }}</li>
-                </template>
-            </ul>
+            <nav>
+                <ul>
+                    <template v-for="(page, idx) in pages">
+                        <li
+                        :key="idx"
+                        class="font-zooja text-base cursor-pointer"
+                        @click="$router.push(page.path)">{{ page.name }}</li>
+                    </template>
+                </ul>
+            </nav>
             <div class="icon-container">
                 <a
                 class="icon twitter"
@@ -87,9 +89,17 @@ export default Vue.extend({
     }
     .nav {
         @apply flex;
-        ul {
-            @apply flex space-x-8 items-center mr-8 pr-10 border-r border-gray-500;
+        nav {
+            @apply flex items-center;
+            ul {
+                @apply flex space-x-8 items-center mr-8 pr-10 border-r border-gray-500;
+            }
         }
+    }
+    @screen sm {
+        .nav {
+            display: none;
+        } 
     }
     .icon-container {
         @apply flex;
@@ -107,7 +117,7 @@ export default Vue.extend({
                 }
                 &:hover {
                     svg {
-                        fill: #1DA1F3;
+                        fill: #00acee;
                     }
                 }
             }

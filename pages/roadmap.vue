@@ -17,19 +17,27 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import {CtfContentType, RoadmapState, CtfContentItem} from '~/types/type'
+import {CtfContentType, CtfContentItem, RoadmapState} from '~/types/type'
 import RoadmapSection from '~/components/RoadmapSection.vue'
 import { DateTime } from 'luxon'
 import createClient from '~/plugins/contentful'
 
 const client = createClient()
 
+type Field = {
+    content: string,
+    completed: boolean,
+    state: RoadmapState[]
+}
+
 export default Vue.extend({
     components: {
         RoadmapSection
     },
     data: () => {
-        ctfData: null as CtfContentItem[] | null
+        return {
+            ctfData: null as CtfContentItem[] | null
+        }
     },
     async asyncData({params}) {
         const entries = await client.getEntries({
@@ -49,8 +57,8 @@ export default Vue.extend({
             if (this.ctfData && this.ctfData.length > 0) {
                 let filter
                 // データをフィルタリングする
-                filter = this.ctfData.filter(item => {
-                    return item.fields.state.includes(state)
+                filter = this.ctfData.filter((item: CtfContentItem) => {
+                    return (item.fields as Field).state.includes(state)
                 })
                 // 完了かつ、１ヶ月経っていた場合、表示しない
                 filter = this.filterDisplayData(filter)
