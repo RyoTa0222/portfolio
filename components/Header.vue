@@ -11,7 +11,7 @@
                     <template v-for="(page, idx) in pages">
                         <li
                         :key="idx"
-                        class="font-zooja text-base cursor-pointer"
+                        class="font-zooja cursor-pointer"
                         @click="$router.push(page.path)">{{ page.name }}</li>
                     </template>
                 </ul>
@@ -50,28 +50,20 @@ export default Vue.extend({
                     path: '/portfolio'
                 },
                 {
-                    name: 'ROAMAP',
+                    name: 'ROADMAP',
                     path: '/roadmap'
                 }
             ] as PageType[],
-            scrollTop: 0 as number
         }
     },
     components: {SvgContainer},
-    mounted() {
-        if (process.client) {
-            window.addEventListener('scroll', () => {
-                this.scrollTop = window.pageYOffset
-            }, false)
-        }
-    },
     computed: {
         /**
          * 画面がスクロールされていたらtrueを返す
          * @return {Boolean} 画面がスクロールされていたらtrue
          */
         computeIsTop(): boolean {
-            return this.scrollTop > 0
+            return this.$window.pageYOffset > 0
         }
     },
 })
@@ -81,6 +73,9 @@ export default Vue.extend({
 .header {
     @apply w-screen h-16 box-border flex justify-between items-center fixed -top-0 -left-0;
     padding: 0 5vw;
+    @screen sm {
+        @apply h-12;   
+    }
     .logo-container {
         @apply h-full cursor-pointer;
         .logo {
@@ -93,12 +88,25 @@ export default Vue.extend({
             @apply flex items-center;
             ul {
                 @apply flex space-x-8 items-center mr-8 pr-10 border-r border-gray-500;
+                li {
+                    @apply text-base;
+                }
             }
         }
     }
     @screen sm {
         .nav {
-            display: none;
+            nav {
+                @apply fixed bottom-0 right-0 w-screen h-32 flex justify-center items-center;
+                ul {
+                    @apply p-0 m-0 h-16 w-10/12 bg-white rounded-full box-border px-4 flex justify-around items-center;
+                    box-shadow: 0 2px 10px #00000010;
+                    border: none;
+                    li {
+                        @apply m-0 px-2 text-sm;
+                    }
+                }
+            }
         } 
     }
     .icon-container {
