@@ -1,5 +1,6 @@
 const colors = require('tailwindcss/colors')
 const plugin = require('tailwindcss/plugin')
+import {breakpoint} from './consts/config'
 
 module.exports = {
   purge: [],
@@ -7,20 +8,21 @@ module.exports = {
   darkMode: 'class', // or 'media' or 'class'
   theme: {
     screens: {
-      '2xl': {'max': '1535px'},
+      '2xl': {'max': `${breakpoint['2xl']}px`},
       // => @media (max-width: 1535px) { ... }
 
-      'xl': {'max': '1279px'},
+      'xl': {'max': `${breakpoint['xl']}px`},
       // => @media (max-width: 1279px) { ... }
 
-      'lg': {'max': '1023px'},
+      'lg': {'max': `${breakpoint['lg']}px`},
       // => @media (max-width: 1023px) { ... }
 
-      'md': {'max': '767px'},
+      'md': {'max': `${breakpoint['md']}px`},
       // => @media (max-width: 767px) { ... }
 
-      'sm': {'max': '639px'},
+      'sm': {'max': `${breakpoint['sm']}px`},
       // => @media (max-width: 639px) { ... }
+      'xs': {'max': `${breakpoint['xs']}px`},
     },
     colors: {
       transparent: 'transparent',
