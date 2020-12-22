@@ -4,7 +4,8 @@ export type PagePath = '/' | '/portfolio' | '/roadmap' | '/blog'
 
 export type PageType = {
     name: PageName,
-    path: PagePath
+    path: PagePath,
+    icon: String
 }
 
 export type CtfContentType = 'roadmap'

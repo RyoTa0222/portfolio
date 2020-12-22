@@ -8,12 +8,19 @@
         <div class="nav">
             <nav>
                 <ul>
-                    <template v-for="(page, idx) in pages">
-                        <li
-                        :key="idx"
-                        class="font-zooja cursor-pointer"
-                        @click="$router.push(page.path)">{{ page.name }}</li>
-                    </template>
+                    <no-ssr>
+                        <template v-for="(page, idx) in pages">
+                            <li
+                            :key="idx"
+                            class="font-zooja cursor-pointer"
+                            @click="$router.push(page.path)">
+                                <template v-if="['xs', 'sm'].includes($breakpoint.name)">
+                                    <svg-container :name="page.icon" class="svg-container" />
+                                </template>
+                                {{ page.name }}
+                            </li>
+                        </template>
+                    </no-ssr>
                 </ul>
             </nav>
             <div class="icon-container">
@@ -43,15 +50,18 @@ export default Vue.extend({
             pages: [
                 {
                     name: 'TOP',
-                    path: '/'
+                    path: '/',
+                    icon: 'home'
                 },
                 {
                     name: 'PORTFOLIO',
-                    path: '/portfolio'
+                    path: '/portfolio',
+                    icon: 'user'
                 },
                 {
                     name: 'ROADMAP',
-                    path: '/roadmap'
+                    path: '/roadmap',
+                    icon: 'map'
                 }
             ] as PageType[],
         }
@@ -63,7 +73,7 @@ export default Vue.extend({
          * @return {Boolean} 画面がスクロールされていたらtrue
          */
         computeIsTop(): boolean {
-            return this.$window.pageYOffset > 0
+            return (this as any).$window.pageYOffset > 0
         }
     },
 })
@@ -99,11 +109,16 @@ export default Vue.extend({
             nav {
                 @apply fixed bottom-0 right-0 w-screen h-32 flex justify-center items-center;
                 ul {
-                    @apply p-0 m-0 h-16 w-10/12 bg-white rounded-full box-border px-4 flex justify-around items-center;
+                    @apply p-0 m-0 h-14 w-10/12 rounded-full box-border px-4 flex justify-around items-center;
                     box-shadow: 0 2px 10px #00000010;
+                    background: #ffffff80;
+                    backdrop-filter: blur(2px);
                     border: none;
                     li {
-                        @apply m-0 px-2 text-sm;
+                        @apply m-0 px-2 pt-2 text-sm flex justify-center items-center flex-col;
+                        .svg-container {
+                            @apply mb-1 h-5;
+                        }
                     }
                 }
             }
