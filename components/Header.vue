@@ -31,9 +31,13 @@
                 rel="noopener noreferrer">
                     <svg-container name="twitter" />
                 </a>
-                <span class="icon cog">
-                    <svg-container name="gear" />
-                </span>
+                <tooltip class="icon-wrapper" bottom text="設定">
+                    <template v-slot:content>
+                        <span class="icon cog">
+                            <svg-container name="gear" />
+                        </span>
+                    </template>
+                </tooltip>
             </div>
         </div>
     </header>
@@ -42,6 +46,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import SvgContainer from '~/components/SvgContainer.vue'
+import Tooltip from '~/components/Tooltip.vue'
 import {PageType} from '~/types/type'
 
 export default Vue.extend({
@@ -66,7 +71,7 @@ export default Vue.extend({
             ] as PageType[],
         }
     },
-    components: {SvgContainer},
+    components: {SvgContainer, Tooltip},
     computed: {
         /**
          * 画面がスクロールされていたらtrueを返す
@@ -125,13 +130,21 @@ export default Vue.extend({
         } 
     }
     .icon-container {
-        @apply flex;
+        @apply flex items-center;
+        .icon-wrapper {
+            @apply ml-4 inline-block w-full;
+            width: 36px;
+            height: 36px;
+        }
         .icon {
             @apply rounded-full p-2 cursor-pointer;
             width: 36px;
             height: 36px;
             &.cog {
-                @apply hover:bg-gray-50 hover:animate-spin-slow transition duration-300 ml-4 bg-opacity-50;
+                @apply hover:bg-gray-50 p-2 hover:animate-spin-slow transition duration-300 bg-opacity-50;
+                &:active {
+                    transform: scale(0.8);
+                }
             }
             &.twitter {
                 @apply hover:bg-gray-50 transition duration-300 bg-opacity-50;
@@ -142,6 +155,9 @@ export default Vue.extend({
                     svg {
                         fill: #00acee;
                     }
+                }
+                &:active {
+                    transform: scale(0.8);
                 }
             }
         }
