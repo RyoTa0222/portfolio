@@ -69,10 +69,6 @@ export default Vue.extend({
     background: #f1f1f1;
     overflow: hidden;
     .isometric-container {
-        // display: flex;
-        // flex-flow: column;
-        // align-items: center;
-        // justify-content: center;
         .txt {
             display: block;
             font-size: 5rem;

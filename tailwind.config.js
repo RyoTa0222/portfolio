@@ -38,6 +38,7 @@ module.exports = {
       indigo: colors.indigo,
       purple: colors.violet,
       pink: colors.pink,
+      dark: '#222'
     },
     spacing: {
       px: '1px',
@@ -790,7 +791,7 @@ module.exports = {
     clear: ['responsive'],
     container: ['responsive'],
     cursor: ['responsive'],
-    display: ['responsive'],
+    display: ['responsive', 'dark'],
     divideColor: ['responsive', 'dark'],
     divideOpacity: ['responsive'],
     divideStyle: ['responsive'],
@@ -884,31 +885,31 @@ module.exports = {
     wordBreak: ['responsive'],
     zIndex: ['responsive', 'focus-within', 'focus'],
     extend: {
-      animation: ['hover']
+      animation: ['hover'],
     }
   },
   plugins: [
     plugin(function({addComponents}) {
       const components = {
-        '.btn': {
-          padding: '.5rem 1rem',
-          borderRadius: '.25rem',
-          fontWeight: '600',
-        },
-        '.btn-blue': {
-          backgroundColor: '#3490dc',
-          color: '#fff',
-          '&:hover': {
-            backgroundColor: '#2779bd'
-          },
-        },
-        '.btn-red': {
-          backgroundColor: '#e3342f',
-          color: '#fff',
-          '&:hover': {
-            backgroundColor: '#cc1f1a'
-          },
-        },
+        // '.btn': {
+        //   padding: '.5rem 1rem',
+        //   borderRadius: '.25rem',
+        //   fontWeight: '600',
+        // },
+        // '.btn-blue': {
+        //   backgroundColor: '#3490dc',
+        //   color: '#fff',
+        //   '&:hover': {
+        //     backgroundColor: '#2779bd'
+        //   },
+        // },
+        // '.btn-red': {
+        //   backgroundColor: '#e3342f',
+        //   color: '#fff',
+        //   '&:hover': {
+        //     backgroundColor: '#cc1f1a'
+        //   },
+        // },
       }
       addComponents(components)
     })

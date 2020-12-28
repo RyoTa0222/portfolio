@@ -1,6 +1,6 @@
 <template>
-    <footer class="absolute bottom-1.5 right-0 footer-container">
-        <p class="text-sm sm:text-xs xs:text-xs">&copy; RyoTa {{computeYear}}</p> 
+    <footer class="absolute bottom-1.5 right-0 footer-container sm:left-0 xs:left-0">
+        <p class="text-sm sm:text-xs xs:text-xs xs:text-center sm:text-center dark:text-white">&copy; RyoTa {{computeYear}}</p> 
     </footer>
 </template>
 
@@ -28,6 +28,6 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .footer-container {
-    margin-right: 5vw;
+    margin: 0 5vw;
 }
 </style>

@@ -1,26 +1,26 @@
 <template>
     <header
     class="header"
-    :class="{separate: computeIsTop, 'bg-white': $route.name === 'roadmap'}">
+    :class="{separate: computeIsTop, 'bg-white dark:bg-dark': $route.name === 'roadmap'}">
         <span class="logo-container" @click="$router.push('/')">
             <img src="~/assets/images/logo.png" alt="RyoTa" class="logo" />
         </span>
         <div class="nav">
             <nav>
                 <ul>
-                    <no-ssr>
+                    <client-only>
                         <template v-for="(page, idx) in pages">
                             <li
                             :key="idx"
                             class="font-zooja cursor-pointer"
                             @click="$router.push(page.path)">
                                 <template v-if="['xs', 'sm'].includes($breakpoint.name)">
-                                    <svg-container :name="page.icon" class="svg-container" />
+                                    <svg-container :name="page.icon" class="svg-container fill-current text-black dark:text-white" />
                                 </template>
                                 {{ page.name }}
                             </li>
                         </template>
-                    </no-ssr>
+                    </client-only>
                 </ul>
             </nav>
             <div class="icon-container">
@@ -29,11 +29,15 @@
                 href="https://twitter.com/RyoTa___0222"
                 target="_blank"
                 rel="noopener noreferrer">
-                    <svg-container name="twitter" />
+                    <svg-container name="twitter" class="fill-current" />
                 </a>
-                <span class="icon cog">
-                    <svg-container name="gear" />
-                </span>
+                <tooltip class="icon-wrapper" bottom text="設定" @clickEvent="openSettingModal">
+                    <template v-slot:content>
+                        <span class="icon cog">
+                            <svg-container name="gear" class="fill-current" />
+                        </span>
+                    </template>
+                </tooltip>
             </div>
         </div>
     </header>
@@ -42,6 +46,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import SvgContainer from '~/components/SvgContainer.vue'
+import Tooltip from '~/components/Tooltip.vue'
 import {PageType} from '~/types/type'
 
 export default Vue.extend({
@@ -66,7 +71,7 @@ export default Vue.extend({
             ] as PageType[],
         }
     },
-    components: {SvgContainer},
+    components: {SvgContainer, Tooltip},
     computed: {
         /**
          * 画面がスクロールされていたらtrueを返す
@@ -76,6 +81,14 @@ export default Vue.extend({
             return (this as any).$window.pageYOffset > 0
         }
     },
+    methods: {
+        /**
+         * 設定のモーダルを開く
+         */
+        openSettingModal() {
+            this.$emit('open')
+        },
+    }
 })
 </script>
 
@@ -97,9 +110,9 @@ export default Vue.extend({
         nav {
             @apply flex items-center;
             ul {
-                @apply flex space-x-8 items-center mr-8 pr-10 border-r border-gray-500;
+                @apply flex space-x-8 items-center mr-8 pr-10 border-r border-gray-500 dark:border-white;
                 li {
-                    @apply text-base;
+                    @apply text-base dark:text-white;
                 }
             }
         }
@@ -109,9 +122,8 @@ export default Vue.extend({
             nav {
                 @apply fixed bottom-0 right-0 w-screen h-32 flex justify-center items-center;
                 ul {
-                    @apply p-0 m-0 h-14 w-10/12 rounded-full box-border px-4 flex justify-around items-center;
+                    @apply p-0 m-0 h-14 w-10/12 rounded-full box-border px-4 flex justify-around items-center bg-white bg-opacity-80 dark:bg-gray-700;
                     box-shadow: 0 2px 10px #00000010;
-                    background: #ffffff80;
                     backdrop-filter: blur(2px);
                     border: none;
                     li {
@@ -125,16 +137,27 @@ export default Vue.extend({
         } 
     }
     .icon-container {
-        @apply flex;
-        .icon {
-            @apply rounded-full p-2 cursor-pointer;
+        @apply flex items-center;
+        .icon-wrapper {
+            @apply ml-4 inline-block w-full;
             width: 36px;
             height: 36px;
+        }
+        .icon {
+            @apply rounded-full p-2 cursor-pointer dark:bg-gray-600 bg-gray-50;
+            width: 36px;
+            height: 36px;
+            svg {
+                @apply dark:text-white text-gray-600;
+            }
             &.cog {
-                @apply hover:bg-gray-50 hover:animate-spin-slow transition duration-300 ml-4 bg-opacity-50;
+                @apply hover:animate-spin-slow transition duration-300 bg-opacity-50;
+                &:active {
+                    transform: scale(0.8);
+                }
             }
             &.twitter {
-                @apply hover:bg-gray-50 transition duration-300 bg-opacity-50;
+                @apply transition duration-300 bg-opacity-50;
                 svg {
                     @apply h-full w-full transition duration-300;
                 }
@@ -142,6 +165,9 @@ export default Vue.extend({
                     svg {
                         fill: #00acee;
                     }
+                }
+                &:active {
+                    transform: scale(0.8);
                 }
             }
         }

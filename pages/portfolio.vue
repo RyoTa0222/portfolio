@@ -1,63 +1,40 @@
 <template>
     <div class="flex portrait-container">
         <!-- テキスト部分 -->
-        <div class="text-container w-1/2">
+        <div class="text-container w-1/2 sm:w-full sm:h-auto sm:p-8">
             <div class="wrapper">
                 <p>2020年から社会人のフロントエンドエンジニア</p>
                 <p>といいつつ、デザインやアニメーション、機械学習にも興味があり、インプット中</p>
-                <p>将来は、フロントを軸足に、様々なソリューションを提供できる人材になりたいです</p>
+                <p>将来は、フロントを軸に、様々なソリューションを提供できる人材になりたいです</p>
                 <p>最近意識してる言葉： 「世界観」、「マイクロインタラクション」</p>
             </div>
         </div>
         <!-- 画像部分 -->
-        <div class="img-container w-1/2 h-full flex items-center">
-            <img :src="require(`~/assets/images/${computeImageName}`)" alt="RyoTa" class="w-full">
+        <div class="img-container w-1/2 h-full flex items-center sm:w-full sm:h-auto sm:p-8 sm:mt-4">
+            <client-only>
+                <img
+                :src="require(`~/assets/images/light-portrait.png`)"
+                alt="RyoTa"
+                class="w-full light" />
+                <img
+                :src="require(`~/assets/images/dark-portrait.png`)"
+                alt="RyoTa"
+                class="w-full dark" />
+            </client-only>
         </div>
     </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import {Mode} from '~/types/type'
+import {Theme} from '~/types/type'
 
-export default Vue.extend({
-    computed: {
-        computeImageName() {
-            const mode = this.getScreenMode()
-            if (mode === 'light') {
-                return 'light-portrait.png'
-            } else if (mode === 'dark') {
-                return 'dark-portrait.png'
-            }
-        }
-    },
-    methods: {
-        /**
-         * 画面がダークモードかライトモードか確認する
-         * @return {Mode} 現在のモードを返す
-         */
-        getScreenMode(): Mode {
-            let mode: Mode = 'light'
-            // ブラウザでダークモードかを確認
-            if (process.client) {
-                if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                    mode = 'dark'
-                    // ローカルストレージに設定されているか確認
-                    const local_mode = localStorage.getItem('mode')
-                    if (local_mode && ['light', 'dark'].includes(local_mode)) {
-                        mode = local_mode as Mode
-                    }
-                }
-            }
-            return mode
-        }
-    }
-})
+export default Vue.extend({})
 </script>
 
 <style lang="scss" scoped>
 .portrait-container {
-    @apply h-screen;
+    @apply h-screen sm:flex-col-reverse sm:justify-end;
     max-width: 1280px;
     margin: auto;
     .text-container {
@@ -66,7 +43,17 @@ export default Vue.extend({
             max-width: 450px;
             @apply m-auto;
             p {
-                @apply mb-2;
+                @apply mb-4 dark:text-white;
+            }
+        }
+    }
+    .img-container {
+        img {
+            &.dark {
+                @apply hidden dark:block;
+            }
+            &.light {
+                @apply block dark:hidden;
             }
         }
     }

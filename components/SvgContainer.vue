@@ -25,12 +25,62 @@
     <svg v-else-if="name === 'map'" xmlns="http://www.w3.org/2000/svg" width="15.716" height="22.452" viewBox="0 0 15.716 22.452">
         <path id="map-marker" d="M12.858,12.665a2.807,2.807,0,1,1,2.807-2.807,2.807,2.807,0,0,1-2.807,2.807M12.858,2A7.858,7.858,0,0,0,5,9.858c0,5.894,7.858,14.594,7.858,14.594s7.858-8.7,7.858-14.594A7.858,7.858,0,0,0,12.858,2Z" transform="translate(-5 -2)"/>
     </svg>
+    <!-- cross -->
+    <svg v-else-if="name === 'cross'" xmlns="http://www.w3.org/2000/svg" width="10.885" height="10.875" viewBox="0 0 10.885 10.875">
+        <path id="XMLID_732_" d="M30.553,29.216a.933.933,0,0,1,0,1.337.959.959,0,0,1-1.337,0L25.393,26.73l-3.823,3.823a.959.959,0,0,1-1.337,0,.933.933,0,0,1,0-1.337l3.823-3.823-3.823-3.823a.946.946,0,0,1,1.337-1.337l3.823,3.823,3.823-3.823a.946.946,0,0,1,1.337,1.337L26.73,25.393Z" transform="translate(-19.95 -19.95)"/>
+    </svg>
+    <!-- moon -->
+    <svg v-else-if="name === 'moon'" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="14.437" height="14.437" viewBox="0 0 14.437 14.437">
+        <defs>
+            <linearGradient id="linear-gradient-moon" x1="0.419" y1="-0.078" x2="0.831" y2="1.131" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#fffca8"/>
+            <stop offset="1" stop-color="#ffc400"/>
+            </linearGradient>
+        </defs>
+        <g id="グループ_19" data-name="グループ 19" transform="translate(-1016.563 -338.563)">
+            <path id="前面オブジェクトで型抜き_1" data-name="前面オブジェクトで型抜き 1" d="M19.558-1353a7.393,7.393,0,0,1-4.313-1.376,7.476,7.476,0,0,1-1.6-1.549,7.418,7.418,0,0,1-1.08-1.969,7.015,7.015,0,0,0,3.417.887,6.968,6.968,0,0,0,2.73-.551,6.988,6.988,0,0,0,2.229-1.5,6.99,6.99,0,0,0,1.5-2.229,6.969,6.969,0,0,0,.551-2.73,7.018,7.018,0,0,0-.887-3.417,7.423,7.423,0,0,1,1.969,1.08,7.472,7.472,0,0,1,1.549,1.6A7.392,7.392,0,0,1,27-1360.442a7.4,7.4,0,0,1-.585,2.9,7.418,7.418,0,0,1-1.595,2.366,7.416,7.416,0,0,1-2.366,1.595A7.393,7.393,0,0,1,19.558-1353Z" transform="translate(1004 1706)" fill="url(#linear-gradient-moon)"/>
+        </g>
+    </svg>
+    <!-- sun -->
+    <svg v-else-if="name === 'sun'" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="18" height="18" viewBox="0 0 18 18">
+        <defs>
+            <linearGradient id="linear-gradient" x1="0.353" y1="-0.03" x2="0.684" y2="1.063" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#ffba00"/>
+            <stop offset="1" stop-color="#ff4a4a"/>
+            </linearGradient>
+        </defs>
+        <g id="グループ_18" data-name="グループ 18" transform="translate(-595 -334)">
+            <g id="グループ_13" data-name="グループ 13" transform="translate(-62.087 -2.087)">
+            <circle id="楕円形_15" data-name="楕円形 15" cx="5" cy="5" r="5" transform="translate(661.087 340.087)" fill="url(#linear-gradient)"/>
+            </g>
+            <g id="グループ_14" data-name="グループ 14">
+            <path id="多角形_1" data-name="多角形 1" d="M1,0,2,3H0Z" transform="translate(603 334)" fill="#ffb205"/>
+            <path id="多角形_2" data-name="多角形 2" d="M1,0,2,3H0Z" transform="translate(605 352) rotate(180)" fill="#ff5642"/>
+            </g>
+            <g id="グループ_15" data-name="グループ 15" transform="translate(419.445 -326.63) rotate(45)">
+            <path id="多角形_1-2" data-name="多角形 1" d="M1,0,2,3H0Z" transform="translate(603 334)" fill="#ff9b14"/>
+            <path id="多角形_2-2" data-name="多角形 2" d="M1,0,2,3H0Z" transform="translate(605 352) rotate(180)" fill="#ff6b34"/>
+            </g>
+            <g id="グループ_16" data-name="グループ 16" transform="translate(947 -261) rotate(90)">
+            <path id="多角形_1-3" data-name="多角形 1" d="M1,0,2,3H0Z" transform="translate(603 334)" fill="#ff762c"/>
+            <path id="多角形_2-3" data-name="多角形 2" d="M1,0,2,3H0Z" transform="translate(605 352) rotate(180)" fill="#ff911b"/>
+            </g>
+            <g id="グループ_17" data-name="グループ 17" transform="translate(1273.63 158.445) rotate(135)">
+            <path id="多角形_1-4" data-name="多角形 1" d="M1,0,2,3H0Z" transform="translate(603 334)" fill="#ff5a3f"/>
+            <path id="多角形_2-4" data-name="多角形 2" d="M1,0,2,3H0Z" transform="translate(605 352) rotate(180)" fill="#ffaf08"/>
+            </g>
+        </g>
+    </svg>
+    <!-- checked -->
+    <svg v-else-if="name === 'checked'" xmlns="http://www.w3.org/2000/svg" width="14" height="10.16" viewBox="0 0 14 10.16">
+        <path id="パス_8" data-name="パス 8" d="M9.84,17.08a1,1,0,0,1-.707-.293l-3.84-3.84a1,1,0,1,1,1.414-1.414L9.84,14.666l7.453-7.453a1,1,0,0,1,1.414,1.414l-8.16,8.16A1,1,0,0,1,9.84,17.08Z" transform="translate(-5 -6.92)" fill="#fff"/>
+    </svg>
 
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
-    props: ['name']
+    props: ['name', 'color']
 })
 </script>
