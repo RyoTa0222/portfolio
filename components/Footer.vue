@@ -1,6 +1,6 @@
 <template>
     <footer class="absolute bottom-1.5 right-0 footer-container sm:left-0 xs:left-0">
-        <p class="text-sm sm:text-xs xs:text-xs xs:text-center sm:text-center">&copy; RyoTa {{computeYear}}</p> 
+        <p class="text-sm sm:text-xs xs:text-xs xs:text-center sm:text-center dark:text-white">&copy; RyoTa {{computeYear}}</p> 
     </footer>
 </template>
 

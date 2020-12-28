@@ -47,11 +47,12 @@ export default {
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [],
   styleResources: {
-    scss: ['~/assets/scss/variables.scss'],
+    scss: ['~/assets/scss/variable.scss'],
   },
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
-    {src: '~/plugins/window.ts'}
+    {src: '~/plugins/window.ts'},
+    {src: '~/plugins/theme.ts', ssr: false},
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -73,6 +74,7 @@ export default {
     '@nuxtjs/pwa',
     // https://www.npmjs.com/package/@nuxtjs/dotenv
     '@nuxtjs/dotenv',
+    '@nuxtjs/style-resources',
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)

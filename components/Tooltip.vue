@@ -2,7 +2,8 @@
     <span
     class="tooltip-container"
     :data-tooltip="text"
-    :class="[computePosition, computeDevice]">
+    :class="[computePosition, computeDevice]"
+    @click="clickEvent">
         <slot name="content" />
     </span>
 </template>
@@ -33,6 +34,11 @@ export default Vue.extend({
             }
         }
     },
+    methods: {
+        clickEvent() {
+            this.$emit('clickEvent')
+        }
+    }
 })
 </script>
 

@@ -1,30 +1,56 @@
 <template>
-  <div class="bg-white relative w-screen min-h-screen box-border">
-    <header-component />
+  <div class="bg-white relative w-screen min-h-screen box-border dark:bg-dark">
+    <header-component @open="openSettingModal" />
     <Nuxt />
     <footer-component />
+    <template v-if="settingModal">
+      <setting-modal @closeEvent="closeSettingModal" />
+    </template>
   </div>
 </template>
 <script lang="ts">
 import Vue from 'vue'
 import HeaderComponent from '~/components/Header.vue'
 import FooterComponent from '~/components/Footer.vue'
+import SettingModal from '~/components/modal/setting/Modal.vue'
 import Typekit from '~/mixins/typekit'
+import {Theme} from '~/types/type'
 
 export default Vue.extend({
   mixins: [Typekit],
   components: {
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    SettingModal
+  },
+  data: () => {
+    return {
+      settingModal: false as boolean
+    }
   },
   mounted() {
     if (process.client) {
-      // On page load or when changing themes, best to add inline in `head` to avoid FOUC
-      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.querySelector('html')?.classList.add('dark')
-      } else {
-        document.querySelector('html')?.classList.remove('dark')
-      }
+      // TODO: ブラウザのテーマを使用する際コメントイン
+      // // ブラウザで設定しているテーマを使う場合
+      // // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+      // if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      //   document.querySelector('html')?.classList.add('dark')
+      // } else {
+      //   document.querySelector('html')?.classList.remove('dark')
+      // }
+      const response: Theme = (this as any).$theme.getTheme();
+      (this as any).$theme.setHtmlTheme(response)
+    }
+  },
+  methods: {
+    openSettingModal() {
+      this.settingModal = true
+    },
+    /**
+     * 設定のモーダルを閉じる
+     */
+    closeSettingModal() {
+        this.settingModal = false
     }
   }
 })

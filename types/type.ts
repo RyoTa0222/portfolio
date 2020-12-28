@@ -10,7 +10,7 @@ export type PageType = {
 
 export type CtfContentType = 'roadmap'
 
-export type Mode = 'light' | 'dark'
+export type Theme = 'light' | 'dark'
 
 export type RoadmapState = 'schedule' | 'develop' | 'merge'
 
