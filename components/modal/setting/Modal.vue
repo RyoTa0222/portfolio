@@ -21,7 +21,7 @@
                     </div>
                     <hr class="border-gray-400 dark:border-gray-50 my-2" />
                     <p class="text-back dark:text-white text-xs">今後もユーザビリティ向上のため、設定項目を増やしていきます。改善の提案等ございましたらTwitterまでご連絡ください</p>
-                    <div class="twitter-link-container">
+                    <div class="twitter-link-container mt-2">
                         <a
                         class="twitter"
                         href="https://twitter.com/RyoTa___0222"
@@ -48,11 +48,11 @@ export default Vue.extend({
     mixins: [Mixin],
     components: {
         Modal,
-        ThemeComponent
+        ThemeComponent,
     },
     data: () => {
         return {
-            theme: 'light' as Theme
+            theme: 'light' as Theme,
         }
     },
     mounted() {

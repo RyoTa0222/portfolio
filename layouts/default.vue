@@ -1,17 +1,23 @@
 <template>
   <div class="bg-white relative w-screen min-h-screen box-border dark:bg-dark">
-    <header-component @open="openSettingModal" />
-    <Nuxt />
-    <footer-component />
-    <template v-if="settingModal">
-      <setting-modal @closeEvent="closeSettingModal" />
+    <template>
+      <header-component @open="openSettingModal" />
+      <Nuxt />
+      <footer-component />
+      <template v-if="settingModal">
+        <setting-modal @closeEvent="closeSettingModal" />
+      </template>
     </template>
+    <transition name="splash-fade">
+      <splash v-if="splashFlg" />
+    </transition>
   </div>
 </template>
 <script lang="ts">
 import Vue from 'vue'
 import HeaderComponent from '~/components/Header.vue'
 import FooterComponent from '~/components/Footer.vue'
+import Splash from '~/components/Splash.vue'
 import SettingModal from '~/components/modal/setting/Modal.vue'
 import Typekit from '~/mixins/typekit'
 import {Theme} from '~/types/type'
@@ -21,11 +27,13 @@ export default Vue.extend({
   components: {
     HeaderComponent,
     FooterComponent,
-    SettingModal
+    SettingModal,
+    Splash
   },
   data: () => {
     return {
-      settingModal: false as boolean
+      settingModal: false as boolean,
+      splashFlg: true as boolean
     }
   },
   mounted() {
@@ -40,6 +48,10 @@ export default Vue.extend({
       // }
       const response: Theme = (this as any).$theme.getTheme();
       (this as any).$theme.setHtmlTheme(response)
+      // スプラッシュ終了
+      setTimeout(() => {
+        this.splashFlg = false
+      }, 3000)
     }
   },
   methods: {

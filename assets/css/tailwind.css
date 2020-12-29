@@ -3,9 +3,32 @@
 @tailwind utilities;
 
 .container {
-    @apply min-h-screen;
+  @apply min-h-screen;
 }
 
-p, span, h1, h2, h3, h4, h5, h6, li {
-    @apply font-fot;
+p,
+span,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+li {
+  @apply font-fot;
+}
+
+.splash-fade-leave-active {
+  animation: splash-fade 3s;
+}
+
+@keyframes splash-fade {
+  0% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-5%);
+    opacity: 0;
+  }
 }
