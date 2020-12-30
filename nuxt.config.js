@@ -3,7 +3,13 @@ require('dotenv').config()
 export default {
   // Target (https://go.nuxtjs.dev/config-target)
   target: 'static',
-
+  // env
+  env: {
+    CTF_SPACE_ID: process.env.CTF_SPACE_ID,
+    CTF_CDA_ACCESS_TOKEN: process.env.CTF_CDA_ACCESS_TOKEN,
+    BASE_URL: process.env.BASE_URL,
+    SITE_URL: process.env.SITE_URL
+  },
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     htmlAttrs: {
