@@ -29,7 +29,16 @@
 import Vue from 'vue'
 import {Theme} from '~/types/type'
 
-export default Vue.extend({})
+export default Vue.extend({
+    head() {
+        return {
+            title: ' | ポートフォリオ',
+            meta: [
+                { hid: 'og:title', property: 'og:title', content: 'RyoTa. | portfolio' },
+            ]
+        }
+    }
+})
 </script>
 
 <style lang="scss" scoped>

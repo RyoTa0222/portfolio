@@ -1,7 +1,7 @@
 <template>
     <header
     class="header"
-    :class="{separate: computeIsTop, 'bg-white dark:bg-dark': $route.name === 'roadmap'}">
+    :class="{separate: computeIsTop, 'bg-white dark:bg-dark': $route.name === 'roadmap', 'error-page-header': $route.name === null}">
         <span class="logo-container" @click="$router.push('/')">
             <img src="~/assets/images/logo.png" alt="RyoTa" class="logo" />
         </span>
@@ -15,7 +15,9 @@
                             class="font-zooja cursor-pointer"
                             @click="$router.push(page.path)">
                                 <template v-if="['xs', 'sm'].includes($breakpoint.name)">
-                                    <svg-container :name="page.icon" class="svg-container fill-current text-black dark:text-white" />
+                                    <svg-container :name="computeIconName(page.icon)" class="svg-container text-black dark:text-white"
+                                    :class="computeActive(page.icon)"
+                                    />
                                 </template>
                                 {{ page.name }}
                             </li>
@@ -79,6 +81,38 @@ export default Vue.extend({
          */
         computeIsTop(): boolean {
             return (this as any).$window.pageYOffset > 0
+        },
+        /**
+         * アイコンの名前を返す
+         * @return {string} アイコン名
+         */
+        computeIconName(): any {
+            return (icon: string): any => {
+                switch(icon) {
+                    case 'home':
+                        return this.$route.name === 'index' ? 'home' : 'home-line'
+                    case 'user':
+                        return this.$route.name === 'portfolio' ? 'user' : 'user-line'
+                    case 'map':
+                        return this.$route.name === 'roadmap' ? 'map' : 'map-line'
+                }
+            }
+        },
+        /**
+         * アイコンの名前を返す
+         * @return {string} アイコン名
+         */
+        computeActive(): any {
+            return (icon: string): any => {
+                switch(icon) {
+                    case 'home':
+                        return this.$route.name === 'index' ? 'active' : ''
+                    case 'user':
+                        return this.$route.name === 'portfolio' ? 'active' : ''
+                    case 'map':
+                        return this.$route.name === 'roadmap' ? 'active' : ''
+                }
+            }
         }
     },
     methods: {
@@ -98,6 +132,9 @@ export default Vue.extend({
     padding: 0 5vw;
     @screen sm {
         @apply h-12;   
+    }
+    &.error-page-header {
+        z-index: 999999;
     }
     .logo-container {
         @apply h-full cursor-pointer;
@@ -129,7 +166,10 @@ export default Vue.extend({
                     li {
                         @apply m-0 px-2 pt-2 text-sm flex justify-center items-center flex-col;
                         .svg-container {
-                            @apply mb-1 h-5;
+                            @apply mb-1 h-5 stroke-current;
+                            &.active {
+                                @apply fill-current;
+                            }
                         }
                     }
                 }

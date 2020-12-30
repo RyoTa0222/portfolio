@@ -2,7 +2,7 @@
   <div class="error-page-container">
     <div class="isometric-container">
         <span class="txt number" :data-text="error.statusCode">{{error.statusCode}}</span>
-        <h1 :data-text="computeErrorMessage" class="txt">
+        <h1 :data-text="computeErrorMessage" class="txt title">
           {{ computeErrorMessage }}
         </h1>
     </div>
@@ -15,26 +15,21 @@ export default Vue.extend({
     layout: 'empty',
     props: {
         error: {
-        type: Object,
-        default: null
-        }
-    },
-    data: () => {
-        return {
-
+            type: Object,
+            default: null
         }
     },
     mounted() {
+        if (process.client) {       
+            const container = document.getElementById('container')
+            container?.addEventListener('changeTheme', this.setTextThickness)
+            this.setTextThickness()
+        }
+    },
+    beforeDestroy() {
         if (process.client) {
-            const elements = document.querySelectorAll('.txt')
-            for (const ele of elements) {
-                console.log((ele as HTMLElement).style.fontSize)
-                let shadow = ''
-                for(let i = 0; i < 30; i++) {
-                    shadow += (shadow ? ',' : '') + `${-i * 1}px ${i * 1}px 0 #e1e1e1`
-                }
-                (ele as HTMLElement).style.textShadow = shadow
-            }
+            const container = document.getElementById('container')
+            container?.addEventListener('changeTheme', this.setTextThickness)
         }
     },
     computed: {
@@ -58,6 +53,23 @@ export default Vue.extend({
             }
             return ''
         }
+    },
+    methods: {
+        /**
+         * 文字を立体的にする
+         */
+        setTextThickness() {
+            const elements = document.querySelectorAll('.txt')
+            const theme = (this as any).$theme.getTheme()
+            const color = theme === 'dark' ? '#1F2937' : '#e1e1e1'
+            for (const ele of elements) {
+                let shadow = ''
+                for(let i = 0; i < 30; i++) {
+                    shadow += (shadow ? ',' : '') + `${-i * 1}px ${i * 1}px 0 ${color}`
+                }
+                (ele as HTMLElement).style.textShadow = shadow
+            }
+        }
     }
 })
 </script>
@@ -68,6 +80,7 @@ export default Vue.extend({
     height: 100vh;
     background: #f1f1f1;
     overflow: hidden;
+    @apply dark:bg-dark;
     .isometric-container {
         .txt {
             display: block;
@@ -80,6 +93,7 @@ export default Vue.extend({
             font-weight: 900;
             font-style: normal;
             margin-left: 20px;
+            @apply dark:text-gray-600;
             &.number {
                 font-size: 13rem;
                 font-family: odile, serif;
@@ -92,10 +106,21 @@ export default Vue.extend({
                 position: absolute;
                 top: 37px;
                 left: -37px;
-                color: rgba(0, 0, 0, 0.25);
+                color:rgba(0, 0, 0, 0.25);
                 text-shadow: none;
                 filter: blur(12px);
                 z-index: -1;
+                @apply dark:text-black;
+            }
+            @screen sm {
+                transform: rotate(-28deg) skew(25deg) scale(0.3) translate(-750px, -500px);
+                &.title {
+                    width: 1000px;
+                }
+                &.number {
+                    transform: rotate(-28deg) skew(25deg) scale(0.5) translate(-300px, 150px);
+                    line-height: 200px;
+                }
             }
         }
     }
