@@ -15,14 +15,18 @@
 
 <script lang="ts">
 import Vue from 'vue'
+import screenHeight from '~/mixins/screenHeight'
+
 export default Vue.extend({
-    props: ['ctfData', 'title', 'screenHeight']
+    // screenHeight, screenWidth
+    mixins: [screenHeight],
+    props: ['ctfData', 'title']
 })
 </script>
 
 <style lang="scss" scoped>
 .content {
-    @apply h-screen w-screen m-auto box-border;
+    @apply w-screen m-auto box-border;
     scroll-snap-align: start;
     max-width: 1280px;
     padding: 10vh 30px;

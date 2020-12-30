@@ -123,7 +123,9 @@ export default Vue.extend({
         .dammy-btn {
             width: 100px;
             height: 30px;
-            @apply rounded-sm inline-flex justify-center items-center text-xs ml-1 mr-1;
+            text-align: center;
+            padding: 6px 0;
+            @apply rounded-sm inline-block text-xs ml-1 mr-1;
         }
     }
     &.light {

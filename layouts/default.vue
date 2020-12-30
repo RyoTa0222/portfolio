@@ -1,5 +1,8 @@
 <template>
-  <div class="bg-white relative w-screen min-h-screen box-border dark:bg-dark" id="container">
+  <div
+  class="bg-white relative w-screen min-h-screen box-border dark:bg-dark"
+  id="container"
+  :style="`height: ${screenHeight}px;`">
     <template>
       <header-component @open="openSettingModal" />
       <Nuxt />
@@ -21,9 +24,10 @@ import Splash from '~/components/Splash.vue'
 import SettingModal from '~/components/modal/setting/Modal.vue'
 import Typekit from '~/mixins/typekit'
 import {Theme} from '~/types/type'
+import screenHeight from '~/mixins/screenHeight'
 
 export default Vue.extend({
-  mixins: [Typekit],
+  mixins: [Typekit, screenHeight],
   components: {
     HeaderComponent,
     FooterComponent,

@@ -170,6 +170,7 @@ export default Vue.extend({
                         }
                         .svg-container {                            
                             @apply mb-1 h-6 stroke-current;
+                            width: 28px;
                             &.active {
                                 @apply fill-current;
                             }

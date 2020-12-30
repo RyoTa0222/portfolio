@@ -1,21 +1,18 @@
 <template>
-    <div class="roadmap-container" :style="`height: ${screenHeight}px;`">
+    <div class="roadmap-container h-full">
         <roadmap-section
         title="開発予定"
         :ctfData="getRoadmapStateData('schedule')"
-        :screenHeight="screenHeight"
         class="schedule"
         id="schedule" />
         <roadmap-section
         title="開発中"
         :ctfData="getRoadmapStateData('develop')"
-        :screenHeight="screenHeight"
         class="develop"
         id="develop" />
         <roadmap-section
         title="反映済み"
         :ctfData="getRoadmapStateData('merge')"
-        :screenHeight="screenHeight"
         class="merge"
         id="merge" />
         <transition name="fade">
@@ -48,7 +45,7 @@ import {CtfContentType, CtfContentItem, RoadmapState} from '~/types/type'
 import RoadmapSection from '~/components/RoadmapSection.vue'
 import { DateTime } from 'luxon'
 import createClient from '~/plugins/contentful'
-import screenHeight from '~/mixins/screenHeight'
+// import screenHeight from '~/mixins/screenHeight'
 
 const client = createClient()
 
@@ -60,7 +57,7 @@ type Field = {
 
 export default Vue.extend({
     // screenWidth, screenHeight
-    mixins: [screenHeight],
+    // mixins: [screenHeight],
     components: {
         RoadmapSection
     },
