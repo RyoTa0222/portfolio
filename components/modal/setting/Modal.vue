@@ -20,7 +20,7 @@
                         </div>
                     </div>
                     <hr class="border-gray-400 dark:border-gray-50 my-2" />
-                    <p class="text-back dark:text-white text-xs">今後もユーザビリティ向上のため、設定項目を増やしていきます。改善の提案等ございましたらTwitterまでご連絡ください</p>
+                    <p class="text-back dark:text-white text-xs">今後もユーザビリティ向上のため、設定項目を増やしていきます。改善の提案等ございましたらTwitterまでご連絡ください！</p>
                     <div class="twitter-link-container mt-2">
                         <a
                         class="twitter"

@@ -165,8 +165,11 @@ export default Vue.extend({
                     border: none;
                     li {
                         @apply m-0 px-2 pt-2 text-sm flex justify-center items-center flex-col;
-                        .svg-container {
-                            @apply mb-1 h-5 stroke-current;
+                        &:focus {
+                            outline: none;
+                        }
+                        .svg-container {                            
+                            @apply mb-1 h-6 stroke-current;
                             &.active {
                                 @apply fill-current;
                             }
@@ -187,6 +190,9 @@ export default Vue.extend({
             @apply rounded-full p-2 cursor-pointer dark:bg-gray-600 bg-gray-50;
             width: 36px;
             height: 36px;
+            &:focus {
+                outline: none;
+            }
             svg {
                 @apply dark:text-white text-gray-600;
             }

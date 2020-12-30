@@ -1,12 +1,12 @@
 <template>
-    <div class="flex portrait-container">
+    <div class="flex portrait-container" :style="`height: ${screenHeight}px;`">
         <!-- テキスト部分 -->
         <div class="text-container w-1/2 sm:w-full sm:h-auto sm:p-8">
             <div class="wrapper">
                 <p>2020年から社会人のフロントエンドエンジニア</p>
                 <p>といいつつ、デザインやアニメーション、機械学習にも興味があり、インプット中</p>
                 <p>将来は、フロントを軸に、様々なソリューションを提供できる人材になりたいです</p>
-                <p>最近意識してる言葉： 「世界観」、「マイクロインタラクション」</p>
+                <p>最近意識してる言葉： <span class="font-bold">「世界観」</span>、<span class="font-bold">「マイクロインタラクション」</span></p>
             </div>
         </div>
         <!-- 画像部分 -->
@@ -28,8 +28,11 @@
 <script lang="ts">
 import Vue from 'vue'
 import {Theme} from '~/types/type'
+import screenHeight from '~/mixins/screenHeight'
 
 export default Vue.extend({
+    // screenWidth, screenHeight
+    mixins: [screenHeight],
     head() {
         return {
             title: ' | ポートフォリオ',
@@ -43,7 +46,7 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .portrait-container {
-    @apply h-screen sm:flex-col-reverse sm:justify-end;
+    @apply sm:flex-col-reverse sm:justify-end;
     max-width: 1280px;
     margin: auto;
     .text-container {

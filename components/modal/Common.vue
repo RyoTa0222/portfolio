@@ -88,6 +88,9 @@ export default Vue.extend({
             &:active {
                 transform: scale(0.8);
             }
+            &:focus {
+                outline: none;                
+            }
             svg {
                 @apply dark:text-white text-gray-600;
             }
