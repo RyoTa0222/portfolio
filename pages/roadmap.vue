@@ -84,7 +84,6 @@ export default Vue.extend({
             // window.addEventListener('load', this.watchDisplayElement)
             ele[0].addEventListener('scroll', this.watchDisplayElement)
         }
-        console.log((this as any).screenHeight)
     },
     beforeDestroy() {
         if (process.client) {
