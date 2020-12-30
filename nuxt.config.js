@@ -1,5 +1,37 @@
 require('dotenv').config()
 
+const mkHead = (environment = 'production') => {
+  const meta = [
+    { charset: 'utf-8' },
+    { 'http-equiv': 'http-equiv', content: 'text/html; charset=UTF-8' },
+    {
+      name: 'viewport',
+      content:
+        'width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=5'
+    },
+    { hid: 'description', name: 'description', content: 'RyoTaのポートフォリオサイトです。UXを意識したサイトの制作を意識しております。Twitterで発信をしておりますのでご気軽にフォローしてください！' },
+    { hid: 'og:site_name', property: 'og:site_name', content: 'RyoTa.' },
+    { hid: 'og:type', property: 'og:type', content: 'website' },
+    { hid: 'og:url', property: 'og:url', content: process.env.SITE_URL },
+    { hid: 'og:title', property: 'og:title', content: 'RyoTa.' },
+    {
+      hid: 'og:description',
+      property: 'og:description',
+      content: 'RyoTaのポートフォリオサイトです。UXを意識したサイトの制作を意識しております。Twitterで発信をしておりますのでご気軽にフォローしてください！'
+    },
+    {
+      hid: 'og:image',
+      property: 'og:image',
+      content: process.env.SITE_URL + '/img/common-ogp.png'
+    },
+    { hid: 'twitter:card', name: 'twitter:card', content: 'summary' }
+  ]
+  if (environment === 'development') {
+    meta.push({ hid: 'robots', name: 'robots', content: 'noindex,nofollow' })
+  }
+  return meta
+}
+
 export default {
   // Target (https://go.nuxtjs.dev/config-target)
   target: 'static',
@@ -8,7 +40,8 @@ export default {
     CTF_SPACE_ID: process.env.CTF_SPACE_ID,
     CTF_CDA_ACCESS_TOKEN: process.env.CTF_CDA_ACCESS_TOKEN,
     BASE_URL: process.env.BASE_URL,
-    SITE_URL: process.env.SITE_URL
+    SITE_URL: process.env.SITE_URL,
+    ENVIRONMENT_NAME: process.env.ENVIRONMENT_NAME || 'production'
   },
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
@@ -16,31 +49,7 @@ export default {
       lang: 'ja'
     },
     titleTemplate: 'RyoTa.%s',
-    meta: [
-      { charset: 'utf-8' },
-      { 'http-equiv': 'http-equiv', content: 'text/html; charset=UTF-8' },
-      {
-        name: 'viewport',
-        content:
-          'width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=5'
-      },
-      { hid: 'description', name: 'description', content: 'RyoTaのポートフォリオサイトです。UXを意識したサイトの制作を意識しております。Twitterで発信をしておりますのでご気軽にフォローしてください！' },
-      { hid: 'og:site_name', property: 'og:site_name', content: 'RyoTa.' },
-      { hid: 'og:type', property: 'og:type', content: 'website' },
-      { hid: 'og:url', property: 'og:url', content: process.env.SITE_URL },
-      { hid: 'og:title', property: 'og:title', content: 'RyoTa.' },
-      {
-        hid: 'og:description',
-        property: 'og:description',
-        content: 'RyoTaのポートフォリオサイトです。UXを意識したサイトの制作を意識しております。Twitterで発信をしておりますのでご気軽にフォローしてください！'
-      },
-      {
-        hid: 'og:image',
-        property: 'og:image',
-        content: process.env.SITE_URL + '/img/common-ogp.png'
-      },
-      { hid: 'twitter:card', name: 'twitter:card', content: 'summary' }
-    ],
+    meta: mkHead(process.env.ENVIRONMENT_NAME || 'production'),
     link: [
       {
         rel: 'icon',
