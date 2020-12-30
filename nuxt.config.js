@@ -1,17 +1,39 @@
 require('dotenv').config()
 
-
 export default {
   // Target (https://go.nuxtjs.dev/config-target)
   target: 'static',
 
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
-    title: 'RyoTa',
+    htmlAttrs: {
+      lang: 'ja'
+    },
+    titleTemplate: 'RyoTa.%s',
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
+      { 'http-equiv': 'http-equiv', content: 'text/html; charset=UTF-8' },
+      {
+        name: 'viewport',
+        content:
+          'width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=5'
+      },
+      { hid: 'description', name: 'description', content: 'RyoTaのポートフォリオサイトです。UXを意識したサイトの制作を意識しております。Twitterで発信をしておりますのでご気軽にフォローしてください！' },
+      { hid: 'og:site_name', property: 'og:site_name', content: 'RyoTa.' },
+      { hid: 'og:type', property: 'og:type', content: 'website' },
+      { hid: 'og:url', property: 'og:url', content: process.env.SITE_URL },
+      { hid: 'og:title', property: 'og:title', content: 'RyoTa.' },
+      {
+        hid: 'og:description',
+        property: 'og:description',
+        content: 'RyoTaのポートフォリオサイトです。UXを意識したサイトの制作を意識しております。Twitterで発信をしておりますのでご気軽にフォローしてください！'
+      },
+      {
+        hid: 'og:image',
+        property: 'og:image',
+        content: process.env.SITE_URL + '/img/common-ogp.png'
+      },
+      { hid: 'twitter:card', name: 'twitter:card', content: 'summary' }
     ],
     link: [
       {

@@ -165,6 +165,14 @@ export default Vue.extend({
                 this.currentSection = 'merge'
             }
         }
+    },
+    head() {
+        return {
+            title: ' | ロードマップ',
+            meta: [
+                { hid: 'og:title', property: 'og:title', content: 'RyoTa. | roadmap' },
+            ]
+        }
     }
 })
 </script>
