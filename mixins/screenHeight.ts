@@ -27,7 +27,6 @@ export default Vue.extend({
         getScreenSize() {
             this.screenWidth = window.innerWidth
             this.screenHeight = window.innerHeight
-            console.log(this.screenHeight)
         },
     }
 })
