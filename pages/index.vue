@@ -1,5 +1,5 @@
 <template>
-  <div class="home-container" :style="`height: ${screenHeight}px;`">
+  <div class="home-container h-full">
     <div class="preparing-container">
       <img src="~/assets/images/home/lr.png" alt="ただ今、準備中です" />
       <div class="text-container">
@@ -13,11 +13,11 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import screenHeight from '~/mixins/screenHeight'
+// import screenHeight from '~/mixins/screenHeight'
 
 export default Vue.extend({
   // screenWidth, screenHeight
-  mixins: [screenHeight]
+  // mixins: [screenHeight]
 })
 </script>
 

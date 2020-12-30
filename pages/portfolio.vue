@@ -1,5 +1,5 @@
 <template>
-    <div class="flex portrait-container" :style="`height: ${screenHeight}px;`">
+    <div class="flex portrait-container h-full">
         <!-- テキスト部分 -->
         <div class="text-container w-1/2 sm:w-full sm:h-auto sm:p-8">
             <div class="wrapper">
@@ -28,11 +28,11 @@
 <script lang="ts">
 import Vue from 'vue'
 import {Theme} from '~/types/type'
-import screenHeight from '~/mixins/screenHeight'
+// import screenHeight from '~/mixins/screenHeight'
 
 export default Vue.extend({
     // screenWidth, screenHeight
-    mixins: [screenHeight],
+    // mixins: [screenHeight],
     head() {
         return {
             title: ' | ポートフォリオ',
