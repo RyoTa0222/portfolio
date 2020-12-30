@@ -1,5 +1,5 @@
 <template>
-    <section class="content" v-if="ctfData.length > 0">
+    <section class="content" v-if="ctfData.length > 0" :style="`height: ${screenHeight}px;`">
         <h2 v-show="title">{{title}}</h2>
         <ul>
             <li
@@ -16,7 +16,7 @@
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
-    props: ['ctfData', 'title']
+    props: ['ctfData', 'title', 'screenHeight']
 })
 </script>
 

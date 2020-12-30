@@ -18,6 +18,10 @@ li {
   @apply font-fot;
 }
 
+* {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
 .splash-fade-leave-active {
   animation: splash-fade 3s;
 }

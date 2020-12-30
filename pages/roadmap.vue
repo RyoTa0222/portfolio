@@ -1,18 +1,21 @@
 <template>
-    <div class="roadmap-container">
+    <div class="roadmap-container" :style="`height: ${screenHeight}px;`">
         <roadmap-section
         title="開発予定"
         :ctfData="getRoadmapStateData('schedule')"
+        :screenHeight="screenHeight"
         class="schedule"
         id="schedule" />
         <roadmap-section
         title="開発中"
         :ctfData="getRoadmapStateData('develop')"
+        :screenHeight="screenHeight"
         class="develop"
         id="develop" />
         <roadmap-section
         title="反映済み"
         :ctfData="getRoadmapStateData('merge')"
+        :screenHeight="screenHeight"
         class="merge"
         id="merge" />
         <transition name="fade">
@@ -45,6 +48,7 @@ import {CtfContentType, CtfContentItem, RoadmapState} from '~/types/type'
 import RoadmapSection from '~/components/RoadmapSection.vue'
 import { DateTime } from 'luxon'
 import createClient from '~/plugins/contentful'
+import screenHeight from '~/mixins/screenHeight'
 
 const client = createClient()
 
@@ -55,6 +59,8 @@ type Field = {
 }
 
 export default Vue.extend({
+    // screenWidth, screenHeight
+    mixins: [screenHeight],
     components: {
         RoadmapSection
     },
@@ -78,6 +84,7 @@ export default Vue.extend({
             // window.addEventListener('load', this.watchDisplayElement)
             ele[0].addEventListener('scroll', this.watchDisplayElement)
         }
+        console.log((this as any).screenHeight)
     },
     beforeDestroy() {
         if (process.client) {
@@ -180,7 +187,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .roadmap-container {
     scroll-snap-type: y mandatory;
-    @apply overflow-scroll h-screen p-0;
+    @apply overflow-scroll p-0;
     -ms-overflow-style: none;    /* IE, Edge 対応 */
     scrollbar-width: none;       /* Firefox 対応 */
     &::-webkit-scrollbar {  /* Chrome, Safari 対応 */
