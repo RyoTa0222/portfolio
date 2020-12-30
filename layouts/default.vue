@@ -2,7 +2,7 @@
   <div
   class="bg-white relative w-screen min-h-screen box-border dark:bg-dark"
   id="container"
-  :style="`height: ${screenHeight}px;`">
+  :style="`min-height: ${screenHeight}px !important;`">
     <template>
       <header-component @open="openSettingModal" />
       <Nuxt />
