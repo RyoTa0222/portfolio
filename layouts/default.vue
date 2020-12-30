@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-white relative w-screen min-h-screen box-border dark:bg-dark">
+  <div class="bg-white relative w-screen min-h-screen box-border dark:bg-dark" id="container">
     <template>
       <header-component @open="openSettingModal" />
       <Nuxt />

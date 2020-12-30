@@ -2,6 +2,15 @@ import { Plugin } from '@nuxt/types'
 import {Theme} from '~/types/type'
 
 const plugin: Plugin = (context, inject) => {
+    // カスタムイベントを登録と発行
+    const registAndDispatchEvent = () => {
+        // 登録
+        const event = new CustomEvent('changeTheme')
+        // 発行
+        const container = document.getElementById('container')
+        container?.dispatchEvent(event)
+    }
+    // HTMLにクラス設定
     const setHtmlTheme = (theme: Theme) => {
         if (theme === 'dark') {
             document.querySelector('html')?.classList.add('dark')
@@ -27,6 +36,7 @@ const plugin: Plugin = (context, inject) => {
         try {
             localStorage.setItem('theme', theme)
             setHtmlTheme(theme)
+            registAndDispatchEvent()
             return true
         } catch (err) {
             return false

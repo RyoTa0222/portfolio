@@ -1,6 +1,6 @@
 <template>
     <section class="content" v-if="ctfData.length > 0">
-        <h2 v-if="title">{{title}}</h2>
+        <h2 v-show="title">{{title}}</h2>
         <ul>
             <li
             v-for="item in ctfData"

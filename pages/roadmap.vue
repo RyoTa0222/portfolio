@@ -3,15 +3,39 @@
         <roadmap-section
         title="開発予定"
         :ctfData="getRoadmapStateData('schedule')"
-        class="schedule" />
+        class="schedule"
+        id="schedule" />
         <roadmap-section
         title="開発中"
         :ctfData="getRoadmapStateData('develop')"
-        class="develop" />
+        class="develop"
+        id="develop" />
         <roadmap-section
         title="反映済み"
         :ctfData="getRoadmapStateData('merge')"
-        class="merge" />
+        class="merge"
+        id="merge" />
+        <transition name="fade">
+            <div class="illust-container schedule" v-if="currentSection === 'schedule'">
+                <img src="@/assets/images/roadmap/schedule/bg.png" alt="背景" class="bg">
+                <img src="@/assets/images/roadmap/tree.png" alt="木" class="tree">
+                <img src="@/assets/images/roadmap/schedule/person.png" alt="人" class="person">
+            </div>
+        </transition>
+        <transition name="fade">
+            <div class="illust-container develop" v-if="currentSection === 'develop'">
+                <img src="@/assets/images/roadmap/develop/bg.png" alt="背景" class="bg">
+                <img src="@/assets/images/roadmap/tree.png" alt="木" class="tree">
+                <img src="@/assets/images/roadmap/develop/person.png" alt="人" class="person">
+            </div>
+        </transition>
+        <transition name="fade">
+            <div class="illust-container merge" v-if="currentSection === 'merge'">
+                <img src="@/assets/images/roadmap/merge/bg.png" alt="背景" class="bg">
+                <img src="@/assets/images/roadmap/tree.png" alt="木" class="tree">
+                <img src="@/assets/images/roadmap/merge/person.png" alt="人" class="person">
+            </div>
+        </transition>
     </div>
 </template>
 
@@ -36,7 +60,8 @@ export default Vue.extend({
     },
     data: () => {
         return {
-            ctfData: null as CtfContentItem[] | null
+            ctfData: null as CtfContentItem[] | null,
+            currentSection: 'schedule' as RoadmapState
         }
     },
     async asyncData({params}) {
@@ -45,6 +70,20 @@ export default Vue.extend({
         })
         return {
             ctfData: entries.items
+        }
+    },
+    mounted() {
+        if (process.client) {
+            const ele = document.getElementsByClassName('roadmap-container')
+            // window.addEventListener('load', this.watchDisplayElement)
+            ele[0].addEventListener('scroll', this.watchDisplayElement)
+        }
+    },
+    beforeDestroy() {
+        if (process.client) {
+            // window.removeEventListener('load', this.watchDisplayElement)
+            const ele = document.getElementsByClassName('roadmap-container')
+            ele[0].removeEventListener('scroll', this.watchDisplayElement)
         }
     },
     methods: {
@@ -91,6 +130,40 @@ export default Vue.extend({
                 })
             }
             return filter
+        },
+        /**
+         * どのセクションを画面に表示するか監視
+         */
+        watchDisplayElement() {
+            // スクロールいちを取得
+            const scrollTop = window.pageYOffset
+            const scrollBottom = scrollTop + window.innerHeight
+            // 要素が表示領域にいるかどうか
+            const _isDisplay = (element: HTMLElement | null): boolean => {
+                if (element) {
+                    const rect = element.getBoundingClientRect()
+                    const targetScrollTop = window.pageYOffset || document.documentElement.scrollTop
+                    let targetTop = rect.top + scrollTop
+                    let targetBottom = targetTop + element.clientHeight
+                    if (targetBottom > scrollTop && targetBottom <= scrollBottom) {
+                        return true
+                    }
+                }
+                return false
+            }
+            // 「開発予定」にいるかどうか
+            const schedule = document.getElementById('schedule')
+            const develop = document.getElementById('develop')
+            const merge = document.getElementById('merge')
+            if (_isDisplay(schedule)) {
+                this.currentSection = 'schedule'
+            }
+            if (_isDisplay(develop)) {
+                this.currentSection = 'develop'
+            }
+            if (_isDisplay(merge)) {
+                this.currentSection = 'merge'
+            }
         }
     }
 })
@@ -104,6 +177,40 @@ export default Vue.extend({
     scrollbar-width: none;       /* Firefox 対応 */
     &::-webkit-scrollbar {  /* Chrome, Safari 対応 */
         display:none;
+    }
+    .illust-container {
+        @apply fixed;
+        right: 50px;
+        bottom: 50px;
+        width: 450px;
+        height: 450px;
+        @screen sm {
+            transform: scale(0.5);
+            transform-origin: right;
+            bottom: 0;
+            right: 0;
+        }
+        .tree {
+            position: absolute;
+            left: 0;
+            bottom: 95px;
+            height: 55%;
+        }
+        .bg {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 30px;
+            left: 0;
+        }
+        .person {
+            width: 100%;
+            height: 50%;
+            position: absolute;
+            object-fit: contain;
+            bottom: 90px;
+            left: 0;
+        }
     }
 }
 </style>

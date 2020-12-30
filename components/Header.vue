@@ -1,7 +1,7 @@
 <template>
     <header
     class="header"
-    :class="{separate: computeIsTop, 'bg-white dark:bg-dark': $route.name === 'roadmap'}">
+    :class="{separate: computeIsTop, 'bg-white dark:bg-dark': $route.name === 'roadmap', 'error-page-header': $route.name === null}">
         <span class="logo-container" @click="$router.push('/')">
             <img src="~/assets/images/logo.png" alt="RyoTa" class="logo" />
         </span>
@@ -113,7 +113,7 @@ export default Vue.extend({
                         return this.$route.name === 'roadmap' ? 'active' : ''
                 }
             }
-        },
+        }
     },
     methods: {
         /**
@@ -132,6 +132,9 @@ export default Vue.extend({
     padding: 0 5vw;
     @screen sm {
         @apply h-12;   
+    }
+    &.error-page-header {
+        z-index: 999999;
     }
     .logo-container {
         @apply h-full cursor-pointer;

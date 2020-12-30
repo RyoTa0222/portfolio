@@ -4,13 +4,32 @@
             <!-- WebP用画像 -->
             <source srcset="@/assets/images/splash-pc.webp" type="image/webp">
             <!-- 従来画像 -->
-            <img src="@/assets/images/splash-pc.png">
+            <img src="@/assets/images/splash-pc.png" alt="splash" @load="load">
         </picture>
-        <div>
-            <p class="typewriter">RyoTa.</p>
+        <div style="height: 32px;">
+            <p class="typewriter" v-show="loaded">RyoTa.</p>
         </div>
     </div>
 </template>
+
+<script lang="ts">
+import Vue from 'vue'
+export default Vue.extend({
+    data: () => {
+        return {
+            loaded: false
+        }
+    },
+    methods: {
+        /**
+         * 画像が読み込み完了したときフラグを立てる
+         */
+        load() {
+            this.loaded = true
+        }
+    }
+})
+</script>
 
 <style lang="scss" scoped>
 .splash-container {
@@ -25,9 +44,9 @@
     @apply text-black dark:text-white overflow-hidden whitespace-nowrap my-0 mx-auto mt-2 border-blue-300 border-r-2 border-solid;
     letter-spacing: .15em; /* Adjust as needed */
     animation: 
-    typing 3.5s steps(20, end),
+    typing 2.5s steps(10, end),
     blink-caret .75s step-end infinite;
-    animation-delay: 0.5s;
+    animation-fill-mode: backwards;
 }
 </style>
 

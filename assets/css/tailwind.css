@@ -32,3 +32,21 @@ li {
     opacity: 0;
   }
 }
+
+.slide-enter-active {
+  transition: transform 1s;
+  transform: translateX(0%);
+}
+.slide-enter {
+  transform: translateX(-200%);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  opacity: 1;
+  transition: opacity 1s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
