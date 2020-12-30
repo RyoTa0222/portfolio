@@ -48,6 +48,7 @@ export default {
     htmlAttrs: {
       lang: 'ja'
     },
+    title: '',
     titleTemplate: 'RyoTa.%s',
     meta: mkHead(process.env.ENVIRONMENT_NAME || 'production'),
     link: [
