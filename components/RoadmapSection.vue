@@ -15,12 +15,8 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import screenHeight from '~/mixins/screenHeight'
-
 export default Vue.extend({
-    // screenHeight, screenWidth
-    mixins: [screenHeight],
-    props: ['ctfData', 'title']
+    props: ['ctfData', 'title', 'screenHeight']
 })
 </script>
 
