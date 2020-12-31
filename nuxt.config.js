@@ -24,7 +24,7 @@ const mkHead = (environment = 'production') => {
       property: 'og:image',
       content: process.env.SITE_URL + '/img/ogp.png'
     },
-    { hid: 'twitter:card', name: 'twitter:card', content: 'summary' }
+    { hid: 'twitter:card', name: 'twitter:card', content: 'summary_large_image' }
   ]
   if (environment === 'development') {
     meta.push({ hid: 'robots', name: 'robots', content: 'noindex,nofollow' })
