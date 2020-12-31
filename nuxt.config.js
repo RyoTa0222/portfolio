@@ -22,7 +22,7 @@ const mkHead = (environment = 'production') => {
     {
       hid: 'og:image',
       property: 'og:image',
-      content: process.env.SITE_URL + '/img/common-ogp.png'
+      content: process.env.SITE_URL + '/img/ogp.png'
     },
     { hid: 'twitter:card', name: 'twitter:card', content: 'summary' }
   ]
