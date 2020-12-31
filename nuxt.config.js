@@ -22,9 +22,11 @@ const mkHead = (environment = 'production') => {
     {
       hid: 'og:image',
       property: 'og:image',
-      content: process.env.SITE_URL + '/img/ogp.png'
+      content: process.env.SITE_URL + 'img/ogp.png'
     },
-    { hid: 'twitter:card', name: 'twitter:card', content: 'summary_large_image' }
+    { hid: 'twitter:card', name: 'twitter:card', content: 'summary_large_image' },
+    { hid: 'twitter:image', name: 'twitter:image', content: process.env.SITE_URL + 'img/ogp.png'},
+    { hid: 'twitter:site', name: 'twitter:site', content: '@RyoTa___0222' },
   ]
   if (environment === 'development') {
     meta.push({ hid: 'robots', name: 'robots', content: 'noindex,nofollow' })
