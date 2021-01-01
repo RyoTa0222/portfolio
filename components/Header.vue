@@ -1,13 +1,13 @@
 <template>
     <header
     class="header"
-    :class="{separate: computeIsTop, 'bg-white dark:bg-dark': $route.name === 'roadmap', 'error-page-header': $route.name === null}">
+    :class="{'separate': computeIsTop, 'bg-white dark:bg-dark': $route.name === 'roadmap', 'error-page-header': $route.name === null}">
         <span class="logo-container" @click="$router.push('/')">
             <img src="~/assets/images/logo.png" alt="RyoTa" class="logo" />
         </span>
         <div class="nav">
             <nav>
-                <ul>
+                <ul class="list-container">
                     <client-only>
                         <template v-for="(page, idx) in pages">
                             <li
@@ -154,32 +154,6 @@ export default Vue.extend({
             }
         }
     }
-    @screen sm {
-        .nav {
-            nav {
-                @apply fixed bottom-0 right-0 w-screen h-32 flex justify-center items-center;
-                ul {
-                    @apply p-0 m-0 h-14 w-10/12 rounded-full box-border px-4 flex justify-around items-center bg-white bg-opacity-80 dark:bg-gray-700;
-                    box-shadow: 0 2px 10px #00000010;
-                    backdrop-filter: blur(2px);
-                    border: none;
-                    li {
-                        @apply m-0 px-2 pt-2 text-sm flex justify-center items-center flex-col;
-                        &:focus {
-                            outline: none;
-                        }
-                        .svg-container {                            
-                            @apply mb-1 h-6 stroke-current;
-                            width: 28px;
-                            &.active {
-                                @apply fill-current;
-                            }
-                        }
-                    }
-                }
-            }
-        } 
-    }
     .icon-container {
         @apply flex items-center;
         .icon-wrapper {
@@ -223,6 +197,31 @@ export default Vue.extend({
         animation: fadeInHeader 1s;
         animation-fill-mode: both;
     }
+    @screen sm {
+        .nav {
+            nav {
+                @apply fixed bottom-0 right-0 w-screen h-32 flex justify-center items-center;
+                .list-container {
+                    @apply p-0 m-0 h-14 w-10/12 rounded-full box-border px-4 flex justify-around items-center bg-white dark:bg-gray-700 dark:bg-opacity-80 bg-opacity-80;
+                    box-shadow: 0 2px 10px #00000010;
+                    backdrop-filter: blur(2px);
+                    border: none;
+                    li {
+                        @apply m-0 px-2 pt-2 text-sm flex justify-center items-center flex-col;
+                        &:focus {
+                            outline: none;
+                        }
+                        .svg-container {                            
+                            @apply mb-1 h-6 stroke-current;
+                            &.active {
+                                @apply fill-current;
+                            }
+                        }
+                    }
+                }
+            }
+        } 
+    }
 }
 </style>
 
@@ -230,11 +229,11 @@ export default Vue.extend({
 @keyframes fadeInHeader {
     0% {
         background: #ffffff00;
-        backdrop-filter: blur(0px);
+        /* backdrop-filter: blur(0px); */
     }
     100% {
         background: #ffffff30;
-        backdrop-filter: blur(10px);
+        /* backdrop-filter: blur(10px); */
     }
 }
 </style>
