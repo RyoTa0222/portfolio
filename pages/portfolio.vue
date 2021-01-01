@@ -1,16 +1,17 @@
 <template>
-    <div class="flex portrait-container" :style="`height: ${screenHeight}px !important;`">
+    <div class="flex portrait-container" :style="`min-height: ${screenHeight}px !important;`">
         <!-- テキスト部分 -->
-        <div class="text-container w-1/2 sm:w-full sm:h-auto sm:p-8">
+        <div class="text-container w-1/2 sm:w-full sm:h-auto sm:p-8 sm:pb-24">
             <div class="wrapper">
-                <p>2020年から社会人のフロントエンドエンジニア</p>
-                <p>といいつつ、デザインやアニメーション、機械学習にも興味があり、インプット中</p>
-                <p>将来は、フロントを軸に、様々なソリューションを提供できる人材になりたいです</p>
-                <p>最近意識してる言葉： <span class="font-bold">「世界観」</span>、<span class="font-bold">「マイクロインタラクション」</span></p>
+                <p>1998年2月22日生まれ。神戸大学卒業後、2020年4月よりフロントエンドエンジニアとしてSI企業に入社。</p>
+                <p>デザインの分野にも興味があり、Webデザインやグラフィックデザイン、アニメーションや３Dモデリングなども手掛けている。</p>
+                <p>また、フロントエンドのみならず、バックエンドもできる人材になるため日々活動中。</p>
+                <p>将来は、フロントを軸に、様々なソリューションを提供できる人材になりたい。</p>
+                <p>最近意識してる言葉は <span class="font-bold">「クリエイティブの世界観」</span>、<span class="font-bold">「マイクロインタラクション」</span></p>
             </div>
         </div>
         <!-- 画像部分 -->
-        <div class="img-container w-1/2 h-full flex items-center sm:w-full sm:h-auto sm:p-8 sm:mt-4">
+        <div class="img-container w-1/2 h-auto flex items-center sm:w-full sm:h-auto sm:p-8 sm:mt-4">
             <client-only>
                 <img
                 :src="require(`~/assets/images/light-portrait.png`)"
@@ -55,7 +56,7 @@ export default Vue.extend({
             max-width: 450px;
             @apply m-auto;
             p {
-                @apply mb-4 dark:text-white;
+                @apply mb-4 dark:text-white sm:text-sm;
             }
         }
     }
