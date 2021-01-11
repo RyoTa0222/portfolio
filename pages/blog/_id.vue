@@ -62,25 +62,29 @@ export default Vue.extend({
         return {
             id: null as null | string,
             entry: null as null | Entry<CtfBlog>,
-            status: 'error' as Status
+            status: 'success' as Status
         }
     },
+    async asyncData ({ params, error, payload }) {
+        if (payload) return { entry: payload }
+        else return { entry: await client.getEntry(params.id) }
+    },
     async created() {
-        this.id = this.$route.params.id
+        // this.id = this.$route.params.id
         // ブログ詳細データの取得
-        await (this as any).getBlogData()
+        // await (this as any).getBlogData()
     },
     mounted() {
         // codeにハイライトを当てる
-        const intervalId = setInterval(() => {
-            Prism.highlightAll()
-            if (this.status === 'success') {
-                setTimeout(() => {
+        // const intervalId = setInterval(() => {
+        //     Prism.highlightAll()
+        //     if (this.status === 'success') {
+        //         setTimeout(() => {
                     Prism.highlightAll()
-                }, 2000);
-                clearInterval(intervalId)
-            }
-        }, 100)
+        //         }, 2000);
+        //         clearInterval(intervalId)
+        //     }
+        // }, 100)
     },
     computed: {
         blogCategory() {
