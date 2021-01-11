@@ -130,7 +130,7 @@ export default Vue.extend({
     },
     head() {
         return {
-            title: ` | ${this.entry?.fields.title ?? 'blog'}`,
+            title: ` | ${this.entry?.fields.title ?? 'ブログ'}`,
             meta: [
                 { hid: 'description', name: 'description', content: this.entry?.fields.description ?? 'RyoTaのポートフォリオサイトです。UXを意識したサイトの制作を意識しております。Twitterで発信をしておりますのでご気軽にフォローしてください！' },
                 { hid: 'og:title', property: 'og:title', content: ` | ${this.entry?.fields.title ?? 'blog'}` },

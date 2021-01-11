@@ -213,6 +213,7 @@ export default Vue.extend({
                     background: var(--color);
                     padding: 2px 5px;
                     max-width: 100%;
+                    word-break: keep-all;
                 }
             }
         }
