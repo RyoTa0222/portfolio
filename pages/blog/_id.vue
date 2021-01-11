@@ -19,12 +19,11 @@
                         />
                     </picture>
                     <div class="category-sys-container">
-                        <div v-if="entry.fields.category" class="category-wrapper">
-                            <span
-                            :style="`--color: ${entry.fields.category.fields.color};`"
-                            class="category"
-                            >{{entry.fields.category.fields.categoryName}}</span>
-                        </div>
+                        <span
+                        v-if="entry.fields.category"
+                        :style="`--color: ${entry.fields.category.fields.color};`"
+                        class="category"
+                        >{{entry.fields.category.fields.categoryName}}</span>
                         <div class="date-wrapper">
                             <span class="row text-right">作成日：{{entry.sys.createdAt | filterDate}}</span>
                             <span class="row text-right" v-show="isUpdate(entry)">更新日：{{entry.sys.updatedAt | filterDate}}</span>
@@ -178,15 +177,12 @@ export default Vue.extend({
             justify-content: space-between;
             align-items: flex-start;
             margin: 10px 0;
-            .category-wrapper {
-                text-align: right;
-                .category {
-                    font-size: 10px;
-                    display: inline-block;
-                    color: white;
-                    background: var(--color);
-                    padding: 2px 5px;
-                }
+            .category {
+                font-size: 10px;
+                display: inline-block;
+                color: white;
+                background: var(--color);
+                padding: 2px 5px;
             }
             .date-wrapper {
                 @apply dark:text-white;
