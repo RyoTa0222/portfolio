@@ -72,11 +72,11 @@ export default Vue.extend({
         this.status = 'pending'
         try {
             // ブログのカテゴリをcontentfulから取得
-            await this.fetchBlogCategory()
+            await (this as any).fetchBlogCategory()
             // アーカイブデータの取得
             // await this.$accessor.fetchArchive()
             // 記事データの取得
-            await this.fetchBlogList()
+            await (this as any).fetchBlogList()
             this.status = 'success'
         } catch (err) {
             console.error(err)
@@ -86,12 +86,12 @@ export default Vue.extend({
     mounted() {
         if (process.client) {
             // keyPressイベント
-            document.addEventListener('keypress', this.toggleSearchInputState)
+            document.addEventListener('keypress', (this as any).toggleSearchInputState)
         }
     },
     beforeDestroy() {
         if (process.client) {
-            document.removeEventListener('keypress', this.toggleSearchInputState)
+            document.removeEventListener('keypress', (this as any).toggleSearchInputState)
         }
     },
     computed: {
@@ -109,7 +109,7 @@ export default Vue.extend({
         /**
          * ブログカテゴリのデータの取得
          */
-        async fetchBlogCategory() {
+        async fetchBlogCategory(): Promise<void> {
             try {
                 const entries: ContentfulCollection<CtfBlogCategoryItem> = await client.getEntries({
                     content_type: 'blogCategory',
@@ -126,7 +126,7 @@ export default Vue.extend({
         /**
          * ブログ一覧記事のデータの取得
          */
-        async fetchBlogList() {
+        async fetchBlogList(): Promise<void> {
             try {
                 const promiseArr = []
                 // 最新の記事
@@ -165,7 +165,7 @@ export default Vue.extend({
          * キー入力でフォームを活性化させる
          * @param {KeyboardEvent} event キーイベント
          */
-        toggleSearchInputState(event: KeyboardEvent) {
+        toggleSearchInputState(event: KeyboardEvent): void {
             const {key} = event
             if (key === '/') {
                 const input = document.getElementById('search')
@@ -180,9 +180,9 @@ export default Vue.extend({
          * enterで処理実行
          * @param {KeyboardEvent} event キーイベント
          */
-        enter(event: KeyboardEvent) {
+        enter(event: KeyboardEvent): void {
             if (event.key === 'Enter') {
-                this.searchBlog()
+                (this as any).searchBlog()
                 const input = document.getElementById('search')
                 if (input) {
                     input.blur()
@@ -192,14 +192,14 @@ export default Vue.extend({
         /**
          * 記事検索
          */
-        searchBlog() {
+        searchBlog(): void {
             console.log('search')
         },
         /**
          * 詳細ページに遷移
          * @param {string} id 記事ID
          */
-        detail(id: string) {
+        detail(id: string): void {
             this.$router.push(`/blog/${id}`)
         }
     },

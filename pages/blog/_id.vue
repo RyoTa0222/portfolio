@@ -66,10 +66,10 @@ export default Vue.extend({
             status: 'error' as Status
         }
     },
-    created() {
+    async created() {
         this.id = this.$route.params.id
         // ブログ詳細データの取得
-        this.getBlogData()
+        await (this as any).getBlogData()
     },
     mounted() {
         // codeにハイライトを当てる
@@ -92,7 +92,7 @@ export default Vue.extend({
         /**
          * ブログ詳細データを取得する
          */
-        async getBlogData() {
+        async getBlogData(): Promise<void> {
             this.status = 'pending'
             if (this.id) {
                 try {
@@ -109,7 +109,7 @@ export default Vue.extend({
          * htmlに変換してデータを返す
          * @param {Document} richTextDocument contentfulから渡ってきたデータ
          */
-        toHtmlString(richTextDocument: Document) {
+        toHtmlString(richTextDocument: Document): string {
             const options = {
                 renderNode: {
                     [BLOCKS.PARAGRAPH]: (node: any, next: any) => {
@@ -126,9 +126,7 @@ export default Vue.extend({
                     },
                 }
             }
-            if (process.client) {
-                return documentToHtmlString(richTextDocument, options)
-            }
+            return documentToHtmlString(richTextDocument, options)
         }
     },
     head() {
@@ -145,7 +143,7 @@ export default Vue.extend({
                 {
                     hid: 'og:image',
                     property: 'og:image',
-                    content: this.entry?.fields?.thumbnail?.fields?.file?.url ?? `${process.env.SITE_URL}/img/ogp.png`
+                    content: (this.entry as any)?.fields?.thumbnail?.fields?.file?.url ?? `${process.env.SITE_URL}/img/ogp.png`
                 },
             ]
         }
