@@ -142,8 +142,11 @@ export default Vue.extend({
                 {
                     hid: 'og:image',
                     property: 'og:image',
-                    content: (this.entry as any)?.fields?.thumbnail?.fields?.file?.url ?? `${process.env.SITE_URL}/img/ogp.png`
+                    content: `https:${(this.entry as any)?.fields?.thumbnail?.fields?.file?.url}` ?? `${process.env.SITE_URL}/img/ogp.png`
                 },
+                { hid: 'twitter:image',
+                name: 'twitter:image',
+                content: `https:${(this.entry as any)?.fields?.thumbnail?.fields?.file?.url}` ?? `${process.env.SITE_URL}/img/ogp.png`},
             ]
         }
     }
@@ -183,6 +186,7 @@ export default Vue.extend({
                 color: white;
                 background: var(--color);
                 padding: 2px 5px;
+                word-break: keepx-all;
             }
             .date-wrapper {
                 @apply dark:text-white;
