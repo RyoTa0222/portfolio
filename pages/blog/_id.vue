@@ -95,10 +95,10 @@ export default Vue.extend({
             this.status = 'pending'
             if (this.id) {
                 try {
-                    const entry: Entry<CtfBlog> = await client.getEntry(this.id)
-                    this.entry = entry
                     console.log(process.env.CTF_CDA_ACCESS_TOKEN)
-                    console.log(this.entry)
+                    console.log(this.$route.params.id)
+                    const entry: Entry<CtfBlog> = await client.getEntry(this.id)
+                    this.entry = entry                    
                     this.status = 'success'
                 } catch (err) {
                     console.error(err)
