@@ -186,7 +186,7 @@ export default Vue.extend({
                 color: white;
                 background: var(--color);
                 padding: 2px 5px;
-                word-break: keepx-all;
+                word-break: keep-all;
             }
             .date-wrapper {
                 @apply dark:text-white;

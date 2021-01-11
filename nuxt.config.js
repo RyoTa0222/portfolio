@@ -1,4 +1,7 @@
 require('dotenv').config()
+import createClient from './plugins/contentful'
+
+const client = createClient()
 
 const mkHead = (environment = 'production') => {
   const meta = [
@@ -129,6 +132,16 @@ export default {
     ]
   },
   generate: {
-    fallback: true
+    fallback: true,
+    routes() {
+      return client.getEntries({
+        content_type: 'blog',
+        select: 'sys.id'
+      }).then(entries => {
+        return entries.items.map(entry => {
+          return `blog/${entry.sys.id}`
+        })
+      })
+    }
   }
 }
