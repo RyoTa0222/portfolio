@@ -135,8 +135,7 @@ export default {
     fallback: true,
     routes() {
       return client.getEntries({
-        content_type: 'blog',
-        select: 'sys.id'
+        content_type: 'blog'
       }).then(entries => {
         return entries.items.map(entry => {
           return {
