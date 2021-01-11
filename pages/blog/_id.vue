@@ -97,6 +97,8 @@ export default Vue.extend({
                 try {
                     const entry: Entry<CtfBlog> = await client.getEntry(this.id)
                     this.entry = entry
+                    console.log(process.env.CTF_CDA_ACCESS_TOKEN)
+                    console.log(this.entry)
                     this.status = 'success'
                 } catch (err) {
                     console.error(err)
