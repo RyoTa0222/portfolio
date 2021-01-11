@@ -139,7 +139,10 @@ export default {
         select: 'sys.id'
       }).then(entries => {
         return entries.items.map(entry => {
-          return `blog/${entry.sys.id}`
+          return {
+            route: `blog/${entry.sys.id}`,
+            payload: entry
+          }
         })
       })
     }
