@@ -5,8 +5,8 @@
                 <loader />
             </div>
             <div v-if="status === 'success'" key="success">
-                <div class="blog-container" v-if="entry !== null">
-                    <h1>{{entry.fields.title}}</h1>
+                <div class="blog-container" v-if="entry && entry.fields">
+                    <h1 v-if="entry.fields.title">{{entry.fields.title}}</h1>
                     <picture v-if="entry.fields.thumbnail">
                         <!-- WebP用画像 -->
                         <source
@@ -61,7 +61,7 @@ export default Vue.extend({
     data: () => {
         return {
             id: null as null | string,
-            entry: null as null | Entry<CtfBlog>,
+            // entry: null as null | Entry<CtfBlog>,
             status: 'success' as Status
         }
     },
@@ -95,21 +95,21 @@ export default Vue.extend({
         /**
          * ブログ詳細データを取得する
          */
-        async getBlogData(): Promise<void> {
-            this.status = 'pending'
-            if (this.id) {
-                try {
-                    console.log(process.env.CTF_CDA_ACCESS_TOKEN)
-                    console.log(this.$route.params.id)
-                    const entry: Entry<CtfBlog> = await client.getEntry(this.id)
-                    this.entry = entry                    
-                    this.status = 'success'
-                } catch (err) {
-                    console.error(err)
-                    this.status = 'error'
-                }
-            }
-        },
+        // async getBlogData(): Promise<void> {
+        //     this.status = 'pending'
+        //     if (this.id) {
+        //         try {
+        //             console.log(process.env.CTF_CDA_ACCESS_TOKEN)
+        //             console.log(this.$route.params.id)
+        //             const entry: Entry<CtfBlog> = await client.getEntry(this.id)
+        //             this.entry = entry                    
+        //             this.status = 'success'
+        //         } catch (err) {
+        //             console.error(err)
+        //             this.status = 'error'
+        //         }
+        //     }
+        // },
         /**
          * htmlに変換してデータを返す
          * @param {Document} richTextDocument contentfulから渡ってきたデータ
@@ -136,23 +136,23 @@ export default Vue.extend({
     },
     head() {
         return {
-            title: ` | ${this.entry?.fields.title ?? 'ブログ'}`,
+            title: ` | ${(this as any).entry?.fields?.title ?? 'ブログ'}`,
             meta: [
-                { hid: 'description', name: 'description', content: this.entry?.fields.description ?? 'RyoTaのポートフォリオサイトです。UXを意識したサイトの制作を意識しております。Twitterで発信をしておりますのでご気軽にフォローしてください！' },
-                { hid: 'og:title', property: 'og:title', content: ` | ${this.entry?.fields.title ?? 'blog'}` },
+                { hid: 'description', name: 'description', content: (this as any).entry?.fields?.description ?? 'RyoTaのポートフォリオサイトです。UXを意識したサイトの制作を意識しております。Twitterで発信をしておりますのでご気軽にフォローしてください！' },
+                { hid: 'og:title', property: 'og:title', content: ` | ${(this as any).entry?.fields?.title ?? 'blog'}` },
                 {
                     hid: 'og:description',
                     property: 'og:description',
-                    content: this.entry?.fields.description ?? 'RyoTaのポートフォリオサイトです。UXを意識したサイトの制作を意識しております。Twitterで発信をしておりますのでご気軽にフォローしてください！'
+                    content: (this as any).entry?.fields?.description ?? 'RyoTaのポートフォリオサイトです。UXを意識したサイトの制作を意識しております。Twitterで発信をしておりますのでご気軽にフォローしてください！'
                 },
                 {
                     hid: 'og:image',
                     property: 'og:image',
-                    content: `https:${(this.entry as any)?.fields?.thumbnail?.fields?.file?.url}` ?? `${process.env.SITE_URL}/img/ogp.png`
+                    content: `https:${((this as any).entry as any)?.fields?.thumbnail?.fields?.file?.url}` ?? `${process.env.SITE_URL}/img/ogp.png`
                 },
                 { hid: 'twitter:image',
                 name: 'twitter:image',
-                content: `https:${(this.entry as any)?.fields?.thumbnail?.fields?.file?.url}` ?? `${process.env.SITE_URL}/img/ogp.png`},
+                content: `https:${((this as any).entry as any)?.fields?.thumbnail?.fields?.file?.url}` ?? `${process.env.SITE_URL}/img/ogp.png`},
             ]
         }
     }
