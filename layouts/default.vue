@@ -4,10 +4,10 @@
   id="container"
   :style="`min-height: ${screenHeight}px !important;`">
     <template>
+      <main>
+        <Nuxt />
+      </main>
       <header-component @open="openSettingModal" />
-        <main>
-          <Nuxt />
-        </main>
       <footer-component />
       <template v-if="settingModal">
         <setting-modal @closeEvent="closeSettingModal" />
@@ -77,8 +77,5 @@ export default Vue.extend({
 html {
   font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Roboto, 'Helvetica Neue', Arial, sans-serif;
-}
-#container {
-  /* z-index: -999; */
 }
 </style>

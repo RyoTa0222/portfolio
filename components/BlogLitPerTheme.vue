@@ -212,6 +212,7 @@ export default Vue.extend({
                     color: white;
                     background: var(--color);
                     padding: 2px 5px;
+                    max-width: 100%;
                 }
             }
         }

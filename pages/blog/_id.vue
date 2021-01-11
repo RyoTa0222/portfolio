@@ -1,5 +1,5 @@
 <template>
-    <div class="blog-id-container">
+    <div class="blog-id-container line-numbers">
         <transition name="fade" mode="out-in">
             <div v-if="status === 'pending'" key="pending">
                 <loader />
@@ -210,6 +210,7 @@ export default Vue.extend({
 .body-container {
     margin-top: 50px;
     padding-bottom: 50px;
+    z-index: -99;
     @screen sm {
         padding-bottom: 100px;
     }
@@ -275,13 +276,13 @@ export default Vue.extend({
         border-radius: 10px;
         overflow: hidden;
         margin: 50px 0;
-        z-index: -999999;
         pre {
-            overflow-x: scroll;
             scrollbar-track-color: #272822;
             margin: 0;
             border: none;
-            z-index: -999999;
+            border-radius: 0;
+            position: inherit;
+            overflow-x: scroll;
             &::-webkit-scrollbar-track {
                 background: #272822;
             }
@@ -290,16 +291,22 @@ export default Vue.extend({
             }
             padding-top: 20px;
             code {
-                z-index: -999999;
                 @screen sm {
                     font-size: 12px;
+                    .line-numbers-rows {
+                        margin-top: -4px;
+                        span {
+                            line-height: 24px;
+                        }
+                    }
                 }
             }
         }
         .code-toolbar {
-            z-index: -99999;
+            position: relative;
             .toolbar {
                 opacity: 1 !important;
+                z-index: 100;
                 .toolbar-item {
                     button {
                         box-shadow: none;
@@ -307,6 +314,9 @@ export default Vue.extend({
                         transition: color 0.3s;
                         &:hover {
                             color: white;
+                        }
+                        &:active {
+                            outline: none;
                         }
                     }
                 }

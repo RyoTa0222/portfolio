@@ -58,7 +58,7 @@ export default Vue.extend({
     overflow: hidden;
     background: #00000040;
     backdrop-filter: blur(2px);
-    position: absolute;
+    position: fixed;
     left: 0;
     top: 0;
     z-index: 9999999;
