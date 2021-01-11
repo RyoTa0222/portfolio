@@ -66,6 +66,11 @@ export default Vue.extend({
                     icon: 'user'
                 },
                 {
+                    name: 'BLOG',
+                    path: '/blog',
+                    icon: 'blog'
+                },
+                {
                     name: 'ROADMAP',
                     path: '/roadmap',
                     icon: 'map'
@@ -93,6 +98,8 @@ export default Vue.extend({
                         return this.$route.name === 'index' ? 'home' : 'home-line'
                     case 'user':
                         return this.$route.name === 'portfolio' ? 'user' : 'user-line'
+                    case 'blog':
+                        return ['blog', 'blog-id'].includes(this.$route.name as string) ? 'blog' : 'blog-line'
                     case 'map':
                         return this.$route.name === 'roadmap' ? 'map' : 'map-line'
                 }
@@ -109,6 +116,8 @@ export default Vue.extend({
                         return this.$route.name === 'index' ? 'active' : ''
                     case 'user':
                         return this.$route.name === 'portfolio' ? 'active' : ''
+                    case 'blog':
+                        return ['blog', 'blog-id'].includes(this.$route.name as string) ? 'active' : ''
                     case 'map':
                         return this.$route.name === 'roadmap' ? 'active' : ''
                 }
@@ -199,20 +208,26 @@ export default Vue.extend({
     }
     @screen sm {
         .nav {
+            z-index: 999999999999;
             nav {
+                z-index: 999999999999;
                 @apply fixed bottom-0 right-0 w-screen h-32 flex justify-center items-center;
                 .list-container {
                     @apply p-0 m-0 h-14 w-10/12 rounded-full box-border px-4 flex justify-around items-center bg-white dark:bg-gray-700 dark:bg-opacity-80 bg-opacity-80;
                     box-shadow: 0 2px 10px #00000010;
                     backdrop-filter: blur(2px);
                     border: none;
+                    z-index: 999999999999;
                     li {
-                        @apply m-0 px-2 pt-2 text-sm flex justify-center items-center flex-col;
+                        @apply px-2 pt-2 text-sm flex justify-center items-center flex-col;
+                        margin: 0 !important;
                         &:focus {
                             outline: none;
                         }
                         .svg-container {                            
-                            @apply mb-1 h-6 stroke-current;
+                            @apply mb-2 stroke-current;
+                            height: 18px;
+                            width: 20px;
                             &.active {
                                 @apply fill-current;
                             }

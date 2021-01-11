@@ -82,14 +82,18 @@ export default Vue.extend({
         if (process.client) {
             const ele = document.getElementsByClassName('roadmap-container')
             // window.addEventListener('load', this.watchDisplayElement)
-            ele[0].addEventListener('scroll', this.watchDisplayElement)
+            if (ele) {
+                ele[0].addEventListener('scroll', this.watchDisplayElement)
+            }
         }
     },
     beforeDestroy() {
         if (process.client) {
             // window.removeEventListener('load', this.watchDisplayElement)
             const ele = document.getElementsByClassName('roadmap-container')
-            ele[0].removeEventListener('scroll', this.watchDisplayElement)
+            if (ele) {
+                ele[0].removeEventListener('scroll', this.watchDisplayElement)
+            }
         }
     },
     methods: {

@@ -1,5 +1,4 @@
 import {createClient} from 'contentful'
-
 interface ContentfulConfig {
     space: string,
     accessToken: string

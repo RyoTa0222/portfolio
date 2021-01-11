@@ -218,6 +218,14 @@ module.exports = {
         'fot-tsukuardgothic-std',
         'sans-serif'
       ],
+      'futura-bold': [
+        'futura-pt-bold',
+        'sans-serif'
+      ],
+      futura: [
+        'futura-pt',
+        'sans-serif'
+      ]
     },
     fontSize: {
       xs: ['0.75rem', { lineHeight: '1rem' }],
