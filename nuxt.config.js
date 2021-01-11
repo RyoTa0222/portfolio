@@ -93,6 +93,7 @@ export default {
   plugins: [
     {src: '~/plugins/window.ts'},
     {src: '~/plugins/theme.ts', ssr: false},
+    {src: '~/plugins/prism.ts', ssr: false}
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -104,6 +105,7 @@ export default {
     '@nuxt/typescript-build',
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
+    'nuxt-typed-vuex'
   ],
 
   // Modules (https://go.nuxtjs.dev/config-modules)
@@ -121,7 +123,11 @@ export default {
   axios: {},
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
-  build: {},
+  build: {
+    transpile: [
+      /typed-vuex/
+    ]
+  },
   generate: {
     fallback: true
   }

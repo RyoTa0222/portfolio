@@ -19,10 +19,12 @@ export default Vue.extend({
         SvgContainer
     },
     mounted() {
-        // prevent scroll (SP)
-        document.addEventListener('touchmove', this.noScroll, {passive: false})
-        // prevent scroll (PC)
-        document.addEventListener('mousewheel', this.noScroll, {passive: false})
+        if (process.client) {
+            // prevent scroll (SP)
+            document.addEventListener('touchmove', this.noScroll, {passive: false})
+            // prevent scroll (PC)
+            document.addEventListener('mousewheel', this.noScroll, {passive: false})
+        }
     },
     methods: {
         /**
@@ -39,10 +41,12 @@ export default Vue.extend({
         },
     },
     beforeDestroy() {
-        // permit scroll (SP)
-        document.removeEventListener('touchmove', this.noScroll)
-        // permit scroll (PC)
-        document.removeEventListener('mousewheel', this.noScroll)
+        if (process.client) {
+            // permit scroll (SP)
+            document.removeEventListener('touchmove', this.noScroll)
+            // permit scroll (PC)
+            document.removeEventListener('mousewheel', this.noScroll)
+        }
     }
 })
 </script>

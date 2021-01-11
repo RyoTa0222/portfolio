@@ -1,3 +1,5 @@
+import {Sys} from 'contentful'
+
 export type PageName = 'TOP' | 'PORTFOLIO' | 'ROADMAP' | 'BLOG'
 
 export type PagePath = '/' | '/portfolio' | '/roadmap' | '/blog'
@@ -5,12 +7,14 @@ export type PagePath = '/' | '/portfolio' | '/roadmap' | '/blog'
 export type PageType = {
     name: PageName,
     path: PagePath,
-    icon: String
+    icon: string
 }
 
 export type CtfContentType = 'roadmap'
 
 export type Theme = 'light' | 'dark'
+
+export type Status = 'pending' | 'success' | 'error'
 
 export type RoadmapState = 'schedule' | 'develop' | 'merge'
 
@@ -35,6 +39,43 @@ export type CtfSys = {
     sys: {
         type: string,
         linkType: string,
+        id: string
+    }
+}
+
+export type CtfBlogCategoryItem = {
+    fields: {
+        categoryName: string,
+        categoryId: string,
+        color: string
+    },
+    sys: {
+        id: string
+    }
+}
+
+export interface CtfBlog {
+    title: string,
+    thumbnail: {
+        sys: {
+            type: string,
+            linkType: string,
+            id: string
+        }
+    },
+    description: string,
+    body: object,
+    category: {
+        sys: {
+            type: string,
+            linkType: string,
+            id: string
+        }
+    }
+}
+
+export interface CtfArchive {
+    sys: {
         id: string
     }
 }

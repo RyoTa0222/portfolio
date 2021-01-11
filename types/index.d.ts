@@ -8,6 +8,6 @@ declare module 'vue/types/vue' {
 
 declare module '`/nuxt/types' {
     interface NuxtAppOptions {
-        $accesor: typeof accessorType
+        $accessor: typeof accessorType
     }
 }
