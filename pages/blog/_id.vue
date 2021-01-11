@@ -136,6 +136,10 @@ export default Vue.extend({
     },
     head() {
         return {
+            htmlAttrs: {
+                lang: 'ja'
+            },
+            titleTemplate: 'RyoTa.%s',
             title: ` | ${(this as any).entry?.fields?.title ?? 'ブログ'}`,
             meta: [
                 { hid: 'description', name: 'description', content: (this as any).entry?.fields?.description ?? 'RyoTaのポートフォリオサイトです。UXを意識したサイトの制作を意識しております。Twitterで発信をしておりますのでご気軽にフォローしてください！' },
@@ -154,6 +158,26 @@ export default Vue.extend({
                 name: 'twitter:image',
                 content: `https:${((this as any).entry as any)?.fields?.thumbnail?.fields?.file?.url}` ?? `${process.env.SITE_URL}/img/ogp.png`},
             ]
+            // title: ` | ${(this as any).entry.fields.title}`,
+            // meta: [
+            //     { hid: 'description', name: 'description', content: (this as any).entry.fields.description },
+            //     { hid: 'og:title', property: 'og:title', content: ` | ${(this as any).entry.fields.title }` },
+            //     {
+            //         hid: 'og:description',
+            //         property: 'og:description',
+            //         content: (this as any).entry.fields.description
+            //     },
+            //     {
+            //         hid: 'og:image',
+            //         property: 'og:image',
+            //         content: `https:${((this as any).entry as any).fields.thumbnail.fields.file.url}`
+            //     },
+            //     { 
+            //         hid: 'twitter:image',
+            //         name: 'twitter:image',
+            //         content: `https:${((this as any).entry as any).fields.thumbnail.fields.file.url}`
+            //     }
+            // ]
         }
     }
 })
