@@ -29,7 +29,9 @@
                             <span class="row text-right" v-show="isUpdate(entry)">更新日：{{entry.sys.updatedAt | filterDate}}</span>
                         </div>
                     </div>
-                    <div v-if="entry.fields.body" class="body-container" v-html="toHtmlString(entry.fields.body)" />
+                    <client-only>
+                        <div v-if="entry.fields.body" class="body-container" v-html="toHtmlString(entry.fields.body)" />
+                    </client-only>
                 </div>
             </div>
             <div v-if="status === 'error'" key="error">
@@ -90,6 +92,30 @@ export default Vue.extend({
         blogCategory() {
             return this.$accessor.blogCategory
         },
+        computeHtmlString() {
+            return (richTextDocument: Document): string => {
+                if (richTextDocument) {
+                    const options = {
+                        renderNode: {
+                            [BLOCKS.PARAGRAPH]: (node: any, next: any) => {
+                                if (node.content.length === 1 && node.content[0]?.marks[0]?.type === 'code') {
+                                    let lang = 'js'
+                                    const searchTerm = '\n'
+                                    const indexOfFirst = node.content[0].value.indexOf(searchTerm)
+                                    lang = node.content[0].value.slice(0, indexOfFirst)
+                                    const context = node.content[0].value.slice(indexOfFirst)
+                                    return `<div class="code prism"><div class="head-component"><div class="btn-wrapper"><span class="btn"></span><span class="btn"></span><span class="btn"></span></div></div><pre class="line-numbers language-${lang}"><code class="language-${lang}">${context}</pre></code></div>`;
+                                }
+                                // else return content as it is
+                                return `<p>${next(node.content)}</p>`;
+                            },
+                        }
+                    }
+                    return documentToHtmlString(richTextDocument, options)
+                }
+                return ''
+            }
+        }
     },
     methods: {
         /**
@@ -115,26 +141,23 @@ export default Vue.extend({
          * @param {Document} richTextDocument contentfulから渡ってきたデータ
          */
         toHtmlString(richTextDocument: Document): string {
-            if (process.client) {
-                const options = {
-                    renderNode: {
-                        [BLOCKS.PARAGRAPH]: (node: any, next: any) => {
-                            if (node.content.length === 1 && node.content[0]?.marks[0]?.type === 'code') {
-                                let lang = 'js'
-                                const searchTerm = '\n'
-                                const indexOfFirst = node.content[0].value.indexOf(searchTerm)
-                                lang = node.content[0].value.slice(0, indexOfFirst)
-                                const context = node.content[0].value.slice(indexOfFirst)
-                                return `<div class="code prism"><div class="head-component"><div class="btn-wrapper"><span class="btn"></span><span class="btn"></span><span class="btn"></span></div></div><pre class="line-numbers language-${lang}"><code class="language-${lang}">${context}</pre></code></div>`;
-                            }
-                            // else return content as it is
-                            return `<p>${next(node.content)}</p>`;
-                        },
-                    }
+            const options = {
+                renderNode: {
+                    [BLOCKS.PARAGRAPH]: (node: any, next: any) => {
+                        if (node.content.length === 1 && node.content[0]?.marks[0]?.type === 'code') {
+                            let lang = 'js'
+                            const searchTerm = '\n'
+                            const indexOfFirst = node.content[0].value.indexOf(searchTerm)
+                            lang = node.content[0].value.slice(0, indexOfFirst)
+                            const context = node.content[0].value.slice(indexOfFirst)
+                            return `<div class="code prism"><div class="head-component"><div class="btn-wrapper"><span class="btn"></span><span class="btn"></span><span class="btn"></span></div></div><pre class="line-numbers language-${lang}"><code class="language-${lang}">${context}</pre></code></div>`;
+                        }
+                        // else return content as it is
+                        return `<p>${next(node.content)}</p>`;
+                    },
                 }
-                return documentToHtmlString(richTextDocument, options)
             }
-            return ''
+            return documentToHtmlString(richTextDocument, options)
         }
     },
     head() {
