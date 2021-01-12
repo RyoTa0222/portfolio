@@ -149,6 +149,7 @@ export default Vue.extend({
                     property: 'og:description',
                     content: (this as any).entry?.fields?.description ?? 'RyoTaのポートフォリオサイトです。UXを意識したサイトの制作を意識しております。Twitterで発信をしておりますのでご気軽にフォローしてください！'
                 },
+                { hid: 'og:url', property: 'og:url', content: `${process.env.SITE_URL}/blog/${this.$route.params.id}`},
                 {
                     hid: 'og:image',
                     property: 'og:image',
