@@ -1,49 +1,37 @@
 <template>
     <div class="blog-id-container line-numbers">
-        <transition name="fade" mode="out-in">
-            <div v-if="status === 'pending'" key="pending">
-                <loader />
-            </div>
-            <div v-if="status === 'success'" key="success">
-                <div class="blog-container" v-if="entry && entry.fields">
-                    <h1 v-if="entry.fields.title">{{entry.fields.title}}</h1>
-                    <picture v-if="entry.fields.thumbnail">
-                        <!-- WebP用画像 -->
-                        <source
-                        :srcset="`${entry.fields.thumbnail.fields.file.url}?w=600&h=300&fm=webp&fit=thumb&q=50`"
-                        type="image/webp">
-                        <!-- 従来画像 -->
-                        <img
-                        :src="`${entry.fields.thumbnail.fields.file.url}?w=600&h=300&fm=png&fl=png8&fit=thumb&q=50`"
-                        :alt="entry.fields.thumbnail.fields.file.fileName"
-                        />
-                    </picture>
-                    <div class="category-sys-container">
-                        <span
-                        v-if="entry.fields.category"
-                        :style="`--color: ${entry.fields.category.fields.color};`"
-                        class="category"
-                        >{{entry.fields.category.fields.categoryName}}</span>
-                        <div class="date-wrapper">
-                            <span class="row text-right">作成日：{{entry.sys.createdAt | filterDate}}</span>
-                            <span class="row text-right" v-show="isUpdate(entry)">更新日：{{entry.sys.updatedAt | filterDate}}</span>
-                        </div>
-                    </div>
-                        <!-- <client-only> -->
-                            <div v-if="entry.fields.body" class="body-container" v-html="toHtmlString(entry.fields.body)" />
-                        <!-- </client-only>                         -->
+        <div class="blog-container" v-if="entry && entry.fields">
+            <h1 v-if="entry.fields.title">{{entry.fields.title}}</h1>
+            <picture v-if="entry.fields.thumbnail">
+                <!-- WebP用画像 -->
+                <source
+                :srcset="`${entry.fields.thumbnail.fields.file.url}?w=600&h=300&fm=webp&fit=thumb&q=50`"
+                type="image/webp">
+                <!-- 従来画像 -->
+                <img
+                :src="`${entry.fields.thumbnail.fields.file.url}?w=600&h=300&fm=png&fl=png8&fit=thumb&q=50`"
+                :alt="entry.fields.thumbnail.fields.file.fileName"
+                />
+            </picture>
+            <div class="category-sys-container">
+                <span
+                v-if="entry.fields.category"
+                :style="`--color: ${entry.fields.category.fields.color};`"
+                class="category"
+                >{{entry.fields.category.fields.categoryName}}</span>
+                <div class="date-wrapper">
+                    <span class="row text-right">作成日：{{entry.sys.createdAt | filterDate}}</span>
+                    <span class="row text-right" v-show="isUpdate(entry)">更新日：{{entry.sys.updatedAt | filterDate}}</span>
                 </div>
             </div>
-            <div v-if="status === 'error'" key="error">
-                <p class="text-center pt-20 dark:text-white">データが取得できませんでした。</p>
-            </div>
-        </transition>
+            <div v-if="entry.fields.body" class="body-container" v-html="toHtmlString(entry.fields.body)" />
+        </div>
     </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
-import { CtfBlog, Status } from '~/types/type'
+import { CtfBlog } from '~/types/type'
 import {Entry} from 'contentful'
 import createClient from '~/plugins/contentful'
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer'
@@ -64,7 +52,6 @@ export default Vue.extend({
     data: () => {
         return {
             id: null as null | string,
-            status: 'success' as Status
         }
     },
     async asyncData ({ params, error, payload }) {
@@ -82,31 +69,11 @@ export default Vue.extend({
                 }
             }
         } catch (err) {
-            error({statusCode: 404, message: 'Blog not found'})
+            error({statusCode: 503, message: 'Blog not found'})
         }
     },
-    async created() {
-        // console.log((this as any).entry)
-        // if ((this as any).entry === undefined || (this as any).entry === null) {
-        //     this.id = this.$route.params.id
-        //     // ブログ詳細データの取得
-        //     await (this as any).getBlogData()
-        // }
-    },
     mounted() {
-        // codeにハイライトを当てる
-        // const intervalId = setInterval(() => {
-        //     Prism.highlightAll()
-        //     if (this.status === 'success') {
-        //         setTimeout(() => {
-                    // setTimeout(() => {
-                        Prism.highlightAll()
-                    // }, 500)
-        //             console.log((this as any).entry)
-        //         }, 2000);
-        //         clearInterval(intervalId)
-        //     }
-        // }, 100)
+        Prism.highlightAll()
     },
     computed: {
         blogCategory() {
@@ -114,24 +81,6 @@ export default Vue.extend({
         }
     },
     methods: {
-        /**
-         * ブログ詳細データを取得する
-         */
-        // async getBlogData(): Promise<void> {
-        //     this.status = 'pending'
-        //     if (this.id) {
-        //         try {
-        //             console.log(process.env.CTF_CDA_ACCESS_TOKEN)
-        //             console.log(this.$route.params.id)
-        //             const entry: Entry<CtfBlog> = await client.getEntry(this.id)
-        //             this.entry = entry                    
-        //             this.status = 'success'
-        //         } catch (err) {
-        //             console.error(err)
-        //             this.status = 'error'
-        //         }
-        //     }
-        // },
         /**
          * htmlに変換してデータを返す
          * @param {Document} richTextDocument contentfulから渡ってきたデータ
@@ -182,26 +131,6 @@ export default Vue.extend({
                 name: 'twitter:image',
                 content: `${'https:' + ((this as any).entry as any)?.fields?.thumbnail?.fields?.file?.url}`},
             ]
-            // title: ` | ${(this as any).entry.fields.title}`,
-            // meta: [
-            //     { hid: 'description', name: 'description', content: (this as any).entry.fields.description },
-            //     { hid: 'og:title', property: 'og:title', content: ` | ${(this as any).entry.fields.title }` },
-            //     {
-            //         hid: 'og:description',
-            //         property: 'og:description',
-            //         content: (this as any).entry.fields.description
-            //     },
-            //     {
-            //         hid: 'og:image',
-            //         property: 'og:image',
-            //         content: `https:${((this as any).entry as any).fields.thumbnail.fields.file.url}`
-            //     },
-            //     { 
-            //         hid: 'twitter:image',
-            //         name: 'twitter:image',
-            //         content: `https:${((this as any).entry as any).fields.thumbnail.fields.file.url}`
-            //     }
-            // ]
         }
     }
 })
