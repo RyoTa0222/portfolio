@@ -97,7 +97,7 @@ export default {
   plugins: [
     {src: '~/plugins/window.ts'},
     {src: '~/plugins/theme.ts', ssr: false},
-    {src: '~/plugins/prism.ts', ssr: false}
+    {src: '~/plugins/prism.ts'}
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
