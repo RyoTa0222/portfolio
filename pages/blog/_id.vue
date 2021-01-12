@@ -137,27 +137,28 @@ export default Vue.extend({
     head() {
         return {
             htmlAttrs: {
-                lang: 'ja'
+                lang: 'ja',
+                prefix: 'og: http://ogp.me/ns#'
             },
             titleTemplate: '',
-            title: `RyoTa. | ${(this as any).entry?.fields?.title ?? 'ブログ'}`,
+            title: `RyoTa. | ${(this as any).entry?.fields?.title}`,
             meta: [
-                { hid: 'description', name: 'description', content: (this as any).entry?.fields?.description ?? 'RyoTaのポートフォリオサイトです。UXを意識したサイトの制作を意識しております。Twitterで発信をしておりますのでご気軽にフォローしてください！' },
-                { hid: 'og:title', property: 'og:title', content: ` | ${(this as any).entry?.fields?.title ?? 'blog'}` },
+                { hid: 'description', name: 'description', content: (this as any).entry?.fields?.description },
+                { hid: 'og:title', property: 'og:title', content: `RyoTa. | ${(this as any).entry?.fields?.title}` },
                 {
                     hid: 'og:description',
                     property: 'og:description',
-                    content: (this as any).entry?.fields?.description ?? 'RyoTaのポートフォリオサイトです。UXを意識したサイトの制作を意識しております。Twitterで発信をしておりますのでご気軽にフォローしてください！'
+                    content: (this as any).entry?.fields?.description
                 },
                 { hid: 'og:url', property: 'og:url', content: `${process.env.SITE_URL}/blog/${this.$route.params.id}`},
                 {
                     hid: 'og:image',
                     property: 'og:image',
-                    content: `https:${((this as any).entry as any)?.fields?.thumbnail?.fields?.file?.url}` ?? `${process.env.SITE_URL}/img/ogp.png`
+                    content: `${'https:' + ((this as any).entry as any)?.fields?.thumbnail?.fields?.file?.url}`
                 },
                 { hid: 'twitter:image',
                 name: 'twitter:image',
-                content: `https:${((this as any).entry as any)?.fields?.thumbnail?.fields?.file?.url}` ?? `${process.env.SITE_URL}/img/ogp.png`},
+                content: `${'https:' + ((this as any).entry as any)?.fields?.thumbnail?.fields?.file?.url}`},
             ]
             // title: ` | ${(this as any).entry.fields.title}`,
             // meta: [
