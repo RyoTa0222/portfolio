@@ -82,7 +82,7 @@ export default Vue.extend({
     },
     async created() {
         console.log((this as any).entry)
-        if ((this as any).entry === undefined) {
+        if ((this as any).entry === undefined || (this as any).entry === null) {
             this.id = this.$route.params.id
             // ブログ詳細データの取得
             await (this as any).getBlogData()
