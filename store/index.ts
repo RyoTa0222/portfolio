@@ -52,23 +52,6 @@ export const mutations = mutationTree(state, {
 
 export const actions = actionTree({state, getters, mutations}, {
     /**
-     * ブログのカテゴリの取得
-     */
-    // async fetchBlogCategory({getters, commit}): Promise<void> {
-    //     try {
-    //         const entries: ContentfulCollection<CtfBlogCategoryItem> = await client.getEntries({
-    //             content_type: 'blogCategory',
-    //             select: 'sys.id,fields',
-    //             order: 'fields.priority'
-    //         })
-    //         if (entries.items.length > 0) {
-    //             commit('setBlogCategory', entries.items)
-    //         }
-    //     } catch (err) {
-    //         console.error(err)
-    //     }
-    // },
-    /**
      * ブログのアーカイブの取得
      */
     async fetchArchive({getters, commit}): Promise<void> {
@@ -97,45 +80,6 @@ export const actions = actionTree({state, getters, mutations}, {
             console.error(err)
         }
     },
-    /**
-     * ブログの記事一覧の取得
-     */
-    // fetchBlogList({getters, commit}): void {
-    //     try {
-    //         const promiseArr = []
-    //         // 最新の記事
-    //         const latestEntries: Promise<EntryCollection<CtfBlog>> = client.getEntries({
-    //             content_type: 'blog',
-    //             limit: 4,
-    //             order: '-sys.updatedAt',
-    //         })
-    //         promiseArr.push(latestEntries)
-    //         // カテゴリごとの記事
-    //         if (getters.blogCategory && getters.blogCategory.length > 0) {
-    //             for (const category of getters.blogCategory) {
-    //                 const categoryEntries: Promise<EntryCollection<CtfBlog>> = client.getEntries({
-    //                     content_type: 'blog',
-    //                     limit: 4,
-    //                     order: '-sys.updatedAt',
-    //                     'fields.category.sys.contentType.sys.id': 'blogCategory',
-    //                     'fields.category.fields.categoryId': category.fields.categoryId
-    //                 })
-    //                 promiseArr.push(categoryEntries)
-    //             }
-    //         }
-    //         if (promiseArr.length > 0) {
-    //             Promise.all(promiseArr).then((entries) => {
-    //                 // 最新の記事の保存
-    //                 commit('setLatestBlog', entries[0])
-    //                 // カテゴリごとの記事の保存
-    //                 commit('setBlogByCategory', entries.slice(1))
-    //             })
-    //         }
-
-    //     } catch (err) {
-    //         console.error(err)
-    //     }
-    // }
 })
 
 export const accessorType = getAccessorType({

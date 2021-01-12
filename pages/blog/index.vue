@@ -1,10 +1,14 @@
 <template>
     <div class="blog-container">
         <transition name="fade" mode="out-in">
-            <div v-if="status === 'pending'" key="pending">
+            <div
+            v-if="latestBlog === undefined ||
+            blogCategory === undefined ||
+            blogByCategory === undefined"
+            key="pending">
                 <loader />
             </div>
-            <div v-else-if="status === 'success'" key="success">
+            <div v-else key="success">
                 <div class="search-container">
                     <input
                     type="search"
@@ -19,7 +23,7 @@
                     </span>
                 </div>
                 <!-- 最新記事 -->
-                <template v-if="latestBlog">
+                <template v-if="latestBlog && Object.keys(latestBlog).length > 0">
                     <blog-list-per-theme
                     @detail="detail"
                     :blogList="latestBlog"
@@ -29,7 +33,7 @@
                     </blog-list-per-theme>
                 </template>
                 <!-- カテゴリごとの記事 -->
-                <template v-if="Object.keys(blogByCategory).length > 0 && blogCategory">
+                <template v-if="blogByCategory && Object.keys(blogByCategory).length > 0 && blogCategory">
                     <template v-for="category in blogCategory">
                         <blog-list-per-theme
                         @detail="detail"
@@ -41,9 +45,6 @@
                         </blog-list-per-theme>
                     </template>
                 </template>
-            </div>
-            <div v-if="status === 'error'" key="error">
-                <p class="text-center pt-20 dark:text-white">データが取得できませんでした。</p>
             </div>
         </transition>
     </div>
@@ -57,30 +58,68 @@ import {CtfBlogCategoryItem, CtfBlog, CtfArchive} from '~/types/type'
 import SvgContainer from '~/components/SvgContainer.vue'
 import BlogListPerTheme from '~/components/BlogLitPerTheme.vue'
 import Loader from '~/components/Looder.vue'
+interface StringKeyObject {
+    // 今回はstring
+    [categoryId: string]: unknown;
+}
 
 const client = createClient()
 
 export default Vue.extend({
-  components: { SvgContainer, BlogListPerTheme, Loader},
+    components: { SvgContainer, BlogListPerTheme, Loader},
+    transition: 'page-fade',
     data: () => {
         return {
             search: '' as string,
-            status: 'pending'
+            status: 'success',
+
         }
     },
-    async created() {
-        this.status = 'pending'
+    async asyncData({error}) {
         try {
-            // ブログのカテゴリをcontentfulから取得
-            await (this as any).fetchBlogCategory()
-            // アーカイブデータの取得
-            // await this.$accessor.fetchArchive()
-            // 記事データの取得
-            await (this as any).fetchBlogList()
-            this.status = 'success'
-        } catch (err) {
-            console.error(err)
-            this.status = 'error'
+            let blogCategory = null as null | CtfBlogCategoryItem[]
+            let latestBlog = null as null | EntryCollection<CtfBlog>
+            let blogByCategory = {} as StringKeyObject
+            // ブログカテゴリのデータの取得
+            const entries: ContentfulCollection<CtfBlogCategoryItem> = await client.getEntries({
+                content_type: 'blogCategory',
+                select: 'sys.id,fields',
+                order: 'fields.priority'
+            })
+            if (entries.items.length > 0) {
+                blogCategory = entries.items
+            }
+            // ブログ一覧記事のデータの取得
+            const arr: EntryCollection<CtfBlog>[] = []
+            // 最新の記事
+            latestBlog = await client.getEntries({
+                content_type: 'blog',
+                limit: 4,
+                order: '-sys.updatedAt',
+            })
+            // カテゴリごとの記事
+            if (blogCategory && blogCategory.length > 0) {
+                for (const category of blogCategory) {
+                    const categoryEntries: EntryCollection<CtfBlog> = await client.getEntries({
+                        content_type: 'blog',
+                        limit: 4,
+                        order: '-sys.updatedAt',
+                        'fields.category.sys.contentType.sys.id': 'blogCategory',
+                        'fields.category.fields.categoryId': category.fields.categoryId
+                    })
+                    arr.push(categoryEntries)
+                }
+            }
+            if (blogCategory && blogCategory.length > 0) {
+                for (let i = 0; i < blogCategory.length; i++) {
+                    const categoryId = blogCategory[i].fields.categoryId
+                    const item = arr[i]
+                    blogByCategory[categoryId] = item
+                }
+            }
+            return {blogCategory, latestBlog, blogByCategory}
+        } catch(err) {
+            error({statusCode: 503, message: 'Blog not found'})
         }
     },
     mounted() {
@@ -94,73 +133,7 @@ export default Vue.extend({
             document.removeEventListener('keypress', (this as any).toggleSearchInputState)
         }
     },
-    computed: {
-        blogCategory() {
-            return this.$accessor.blogCategory
-        },
-        latestBlog() {
-            return this.$accessor.latestBlog
-        },
-        blogByCategory() {
-            return this.$accessor.blogByCategory
-        },
-    },
     methods: {
-        /**
-         * ブログカテゴリのデータの取得
-         */
-        async fetchBlogCategory(): Promise<void> {
-            try {
-                const entries: ContentfulCollection<CtfBlogCategoryItem> = await client.getEntries({
-                    content_type: 'blogCategory',
-                    select: 'sys.id,fields',
-                    order: 'fields.priority'
-                })
-                if (entries.items.length > 0) {
-                    this.$accessor.setBlogCategory(entries.items)
-                }
-            } catch (err) {
-                console.error(err)
-            }
-        },
-        /**
-         * ブログ一覧記事のデータの取得
-         */
-        async fetchBlogList(): Promise<void> {
-            try {
-                const promiseArr = []
-                // 最新の記事
-                const latestEntries: Promise<EntryCollection<CtfBlog>> = client.getEntries({
-                    content_type: 'blog',
-                    limit: 4,
-                    order: '-sys.updatedAt',
-                })
-                promiseArr.push(latestEntries)
-                // カテゴリごとの記事
-                if (this.$accessor.blogCategory && this.$accessor.blogCategory.length > 0) {
-                    for (const category of this.$accessor.blogCategory) {
-                        const categoryEntries: Promise<EntryCollection<CtfBlog>> = client.getEntries({
-                            content_type: 'blog',
-                            limit: 4,
-                            order: '-sys.updatedAt',
-                            'fields.category.sys.contentType.sys.id': 'blogCategory',
-                            'fields.category.fields.categoryId': category.fields.categoryId
-                        })
-                        promiseArr.push(categoryEntries)
-                    }
-                }
-                if (promiseArr.length > 0) {
-                    Promise.all(promiseArr).then((entries) => {
-                        // 最新の記事の保存
-                        this.$accessor.setLatestBlog(entries[0])
-                        // カテゴリごとの記事の保存
-                        this.$accessor.setBlogByCategory(entries.slice(1))
-                    })
-                }
-            } catch (err) {
-                console.error(err)
-            }
-        },
         /**
          * キー入力でフォームを活性化させる
          * @param {KeyboardEvent} event キーイベント
@@ -207,7 +180,7 @@ export default Vue.extend({
         return {
             title: ' | ブログ',
             meta: [
-                { hid: 'og:title', property: 'og:title', content: 'RyoTa. | blog' },
+                { hid: 'og:title', property: 'og:title', content: 'RyoTa. | ブログ' },
             ]
         }
     }
