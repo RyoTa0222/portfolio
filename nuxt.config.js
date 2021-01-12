@@ -40,6 +40,7 @@ const mkHead = (environment = 'production') => {
 export default {
   // Target (https://go.nuxtjs.dev/config-target)
   target: 'static',
+  mode: 'universal',
   // env
   env: {
     CTF_SPACE_ID: process.env.CTF_SPACE_ID,
@@ -140,7 +141,7 @@ export default {
       }).then(entries => {
         return entries.items.map(entry => {
           return {
-            route: `blog/${entry.sys.id}`,
+            route: `blog/${entry.sys.id}/`,
             payload: entry
           }
         })
