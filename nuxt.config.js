@@ -141,7 +141,7 @@ export default {
       }).then(entries => {
         return entries.items.map(entry => {
           return {
-            route: `blog/${entry.sys.id}/`,
+            route: `blog/${entry.fields.id}`,
             payload: entry
           }
         })

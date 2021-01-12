@@ -15,7 +15,7 @@
             <div
             v-for="item in blogList.items"
             :key="item.sys.id"
-            @click="detail(item.sys.id)"
+            @click="detail(item.fields.id)"
             class="item-wrapper">
                 <picture v-if="getImagePath(item, blogList) !== null">
                     <!-- WebP用画像 -->
