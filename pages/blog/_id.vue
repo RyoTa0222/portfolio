@@ -64,93 +64,69 @@ export default Vue.extend({
     data: () => {
         return {
             id: null as null | string,
-            entry: null as null | Entry<CtfBlog>,
+            // entry: null as null | Entry<CtfBlog>,
             status: 'success' as Status
         }
     },
     async asyncData ({ params, error, payload }) {
         console.log('async')
-        if (payload) {
-            console.log(payload?.fields?.body?.content)
-            // console.log(payload)
-            return { entry: payload }
-        }
-        else {
-            console.log('not payload')
+        // if (payload) {
+        //     console.log(payload?.fields?.body?.content)
+        //     // console.log(payload)
+        //     return { entry: payload }
+        // }
+        // else {
+            // console.log('not payload')
             return { entry: await client.getEntry(params.id) }
-        }
+        // }
     },
     async created() {
-        console.log((this as any).entry)
-        if ((this as any).entry === undefined || (this as any).entry === null) {
-            this.id = this.$route.params.id
-            // ブログ詳細データの取得
-            await (this as any).getBlogData()
-        }
+        // console.log((this as any).entry)
+        // if ((this as any).entry === undefined || (this as any).entry === null) {
+        //     this.id = this.$route.params.id
+        //     // ブログ詳細データの取得
+        //     await (this as any).getBlogData()
+        // }
     },
     mounted() {
         // codeにハイライトを当てる
-        const intervalId = setInterval(() => {
-            Prism.highlightAll()
-            if (this.status === 'success') {
-                setTimeout(() => {
-                    // setTimeout(() => {
+        // const intervalId = setInterval(() => {
+        //     Prism.highlightAll()
+        //     if (this.status === 'success') {
+        //         setTimeout(() => {
+                    setTimeout(() => {
                         Prism.highlightAll()
-                    // }, 1000)
-                    console.log((this as any).entry)
-                }, 2000);
-                clearInterval(intervalId)
-            }
-        }, 100)
+                    }, 500)
+        //             console.log((this as any).entry)
+        //         }, 2000);
+        //         clearInterval(intervalId)
+        //     }
+        // }, 100)
     },
     computed: {
         blogCategory() {
             return this.$accessor.blogCategory
-        },
-        computeHtmlString() {
-            return (richTextDocument: Document): string => {
-                if (richTextDocument) {
-                    const options = {
-                        renderNode: {
-                            [BLOCKS.PARAGRAPH]: (node: any, next: any) => {
-                                if (node.content.length === 1 && node.content[0]?.marks[0]?.type === 'code') {
-                                    let lang = 'js'
-                                    const searchTerm = '\n'
-                                    const indexOfFirst = node.content[0].value.indexOf(searchTerm)
-                                    lang = node.content[0].value.slice(0, indexOfFirst)
-                                    const context = node.content[0].value.slice(indexOfFirst)
-                                    return `<div class="code prism"><div class="head-component"><div class="btn-wrapper"><span class="btn"></span><span class="btn"></span><span class="btn"></span></div></div><pre class="line-numbers language-${lang}"><code class="language-${lang}">${context}</pre></code></div>`;
-                                }
-                                // else return content as it is
-                                return `<p>${next(node.content)}</p>`;
-                            },
-                        }
-                    }
-                    return documentToHtmlString(richTextDocument, options)
-                }
-                return ''
-            }
         }
     },
     methods: {
         /**
          * ブログ詳細データを取得する
          */
-        async getBlogData(): Promise<void> {
-            this.status = 'pending'
-            if (this.id) {
-                try {
-                    console.log(process.env.CTF_CDA_ACCESS_TOKEN)
-                    console.log(this.$route.params.id)
-                    const entry: Entry<CtfBlog> = await client.getEntry(this.id)
-                    this.entry = entry                    
-                    this.status = 'success'
-                } catch (err) {
-                    console.error(err)
-                    this.status = 'error'
-                }
-            }
-        },
+        // async getBlogData(): Promise<void> {
+        //     this.status = 'pending'
+        //     if (this.id) {
+        //         try {
+        //             console.log(process.env.CTF_CDA_ACCESS_TOKEN)
+        //             console.log(this.$route.params.id)
+        //             const entry: Entry<CtfBlog> = await client.getEntry(this.id)
+        //             this.entry = entry                    
+        //             this.status = 'success'
+        //         } catch (err) {
+        //             console.error(err)
+        //             this.status = 'error'
+        //         }
+        //     }
+        // },
         /**
          * htmlに変換してデータを返す
          * @param {Document} richTextDocument contentfulから渡ってきたデータ
