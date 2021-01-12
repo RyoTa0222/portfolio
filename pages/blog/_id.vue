@@ -139,8 +139,8 @@ export default Vue.extend({
             htmlAttrs: {
                 lang: 'ja'
             },
-            titleTemplate: 'RyoTa.%s',
-            title: ` | ${(this as any).entry?.fields?.title ?? 'ブログ'}`,
+            titleTemplate: '',
+            title: `RyoTa. | ${(this as any).entry?.fields?.title ?? 'ブログ'}`,
             meta: [
                 { hid: 'description', name: 'description', content: (this as any).entry?.fields?.description ?? 'RyoTaのポートフォリオサイトです。UXを意識したサイトの制作を意識しております。Twitterで発信をしておりますのでご気軽にフォローしてください！' },
                 { hid: 'og:title', property: 'og:title', content: ` | ${(this as any).entry?.fields?.title ?? 'blog'}` },
