@@ -94,7 +94,7 @@ export default Vue.extend({
                     setTimeout(() => {
                         Prism.highlightAll()
                     }, 500)
-                    console.log('mount')
+                    console.log((this as any).entry)
         //         }, 2000);
         //         clearInterval(intervalId)
         //     }
