@@ -29,9 +29,9 @@
                             <span class="row text-right" v-show="isUpdate(entry)">更新日：{{entry.sys.updatedAt | filterDate}}</span>
                         </div>
                     </div>
-                    <client-only>
+                    <no-ssr>
                         <div v-if="entry.fields.body" class="body-container" v-html="toHtmlString(entry.fields.body)" />
-                    </client-only>
+                    </no-ssr>
                 </div>
             </div>
             <div v-if="status === 'error'" key="error">
