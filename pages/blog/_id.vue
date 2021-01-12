@@ -64,21 +64,26 @@ export default Vue.extend({
     data: () => {
         return {
             id: null as null | string,
-            // entry: null as null | Entry<CtfBlog>,
             status: 'success' as Status
         }
     },
     async asyncData ({ params, error, payload }) {
-        console.log('async')
-        // if (payload) {
-        //     console.log(payload?.fields?.body?.content)
-        //     // console.log(payload)
-        //     return { entry: payload }
-        // }
-        // else {
-            // console.log('not payload')
-            return { entry: await client.getEntry(params.id) }
-        // }
+        try {
+            if (payload) {
+                return { entry: payload }
+            }
+            else {
+                const entry = await client.getEntries({
+                    content_type: 'blog',
+                    'fields.id': params.id
+                })
+                if (entry) {
+                    return { entry: entry.items[0] }
+                }
+            }
+        } catch (err) {
+            error({statusCode: 404, message: 'Blog not found'})
+        }
     },
     async created() {
         // console.log((this as any).entry)
