@@ -29,9 +29,9 @@
                             <span class="row text-right" v-show="isUpdate(entry)">更新日：{{entry.sys.updatedAt | filterDate}}</span>
                         </div>
                     </div>
-                        <client-only>
+                        <!-- <client-only> -->
                             <div v-if="entry.fields.body" class="body-container" v-html="toHtmlString(entry.fields.body)" />
-                        </client-only>                        
+                        <!-- </client-only>                         -->
                 </div>
             </div>
             <div v-if="status === 'error'" key="error">
@@ -99,9 +99,9 @@ export default Vue.extend({
         //     Prism.highlightAll()
         //     if (this.status === 'success') {
         //         setTimeout(() => {
-                    setTimeout(() => {
+                    // setTimeout(() => {
                         Prism.highlightAll()
-                    }, 500)
+                    // }, 500)
         //             console.log((this as any).entry)
         //         }, 2000);
         //         clearInterval(intervalId)
