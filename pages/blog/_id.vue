@@ -29,9 +29,9 @@
                             <span class="row text-right" v-show="isUpdate(entry)">更新日：{{entry.sys.updatedAt | filterDate}}</span>
                         </div>
                     </div>
-                    <no-ssr>
-                        <div v-if="entry.fields.body" class="body-container" v-html="toHtmlString(entry.fields.body)" />
-                    </no-ssr>
+                        <client-only>
+                            <div v-if="entry.fields.body" class="body-container" v-html="toHtmlString(entry.fields.body)" />
+                        </client-only>                        
                 </div>
             </div>
             <div v-if="status === 'error'" key="error">
@@ -57,6 +57,7 @@ const client = createClient()
 
 export default Vue.extend({
     mixins: [blog, filter],
+    transition: 'page-fade',
     components: {
         Loader
     },
@@ -68,8 +69,16 @@ export default Vue.extend({
         }
     },
     async asyncData ({ params, error, payload }) {
-        if (payload) return { entry: payload }
-        else return { entry: await client.getEntry(params.id) }
+        console.log('async')
+        if (payload) {
+            console.log(payload?.fields?.body?.content)
+            // console.log(payload)
+            return { entry: payload }
+        }
+        else {
+            console.log('not payload')
+            return { entry: await client.getEntry(params.id) }
+        }
     },
     async created() {
         // this.id = this.$route.params.id
@@ -82,7 +91,10 @@ export default Vue.extend({
         //     Prism.highlightAll()
         //     if (this.status === 'success') {
         //         setTimeout(() => {
-                    Prism.highlightAll()
+                    setTimeout(() => {
+                        Prism.highlightAll()
+                    }, 500)
+                    console.log('mount')
         //         }, 2000);
         //         clearInterval(intervalId)
         //     }
