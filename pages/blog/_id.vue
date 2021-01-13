@@ -116,7 +116,7 @@ export default Vue.extend({
          * twitterに共有
          */
         share() {
-            const url = `https://twitter.com/intent/tweet?text=${(this as any).entry.fields.title}&url=${process.env.SITE_URL}/blog/${this.$route.params.id}`
+            const url = `https://twitter.com/intent/tweet?text=${(this as any).entry.fields.title}&url=${process.env.SITE_URL}blog/${this.$route.params.id}`
             location.href = url
         }
     },
@@ -222,6 +222,7 @@ export default Vue.extend({
     @screen sm {
         width: 90vw;
         padding-top: 30px;
+        padding-bottom: 150px;
     }
 }
 </style>
@@ -232,7 +233,7 @@ export default Vue.extend({
     padding-bottom: 30px;
     z-index: -99;
     @screen sm {
-        padding-bottom: 100px;
+        padding-bottom: 30px;
     }
     h1, h2, h3, h4, h5, h6, p, li {
         @apply dark:text-white;
