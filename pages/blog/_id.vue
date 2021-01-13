@@ -117,8 +117,7 @@ export default Vue.extend({
          */
         share() {
             const url = `https://twitter.com/intent/tweet?text=${(this as any).entry.fields.title}&url=${process.env.SITE_URL}/blog/${this.$route.params.id}`
-            // location.href = url
-            console.log(`${process.env.SITE_URL}/blog/${this.$route.params.id}`)
+            location.href = url
         }
     },
     head() {
