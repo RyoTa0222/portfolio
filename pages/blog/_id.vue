@@ -25,6 +25,12 @@
                 </div>
             </div>
             <div v-if="entry.fields.body" class="body-container" v-html="toHtmlString(entry.fields.body)" />
+            <div class="tweet-share-btn-container">
+                <button class="tweet-share-btn" @click="share">
+                    <svg-container name="twitter" />
+                    <span>シェア</span>
+                </button>
+            </div>
         </div>
     </div>
 </template>
@@ -40,6 +46,7 @@ import blog from '~/mixins/blog'
 import filter from '~/mixins/filter'
 import Prism from '~/plugins/prism'
 import Loader from '~/components/Looder.vue'
+import SvgContainer from '~/components/SvgContainer.vue'
 
 const client = createClient()
 
@@ -47,7 +54,8 @@ export default Vue.extend({
     mixins: [blog, filter],
     transition: 'page-fade',
     components: {
-        Loader
+        Loader,
+        SvgContainer
     },
     data: () => {
         return {
@@ -103,6 +111,14 @@ export default Vue.extend({
                 }
             }
             return documentToHtmlString(richTextDocument, options)
+        },
+        /**
+         * twitterに共有
+         */
+        share() {
+            const url = `https://twitter.com/intent/tweet?text=${(this as any).entry.fields.title}&url=${process.env.SITE_URL}/blog/${this.$route.params.id}`
+            // location.href = url
+            console.log(`${process.env.SITE_URL}/blog/${this.$route.params.id}`)
         }
     },
     head() {
@@ -142,6 +158,7 @@ export default Vue.extend({
     margin: auto;
     max-width: 600px;
     padding-top: 64px;
+    padding-bottom: 100px;
     .blog-container {
         margin-top: 50px;
         h1 {
@@ -181,6 +198,31 @@ export default Vue.extend({
                 }
             }
         }
+        .tweet-share-btn-container {
+            display: flex;
+            justify-content: flex-end;
+            .tweet-share-btn {
+                color: #00acee;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                width: 110px;
+                border: solid 1px #00acee;
+                border-radius: 30px;
+                padding: 2px 10px;
+                transition: transform 0.3s;
+                svg {
+                    width: 25px;
+                    fill: #00acee;
+                }
+                &:focus {
+                    outline: none;
+                }
+                &:active {
+                    transform: scale(0.9);
+                }
+            }
+        }
     }
     @screen sm {
         width: 90vw;
@@ -192,7 +234,7 @@ export default Vue.extend({
 <style lang="scss">
 .body-container {
     margin-top: 50px;
-    padding-bottom: 50px;
+    padding-bottom: 30px;
     z-index: -99;
     @screen sm {
         padding-bottom: 100px;
@@ -255,6 +297,12 @@ export default Vue.extend({
             font-size: 0.8rem;
         }
     }
+    code {
+        display: inline-block;
+        padding: 1px 8px;
+        border-radius: 4px;
+        @apply bg-gray-100;
+    }
     .code {
         border-radius: 10px;
         overflow: hidden;
@@ -274,12 +322,13 @@ export default Vue.extend({
             }
             padding-top: 20px;
             code {
+                background: transparent;
                 @screen sm {
                     font-size: 12px;
                     .line-numbers-rows {
-                        margin-top: -4px;
+                        margin-top: 2px;
                         span {
-                            line-height: 24px;
+                            line-height: 19px;
                         }
                     }
                 }
