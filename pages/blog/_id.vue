@@ -122,10 +122,6 @@ export default Vue.extend({
     },
     head() {
         return {
-            htmlAttrs: {
-                lang: 'ja',
-                prefix: 'og: http://ogp.me/ns#'
-            },
             titleTemplate: '',
             title: `RyoTa. | ${(this as any).entry?.fields?.title}`,
             meta: [
