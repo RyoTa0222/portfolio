@@ -297,7 +297,7 @@ export default Vue.extend({
         display: inline-block;
         padding: 1px 8px;
         border-radius: 4px;
-        @apply bg-gray-100;
+        @apply bg-gray-100 dark:bg-gray-600;
     }
     .code {
         border-radius: 10px;
