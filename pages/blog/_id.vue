@@ -483,8 +483,10 @@ export default Vue.extend({
             padding-top: 20px;
             code {
                 background: transparent;
+                height: 28px;
                 @screen sm {
                     font-size: 12px;
+                    height: 25px;
                     .line-numbers-rows {
                         margin-top: 2px;
                         span {
