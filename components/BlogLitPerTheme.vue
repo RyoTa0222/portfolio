@@ -39,7 +39,9 @@
                 </div>
             </div>
         </div>
-        <button class="more-btn" :style="getColor(blogList, latest)" v-if="isMoreBlogs()">もっと見る</button>
+        <div class="more-btn-container">
+            <button class="more-btn" :style="getColor(blogList, latest)" v-if="isMoreBlogs(latest !== undefined)">もっと見る</button>
+        </div>
     </div>
 </template>
 
@@ -86,11 +88,12 @@ export default Vue.extend({
     methods: {
         /**
          * ４つ以上コンテンツがあるか
+         * @param {boolean} latest trueなら最新記事
          * @return {boolean} trueなら５つ以上コンテンツがある
          */
-        isMoreBlogs(): boolean {
+        isMoreBlogs(latest: boolean): boolean {
             const {total, limit} = this.blogList
-            return (total > limit)
+            return (total > limit) && !latest
         },
         /**
          * スクロールできるかを設定する
@@ -218,12 +221,17 @@ export default Vue.extend({
             }
         }
     }
+    .more-btn-container {
+        display: flex;
+        justify-content: flex-end;
+    }
     .more-btn {
         width: 240px;
         height: 40px;
         border: solid 1px black;
         position: relative;
         color: #00000000;
+        margin-bottom: 20px;
         &::before {
             content: '';
             position: absolute;

@@ -36,9 +36,9 @@ export default Vue.extend({
     mixins: [screenHeight],
     head() {
         return {
-            title: ' | ポートフォリオ',
+            title: 'ポートフォリオ | RyoTa.',
             meta: [
-                { hid: 'og:title', property: 'og:title', content: 'RyoTa. | portfolio' },
+                { hid: 'og:title', property: 'og:title', content: 'ポートフォリオ | RyoTa.' },
             ]
         }
     }

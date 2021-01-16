@@ -178,9 +178,9 @@ export default Vue.extend({
     },
     head() {
         return {
-            title: ' | ロードマップ',
+            title: 'ロードマップ | RyoTa.',
             meta: [
-                { hid: 'og:title', property: 'og:title', content: 'RyoTa. | roadmap' },
+                { hid: 'og:title', property: 'og:title', content: 'ロードマップ | RyoTa.' },
             ]
         }
     }

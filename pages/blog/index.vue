@@ -178,9 +178,9 @@ export default Vue.extend({
     },
     head() {
         return {
-            title: ' | ブログ',
+            title: 'ブログ | RyoTa.',
             meta: [
-                { hid: 'og:title', property: 'og:title', content: 'RyoTa. | ブログ' },
+                { hid: 'og:title', property: 'og:title', content: 'ブログ | RyoTa.' },
             ]
         }
     }

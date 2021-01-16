@@ -56,6 +56,7 @@ export type CtfBlogCategoryItem = {
 
 export interface CtfBlog {
     title: string,
+    id: string,
     thumbnail: {
         sys: {
             type: string,
@@ -77,5 +78,21 @@ export interface CtfBlog {
 export interface CtfArchive {
     sys: {
         id: string
+    }
+}
+
+export interface CtfFile {
+    title: string,
+    file: {
+        url: string,
+        details: {
+            size: number,
+            image: {
+                width: number,
+                height: number
+            }
+        },
+        fileName: string,
+        contentType: string
     }
 }
