@@ -20,7 +20,7 @@ const mkHead = (environment = 'production') => {
     {
       hid: 'og:description',
       property: 'og:description',
-      content: 'RyoTaのポートフォリオサイトです。UXを意識したサイトの制作を意識しております。Twitterで発信をしておりますのでご気軽にフォローしてください！'
+      content: 'RyoTa.のポートフォリオサイトです。UXを意識したサイトの制作を意識しております。Twitterで発信をしておりますのでご気軽にフォローしてください！'
     },
     {
       hid: 'og:image',
@@ -55,8 +55,7 @@ export default {
       lang: 'ja',
       prefix: 'og: http://ogp.me/ns#'
     },
-    title: '',
-    titleTemplate: 'RyoTa.%s',
+    title: 'RyoTa.',
     meta: mkHead(process.env.ENVIRONMENT_NAME || 'production'),
     link: [
       {
@@ -142,7 +141,10 @@ export default {
         return entries.items.map(entry => {
           return {
             route: `blog/${entry.fields.id}`,
-            payload: entry
+            payload: {
+              entry,
+              includes: entries.includes
+            }
           }
         })
       })

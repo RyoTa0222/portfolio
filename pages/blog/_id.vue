@@ -37,11 +37,11 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { CtfBlog } from '~/types/type'
+import { CtfBlog, CtfBlogCategoryItem, CtfFile } from '~/types/type'
 import {Entry} from 'contentful'
 import createClient from '~/plugins/contentful'
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer'
-import { Document, MARKS, BLOCKS } from '@contentful/rich-text-types'
+import { Document, MARKS, BLOCKS, INLINES } from '@contentful/rich-text-types'
 import blog from '~/mixins/blog'
 import filter from '~/mixins/filter'
 import Prism from '~/plugins/prism'
@@ -65,7 +65,7 @@ export default Vue.extend({
     async asyncData ({ params, error, payload }) {
         try {
             if (payload) {
-                return { entry: payload }
+                return payload
             }
             else {
                 const entry = await client.getEntries({
@@ -73,7 +73,7 @@ export default Vue.extend({
                     'fields.id': params.id
                 })
                 if (entry) {
-                    return { entry: entry.items[0] }
+                    return { entry: entry.items[0], includes: entry.includes }
                 }
             }
         } catch (err) {
@@ -102,12 +102,95 @@ export default Vue.extend({
                             const searchTerm = '\n'
                             const indexOfFirst = node.content[0].value.indexOf(searchTerm)
                             lang = node.content[0].value.slice(0, indexOfFirst)
-                            const context = node.content[0].value.slice(indexOfFirst)
-                            return `<div class="code prism"><div class="head-component"><div class="btn-wrapper"><span class="btn"></span><span class="btn"></span><span class="btn"></span></div></div><pre class="line-numbers language-${lang}"><code class="language-${lang}">${context}</pre></code></div>`;
+                            let context = node.content[0].value.slice(indexOfFirst)
+                            context = context
+                                .replace(/</g, '&lt;')
+                                .replace(/>/g, '&gt;')
+                            return `<div class="code prism"><div class="head-component"><div class="btn-wrapper"><span class="btn"></span><span class="btn"></span><span class="btn"></span></div></div><pre class="line-numbers language-${lang}"><code class="language-${lang}">${context}</pre></code></div>`
+                        }
+                        if (node.content) {
+                            node.content.forEach((element: any) => {
+                                if (element.value) {
+                                    const arr = element.value.split('\n')
+                                    const text = arr.map((_text: string) => {
+                                        return `${_text}<br/>`
+                                    })
+                                    return `<p>${text}</p>`
+                                }
+                            })
                         }
                         // else return content as it is
                         return `<p>${next(node.content)}</p>`;
                     },
+                    [BLOCKS.EMBEDDED_ASSET]: (node: any, next: any) => {
+                        if (node.data &&
+                        node.data.target &&
+                        node.data.target.sys &&
+                        node.data.target.sys.id) {
+                            const id: string = node.data.target.sys.id
+                            const assets = (this as any).includes.Asset
+                            const asset: Entry<CtfFile> | undefined = assets.find((_asset: Entry<CtfFile>) => {
+                                return (_asset?.sys?.id === id)
+                            })
+                            if (asset) {
+                                return `<img src="${asset.fields.file.url}" alt="${asset.fields.file.url}" />`
+                            }
+                        }
+                        return `<p></p>`
+                    },
+                    [BLOCKS.QUOTE]: (node: any, next: any) => {
+                        return `<blockquote class="quote-container">${next(node.content)}</blockquote>`
+                    },
+                    [BLOCKS.EMBEDDED_ENTRY]: (node: any, next: any) => {
+                        console.log(node)
+                        const blog: Entry<any> = node.data.target
+                        if (blog) {
+                            const title = blog.fields.title
+                            const id = blog.fields.id
+                            const description = blog.fields.description
+                            const thumbnail = blog.fields.thumbnail.fields.file.url
+                            return `
+                            <a class="block-embedded-entry" href="${process.env.SITE_URL}/blog/${id}">
+                                <img src="https://${thumbnail}" alt="${title}" />
+                                <div class="text-container">
+                                    <span class="title">${title}</span>
+                                    <span class="description">${description}</span>
+                                </div>
+                            </a>`
+                        }
+                        return `<div class="block-embedded-entry"></div>`
+                    },
+                    [INLINES.ENTRY_HYPERLINK]: (node: any, next: any) => {
+                        const value: string = node.content[0].value
+                        const id: string = node.data.target.sys.id
+                        const entries: Entry<CtfBlog>[] = (this as any).includes.Entry
+                        const entry = entries.find((_entry: Entry<CtfBlog>) => {
+                            return (_entry?.sys?.id === id)
+                        })
+                        if (entry) {
+                            return `<a href="${process.env.SITE_URL}/blog/${entry.fields.id}">${value}</a>`
+                        }
+                        return `<a>${value}</a>`
+                    },
+                    [INLINES.ASSET_HYPERLINK]: (node: any, next: any) => {
+                        const value: string = node.content[0].value
+                        const id: string = node.data.target.sys.id
+                        const assets: Entry<CtfFile>[] = (this as any).includes.Asset
+                        const asset = assets.find((_asset: Entry<CtfFile>) => {
+                            return (_asset?.sys?.id === id)
+                        })
+                        if (asset) {
+                            return `<a href="${asset.fields.file.url}">${value}</a>`
+                        }
+                        return `<a>${value}</a>`
+                    },
+                    [INLINES.EMBEDDED_ENTRY]: (node: any, next: any) => {
+                        const blog: Entry<CtfBlog> = node.data.target
+                        if (blog) {
+                            return `<a class="inline-embedded-entry" href="${process.env.SITE_URL}/blog/${blog.fields.id}">${blog.fields.title}</a>`
+                        }
+                        return `<a></a>`
+                    }
                 }
             }
             return documentToHtmlString(richTextDocument, options)
@@ -123,10 +206,10 @@ export default Vue.extend({
     head() {
         return {
             titleTemplate: '',
-            title: `RyoTa. | ${(this as any).entry?.fields?.title}`,
+            title: `${(this as any).entry?.fields?.title} | RyoTa.`,
             meta: [
                 { hid: 'description', name: 'description', content: (this as any).entry?.fields?.description },
-                { hid: 'og:title', property: 'og:title', content: `RyoTa. | ${(this as any).entry?.fields?.title}` },
+                { hid: 'og:title', property: 'og:title', content: `${(this as any).entry?.fields?.title} | RyoTa.` },
                 {
                     hid: 'og:description',
                     property: 'og:description',
@@ -252,7 +335,8 @@ export default Vue.extend({
     h2 {
         font-size: 1.5625rem;
         font-weight: bold;
-        margin-top: 60px;
+        margin-top: 70px;
+        margin-bottom: 20px;
         @screen sm {
             font-size: 1.4rem;
             margin-top: 30px;
@@ -261,6 +345,8 @@ export default Vue.extend({
     h3 {
         font-size: 1.375rem;
         font-weight: bold;
+        margin-top: 70px;
+        margin-bottom: 20px;
         @screen sm {
             font-size: 1.3rem;
         }
@@ -268,6 +354,8 @@ export default Vue.extend({
     h4 {
         font-size: 1.25rem;
         font-weight: bold;
+        margin-top: 50px;
+        margin-bottom: 20px;
         @screen sm {
             font-size: 1.2rem;
         }
@@ -289,9 +377,85 @@ export default Vue.extend({
     p {
         font-size: 1rem;
         margin-bottom: 25px;
+        line-height: 2rem;
         @screen sm {
             font-size: 0.8rem;
+            line-height: 1.6rem;
         }
+    }
+    .inline-embedded-entry {
+        display: inline-block;
+        padding: 0 8px;
+        margin-right: 4px;
+        border: solid 1px #ddd;
+        border-radius: 5px;
+        font-size: 15px;
+        max-width: 80%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        text-decoration: none;
+        @apply text-black dark:text-white dark:border-gray-400;
+        &:hover {
+            cursor: pointer;
+        }
+        @screen sm {
+            font-size: 12px;
+        }
+    }
+    .block-embedded-entry {
+        margin: 20px 0;
+        display: flex;
+        box-sizing: border-box;
+        padding: 20px;
+        border: solid 1px #ddd;
+        border-radius: 10px;
+        text-decoration: none;
+        @apply text-black dark:text-white dark:border-gray-400;
+        .text-container {
+            span {
+                display: block;
+                width: 100%;
+                &.title {
+                    font-weight: bold;
+                    margin-bottom: 5px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+                &.description {
+                    font-size: 14px;
+                    display: -webkit-box;
+                    -webkit-box-orient: vertical;
+                    -webkit-line-clamp: 3;
+                    overflow: hidden;
+                }
+            }
+        }
+        img {
+            width: 100px;
+            object-fit: contain;
+            object-position: top;
+            margin-right: 10px;
+        }
+        &:hover {
+            cursor: pointer;
+        }
+        @screen sm {
+            flex-flow: column;
+            img {
+                width: 100%;
+                margin-right: 0px;
+                margin-bottom: 10px;
+            }
+        }
+    }
+    .quote-container {
+        box-sizing: border-box;
+        padding-left: 20px;
+        border-left: 5px solid #ddd;
+        margin: 1.5rem 0;
+        color: #777;
     }
     code {
         display: inline-block;

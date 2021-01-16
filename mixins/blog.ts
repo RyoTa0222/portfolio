@@ -31,9 +31,9 @@ export default Vue.extend({
          * @return {null | object} 画像データがあればパスと画像名を返す
          */
         getCategory(item: null | Entry<CtfBlog>, blogList: null | EntryCollection<CtfBlog>): null | string {
-            if (item && blogList) {
+            if (item && item.fields.category && blogList) {
                 const entries = blogList.includes?.Entry
-                if (entries) {
+                if (entries !== undefined && entries.length > 0) {
                     for (const entry of entries) {
                         if (entry.sys.id === item.fields.category.sys.id) {
                             return entry.fields.categoryName
