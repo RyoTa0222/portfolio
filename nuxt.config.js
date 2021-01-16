@@ -1,4 +1,5 @@
 require('dotenv').config()
+import blog from './mixins/blog'
 import createClient from './plugins/contentful'
 
 const client = createClient()
@@ -121,11 +122,34 @@ export default {
     // https://www.npmjs.com/package/@nuxtjs/dotenv
     '@nuxtjs/dotenv',
     '@nuxtjs/style-resources',
+    '@nuxtjs/sentry',
+    '@nuxtjs/sitemap',
+    '@nuxtjs/robots'
   ],
-
+  sitemap: {
+    path: '/sitemap.xml',
+    hostname: process.env.SITE_URL,
+    routes(callback) {
+      return Promise.all([
+        client.getEntries({
+          content_type: 'blog'
+        })
+      ]).then(([blogEntries]) => {
+        const _blog = blogEntries.items.map(blogEntry => {
+          return `blog/${blogEntry.fields.id}`
+        })
+        // 今後ルート追加時routesに結合
+        const routes = _blog
+        callback(null, routes)
+      }).catch(callback)
+    }
+  },
+  robots: {
+    UserAgent: '*',
+    Sitemap: `${process.env.SITE_URL}/sitemap.xml`
+  },
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {},
-
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
     transpile: [
