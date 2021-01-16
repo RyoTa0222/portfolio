@@ -293,6 +293,9 @@ export default Vue.extend({
                     width: 25px;
                     fill: #00acee;
                 }
+                span {
+                    width: 50px;
+                }
                 &:focus {
                     outline: none;
                 }
@@ -461,7 +464,12 @@ export default Vue.extend({
         display: inline-block;
         padding: 1px 8px;
         border-radius: 4px;
+        margin: 1px 0;
+        height: 28px;
         @apply bg-gray-100 dark:bg-gray-600;
+        @screen sm {
+            height: 25px;
+        }
     }
     .code {
         border-radius: 10px;
@@ -474,6 +482,8 @@ export default Vue.extend({
             border-radius: 0;
             position: inherit;
             overflow-x: scroll;
+            border-radius: 0px 0px 10px 10px / 0px 0px 10px 10px;
+            -webkit-border-radius: 0px 0px 10px 10px / 0px 0px 10px 10px;
             &::-webkit-scrollbar-track {
                 background: #272822;
             }
@@ -483,10 +493,9 @@ export default Vue.extend({
             padding-top: 20px;
             code {
                 background: transparent;
-                height: 28px;
+                height: inherit;
                 @screen sm {
                     font-size: 12px;
-                    height: 25px;
                     .line-numbers-rows {
                         margin-top: 2px;
                         span {
