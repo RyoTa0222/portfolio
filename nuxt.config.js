@@ -146,7 +146,7 @@ export default {
   },
   robots: {
     UserAgent: '*',
-    Sitemap: `${process.env.SITE_URL}/sitemap.xml`
+    Sitemap: `${process.env.SITE_URL}sitemap.xml`
   },
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {},
