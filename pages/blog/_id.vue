@@ -133,7 +133,7 @@ export default Vue.extend({
                                 return (_asset?.sys?.id === id)
                             })
                             if (asset) {
-                                return `<img src="${asset.fields.file.url}" alt="${asset.fields.file.url}" />`
+                                return `<img src="${asset.fields.file.url}" alt="${asset.fields.file.url}" class="embedded-image" />`
                             }
                         }
                         return `<p></p>`
@@ -377,6 +377,9 @@ export default Vue.extend({
             font-size: 1rem;
         }
     }
+    img.embedded-image {
+        margin: 50px 0;
+    }
     p {
         font-size: 1rem;
         margin-bottom: 25px;
@@ -499,7 +502,7 @@ export default Vue.extend({
                     .line-numbers-rows {
                         margin-top: 2px;
                         span {
-                            line-height: 19px;
+                            // line-height: 19px;
                         }
                     }
                 }
