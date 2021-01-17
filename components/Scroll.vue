@@ -1,6 +1,10 @@
 <template>
     <div v-if="mode === 'vertical'" class="scroll-container vertical">
-        <span class="font-futura italic text">scroll</span>
+        <div class="wrapper">
+            <span class="font-futura italic text">scroll</span>
+            <svg-container name="loading-circle" class="circle" />
+            <svg-container name="long-arrow-bottom" class="arrow" />
+        </div>
     </div>
     <div v-else-if="mode === 'side'" class="scroll-container side">
         <span class="font-futura italic text">scroll</span>
@@ -55,6 +59,40 @@ export default Vue.extend({
             }
         }
     }
+    &.vertical {
+        .wrapper {
+            width: 60px;
+            height: 200px;
+            position: relative;
+            .text {
+                @apply dark:text-white text-black;
+                transform: rotate(-90deg);
+                position: absolute;
+                top: 40px;
+                left: 30px;
+            }
+            svg {
+                @apply stroke-current text-black dark:text-white;
+            }
+            svg.circle {
+                fill: none;
+                stroke-width: 1;
+                stroke-linecap: round;
+                stroke-dasharray: 128 128;
+                animation: Loader 5s infinite cubic-bezier(.4,0,.3,1), Loading 1.2s infinite linear;
+                vertical-align: middle;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+            }
+            .arrow {
+                position: absolute;
+                bottom: 25px;
+                right: 28px;
+                height: 150px;
+            }
+        }
+    }
 }
 </style>
 
@@ -69,5 +107,14 @@ export default Vue.extend({
 }
 @keyframes Fade {
     50% { opacity: 0; }
+}
+@keyframes Loader {
+	0% { stroke-dashoffset: 128; }
+	15%, 85% { stroke-dashoffset: 0; }
+	100% { stroke-dashoffset: -128; }
+}
+@keyframes Loading {
+	from { transform: none; }
+	to { transform: rotate(360deg); }
 }
 </style>

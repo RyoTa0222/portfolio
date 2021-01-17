@@ -123,6 +123,17 @@
     <svg v-else-if="name === 'arrow-right'" xmlns="http://www.w3.org/2000/svg" width="7.269" height="18.447" viewBox="0 0 7.269 18.447">
         <path id="パス_12" data-name="パス 12" d="M11158,205.5l6.07,8.541-6.07,8.511" transform="translate(-11157.303 -204.803)" fill="none" stroke="#8d8d8d" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"/>
     </svg>
+    <!-- loading-circle -->
+     <svg v-else-if="name === 'loading-circle'" width="60" height="60" viewBox="0 0 60 60">
+        <circle cx="30" cy="30" r="20"/>
+    </svg>
+    <!-- long-arrow-bottom -->
+    <svg v-else-if="name === 'long-arrow-bottom'" xmlns="http://www.w3.org/2000/svg" width="13.913" height="181.282" viewBox="0 0 13.913 181.282">
+        <g id="グループ_7" data-name="グループ 7" transform="translate(-348.087 -800.5)">
+            <line id="線_3" data-name="線 3" y2="181" transform="translate(361.5 800.5)" fill="none" stroke-width="1"/>
+            <line id="線_4" data-name="線 4" x1="13" y1="19" transform="translate(348.5 962.5)" fill="none" stroke-width="1"/>
+        </g>
+    </svg>
 </template>
 
 <script lang="ts">

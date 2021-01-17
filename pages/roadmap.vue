@@ -1,44 +1,49 @@
 <template>
     <div class="roadmap-container" :style="`height: ${screenHeight}px !important;`">
-        <roadmap-section
-        title="開発予定"
-        :ctfData="getRoadmapStateData('schedule')"
-        :screenHeight="screenHeight"
-        class="schedule"
-        id="schedule" />
-        <roadmap-section
-        title="開発中"
-        :ctfData="getRoadmapStateData('develop')"
-        :screenHeight="screenHeight"
-        class="develop"
-        id="develop" />
-        <roadmap-section
-        title="反映済み"
-        :ctfData="getRoadmapStateData('merge')"
-        :screenHeight="screenHeight"
-        class="merge"
-        id="merge" />
-        <transition name="fade">
-            <div class="illust-container schedule" v-if="currentSection === 'schedule'">
+        <transition name="fade" mode="in-out">
+            <div class="illust-container schedule" v-if="currentSection === 'schedule'" key="schedule">
                 <img src="@/assets/images/roadmap/schedule/bg.png" alt="背景" class="bg">
                 <img src="@/assets/images/roadmap/tree.png" alt="木" class="tree">
                 <img src="@/assets/images/roadmap/schedule/person.png" alt="人" class="person">
             </div>
-        </transition>
-        <transition name="fade">
-            <div class="illust-container develop" v-if="currentSection === 'develop'">
+            <div class="illust-container develop" v-if="currentSection === 'develop'" key="develop">
                 <img src="@/assets/images/roadmap/develop/bg.png" alt="背景" class="bg">
                 <img src="@/assets/images/roadmap/tree.png" alt="木" class="tree">
                 <img src="@/assets/images/roadmap/develop/person.png" alt="人" class="person">
             </div>
-        </transition>
-        <transition name="fade">
-            <div class="illust-container merge" v-if="currentSection === 'merge'">
+            <div class="illust-container merge" v-if="currentSection === 'merge'" key="merge">
                 <img src="@/assets/images/roadmap/merge/bg.png" alt="背景" class="bg">
                 <img src="@/assets/images/roadmap/tree.png" alt="木" class="tree">
                 <img src="@/assets/images/roadmap/merge/person.png" alt="人" class="person">
             </div>
         </transition>
+        <transition name="fade">
+            <scroll mode="vertical" class="scroll-component" v-if="computeScrollable" />
+        </transition>
+        <roadmap-section
+        title="開発予定"
+        name="schedule"
+        :ctfData="getRoadmapStateData('schedule')"
+        :screenHeight="screenHeight"
+        :current="currentSection"
+        class="schedule"
+        id="schedule" />
+        <roadmap-section
+        title="開発中"
+        name="develop"
+        :ctfData="getRoadmapStateData('develop')"
+        :screenHeight="screenHeight"
+        :current="currentSection"
+        class="develop"
+        id="develop" />
+        <roadmap-section
+        title="反映済み"
+        name="merge"
+        :ctfData="getRoadmapStateData('merge')"
+        :screenHeight="screenHeight"
+        :current="currentSection"
+        class="merge"
+        id="merge" />
     </div>
 </template>
 
@@ -46,6 +51,7 @@
 import Vue from 'vue'
 import {CtfContentType, CtfContentItem, RoadmapState} from '~/types/type'
 import RoadmapSection from '~/components/RoadmapSection.vue'
+import Scroll from '~/components/Scroll.vue'
 import { DateTime } from 'luxon'
 import createClient from '~/plugins/contentful'
 import screenHeight from '~/mixins/screenHeight'
@@ -62,7 +68,8 @@ export default Vue.extend({
     // screenWidth, screenHeight
     mixins: [screenHeight],
     components: {
-        RoadmapSection
+        RoadmapSection,
+        Scroll
     },
     data: () => {
         return {
@@ -94,6 +101,31 @@ export default Vue.extend({
             if (ele) {
                 ele[0].removeEventListener('scroll', this.watchDisplayElement)
             }
+        }
+    },
+    computed: {
+        /**
+         * スクロールできるかどうか
+         * @return {Boolean} trueならスクロール可能
+         */
+        computeScrollable() {
+            const _schedule = this.getRoadmapStateData('schedule')
+            const _develop = this.getRoadmapStateData('develop')
+            const _merge = this.getRoadmapStateData('merge')
+            if (_merge.length > 0) {
+                if (this.currentSection === 'merge') {
+                    return false
+                }
+            } else if (_develop.length > 0) {
+                if (this.currentSection === 'merge') {
+                    return false
+                }
+            } else if (_schedule.length > 0) {
+                if (this.currentSection === 'schedule') {
+                    return false
+                }
+            }
+            return true
         }
     },
     methods: {
@@ -195,6 +227,15 @@ export default Vue.extend({
     scrollbar-width: none;       /* Firefox 対応 */
     &::-webkit-scrollbar {  /* Chrome, Safari 対応 */
         display:none;
+    }
+    .scroll-component {
+        position: fixed;
+        bottom: 10px;
+        left: 10px;
+        @screen sm {
+            transform: scale(0.8);
+            transform-origin: left bottom;
+        }
     }
     .illust-container {
         @apply fixed;
