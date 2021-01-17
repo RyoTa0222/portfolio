@@ -1,27 +1,12 @@
 <template>
     <div class="flex portrait-container" :style="`min-height: ${screenHeight}px !important;`">
-        <!-- テキスト部分 -->
-        <div class="text-container w-1/2 sm:w-full sm:h-auto sm:p-8 sm:pb-24">
-            <div class="wrapper">
-                <p>1998年2月22日生まれ。神戸大学卒業後、2020年4月よりフロントエンドエンジニアとしてSI企業に入社。</p>
-                <p>デザインの分野にも興味があり、Webデザインやグラフィックデザイン、アニメーションや３Dモデリングなども手掛けている。</p>
-                <p>また、フロントエンドのみならず、バックエンドもできる人材になるため日々活動中。</p>
-                <p>将来は、フロントを軸に、様々なソリューションを提供できる人材になりたい。</p>
-                <p>最近意識してる言葉は <span class="font-bold">「クリエイティブの世界観」</span>、<span class="font-bold">「マイクロインタラクション」</span></p>
+        <div class="preparing-container">
+            <img src="~/assets/images/portfolio/lr.png" alt="ただ今、準備中です" />
+            <div class="text-container">
+                <p>現在ポートフォリオの制作が<br/>間に合っていません...</p>
+                <p>準備でき次第、公開します！！</p>
+                <p>今しばらくお待ちください...</p>
             </div>
-        </div>
-        <!-- 画像部分 -->
-        <div class="img-container w-1/2 h-auto flex items-center sm:w-full sm:h-auto sm:p-8 sm:mt-4">
-            <client-only>
-                <img
-                :src="require(`~/assets/images/light-portrait.png`)"
-                alt="RyoTa"
-                class="w-full light" />
-                <img
-                :src="require(`~/assets/images/dark-portrait.png`)"
-                alt="RyoTa"
-                class="w-full dark" />
-            </client-only>
         </div>
     </div>
 </template>
@@ -47,26 +32,39 @@ export default Vue.extend({
 
 <style lang="scss" scoped>
 .portrait-container {
-    @apply sm:flex-col-reverse sm:justify-end;
-    max-width: 1280px;
-    margin: auto;
-    .text-container {
-        @apply flex items-center;
-        .wrapper {
-            max-width: 450px;
-            @apply m-auto;
+    @apply flex justify-center items-center;
+    .preparing-container {
+        @apply flex justify-start items-center;
+        width: 600px;
+        height: 350px;
+        background: url("~assets/images/portfolio/bg.png");
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        img {
+            height: 280px;
+        }
+        .text-container {
+            margin-left: 10px;
             p {
-                @apply mb-4 dark:text-white sm:text-sm;
+                line-height: 30px;
+                margin-bottom: 20px;
             }
         }
     }
-    .img-container {
+    @screen sm {
+        .preparing-container {
+        width: 90%;
         img {
-            &.dark {
-                @apply hidden dark:block;
-            }
-            &.light {
-                @apply block dark:hidden;
+            height: 130px;
+        }
+        .text-container {
+            margin-left: 0px;
+            p {
+                font-size: 12px;
+                line-height: 20px;
+                margin-bottom: 10px;
+                }
             }
         }
     }
