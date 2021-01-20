@@ -42,6 +42,11 @@ export default Vue.extend({
       splashFlg: true as boolean
     }
   },
+  created() {
+    if (this.$route.name === 'blog-id') {
+      this.splashFlg = false
+    }
+  }, 
   mounted() {
     if (process.client) {
       // TODO: ブラウザのテーマを使用する際コメントイン
@@ -54,10 +59,12 @@ export default Vue.extend({
       // }
       const response: Theme = (this as any).$theme.getTheme();
       (this as any).$theme.setHtmlTheme(response)
-      // スプラッシュ終了
-      setTimeout(() => {
-        this.splashFlg = false
-      }, 3000)
+      // flgがtrueの場合３秒後にスプラッシュ終了
+      if (!this.splashFlg) {
+        setTimeout(() => {
+          this.splashFlg = false
+        }, 3000)
+      }
     }
   },
   methods: {
