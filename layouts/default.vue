@@ -60,7 +60,7 @@ export default Vue.extend({
       const response: Theme = (this as any).$theme.getTheme();
       (this as any).$theme.setHtmlTheme(response)
       // flgがtrueの場合３秒後にスプラッシュ終了
-      if (!this.splashFlg) {
+      if (this.splashFlg) {
         setTimeout(() => {
           this.splashFlg = false
         }, 3000)
