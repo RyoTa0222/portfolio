@@ -126,7 +126,6 @@ export default {
   ],
   router: {
     trailingSlash: true,
-    middleware: ['redirect']
   },
   sitemap: {
     path: '/sitemap.xml',
