@@ -1,5 +1,4 @@
 require('dotenv').config()
-import blog from './mixins/blog'
 import createClient from './plugins/contentful'
 
 const client = createClient()
@@ -125,9 +124,13 @@ export default {
     '@nuxtjs/sitemap',
     '@nuxtjs/robots'
   ],
+  router: {
+    trailingSlash: true,
+  },
   sitemap: {
     path: '/sitemap.xml',
     hostname: process.env.SITE_URL,
+    trailingSlash: true,
     routes(callback) {
       return Promise.all([
         client.getEntries({
