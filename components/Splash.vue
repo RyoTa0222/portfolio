@@ -1,11 +1,13 @@
 <template>
     <div class="splash-container">
-        <picture>
-            <!-- WebP用画像 -->
-            <source srcset="@/assets/images/splash-pc.webp" type="image/webp">
-            <!-- 従来画像 -->
-            <img src="@/assets/images/splash-pc.png" alt="splash" @load="load">
-        </picture>
+        <client-only>
+            <picture>
+                <!-- WebP用画像 -->
+                <source srcset="@/assets/images/splash-pc.webp" type="image/webp">
+                <!-- 従来画像 -->
+                <img src="@/assets/images/splash-pc.png" alt="splash" @load="load">
+            </picture>
+        </client-only>
         <div style="height: 32px;">
             <p class="typewriter" v-show="loaded">RyoTa.</p>
         </div>

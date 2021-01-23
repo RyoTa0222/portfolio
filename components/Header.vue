@@ -13,7 +13,7 @@
                             <li
                             :key="idx"
                             class="font-zooja cursor-pointer"
-                            @click="$router.push(page.path)">
+                            @click="$router.push(`${page.path}`)">
                                 <template v-if="['xs', 'sm'].includes($breakpoint.name)">
                                     <svg-container :name="computeIconName(page.icon)" class="svg-container text-black dark:text-white"
                                     :class="computeActive(page.icon)"
@@ -62,17 +62,17 @@ export default Vue.extend({
                 },
                 {
                     name: 'PORTFOLIO',
-                    path: '/portfolio',
+                    path: '/portfolio/',
                     icon: 'user'
                 },
                 {
                     name: 'BLOG',
-                    path: '/blog',
+                    path: '/blog/',
                     icon: 'blog'
                 },
                 {
                     name: 'ROADMAP',
-                    path: '/roadmap',
+                    path: '/roadmap/',
                     icon: 'map'
                 }
             ] as PageType[],
@@ -99,7 +99,7 @@ export default Vue.extend({
                     case 'user':
                         return this.$route.name === 'portfolio' ? 'user' : 'user-line'
                     case 'blog':
-                        return ['blog', 'blog-id'].includes(this.$route.name as string) ? 'blog' : 'blog-line'
+                        return ['blog', 'blog-category', 'blog-category-id'].includes(this.$route.name as string) ? 'blog' : 'blog-line'
                     case 'map':
                         return this.$route.name === 'roadmap' ? 'map' : 'map-line'
                 }
@@ -117,7 +117,7 @@ export default Vue.extend({
                     case 'user':
                         return this.$route.name === 'portfolio' ? 'active' : ''
                     case 'blog':
-                        return ['blog', 'blog-id'].includes(this.$route.name as string) ? 'active' : ''
+                        return ['blog', 'blog-category', 'blog-category-id'].includes(this.$route.name as string) ? 'active' : ''
                     case 'map':
                         return this.$route.name === 'roadmap' ? 'active' : ''
                 }

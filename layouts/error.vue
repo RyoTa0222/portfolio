@@ -1,12 +1,12 @@
 <template>
-  <div class="error-page-container">
-    <div class="isometric-container">
-        <span class="txt number" :data-text="error.statusCode">{{error.statusCode}}</span>
-        <h1 :data-text="computeErrorMessage" class="txt title">
-          {{ computeErrorMessage }}
-        </h1>
+    <div class="error-page-container">
+        <div class="isometric-container">
+            <span class="txt number" :data-text="error.statusCode">{{error.statusCode}}</span>
+            <h1 :data-text="computeErrorMessage" class="txt title">
+            {{ computeErrorMessage }}
+            </h1>
+        </div>
     </div>
-  </div>
 </template>
 
 <script lang="ts">
@@ -48,6 +48,9 @@ export default Vue.extend({
                 }
                 if (message === 'Network Error') {
                     return 'サーバーで問題が発生しました'
+                }
+                if (message === 'Blog not found') {
+                    return '記事が見つかりません'
                 }
                 return 'エラーが発生しました'
             }

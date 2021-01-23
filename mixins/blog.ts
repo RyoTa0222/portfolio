@@ -26,17 +26,20 @@ export default Vue.extend({
             return null
         },
         /**
-         * 画像のパスと名前を返す
+         * カテゴリ名を返す
          * @param {CtfBlog} item ブログデータ
-         * @return {null | object} 画像データがあればパスと画像名を返す
+         * @param {string} id 記事ID
+         * @return {null | object} カテゴリ名を返す
          */
-        getCategory(item: null | Entry<CtfBlog>, blogList: null | EntryCollection<CtfBlog>): null | string {
+        getCategory(item: null | Entry<CtfBlog>, blogList: null | EntryCollection<CtfBlog>, id?: string): null | string {
             if (item && item.fields.category && blogList) {
                 const entries = blogList.includes?.Entry
                 if (entries !== undefined && entries.length > 0) {
                     for (const entry of entries) {
                         if (entry.sys.id === item.fields.category.sys.id) {
-                            return entry.fields.categoryName
+                            let rtn = entry.fields.categoryName
+                            if (id) rtn = entry.fields.categoryId
+                            return rtn
                         }
                     }
                 }

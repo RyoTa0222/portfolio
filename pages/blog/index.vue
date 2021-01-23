@@ -37,6 +37,7 @@
                     <template v-for="category in blogCategory">
                         <blog-list-per-theme
                         @detail="detail"
+                        @more="more"
                         :key="category.sys.id"
                         :blogList="blogByCategory[category.fields.categoryId]"
                         v-if="blogByCategory[category.fields.categoryId].items.length > 0"
@@ -171,9 +172,17 @@ export default Vue.extend({
         /**
          * 詳細ページに遷移
          * @param {string} id 記事ID
+         * @param {string} category 記事カテゴリ
          */
-        detail(id: string): void {
-            this.$router.push(`/blog/${id}`)
+        detail(id: string, category: string): void {
+            this.$router.push(`/blog/${category}/${id}/`)
+        },
+        /**
+         *　カテゴリごとの記事ページに遷移
+         * @param {string} category 記事カテゴリ
+         */
+        more(category: string) {
+            this.$router.push(`/blog/${category}/`)
         }
     },
     head() {
@@ -190,6 +199,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .blog-container {
     width: 60vw;
+    max-width: 950px;
     box-sizing: border-box;
     margin: 0 auto;
     padding-top: 64px;

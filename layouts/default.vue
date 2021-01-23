@@ -4,9 +4,7 @@
   id="container"
   :style="`min-height: ${screenHeight}px !important;`">
     <template>
-      <main>
-        <Nuxt />
-      </main>
+      <Nuxt />
       <header-component @open="openSettingModal" />
       <footer-component />
       <template v-if="settingModal">
