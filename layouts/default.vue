@@ -41,7 +41,7 @@ export default Vue.extend({
     }
   },
   created() {
-    if (this.$route.name === 'blog-id') {
+    if (this.$route.name === 'blog-category-id') {
       this.splashFlg = false
     }
   }, 
