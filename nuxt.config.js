@@ -137,11 +137,20 @@ export default {
           content_type: 'blog'
         })
       ]).then(([blogEntries]) => {
-        const _blog = blogEntries.items.map(blogEntry => {
-          return `blog/${blogEntry.fields.id}`
+        const l = []
+        const _blogDetail = blogEntries.items.map(blogEntry => {
+          const categoryId = blogEntry.fields.category.sys.id
+          const categoryItem = blogEntries.includes.Entry.find((item) => item.sys.id === categoryId)
+          if (l.includes(categoryItem.fields.categoryId) !== -1) {
+            l.push(categoryItem.fields.categoryId)
+          }
+          return `blog/${categoryItem.fields.categoryId}/${blogEntry.fields.id}/`
+        })
+        const _blogCategory = l.map(category => {
+          return `blog/${category}/`
         })
         // 今後ルート追加時routesに結合
-        const routes = _blog
+        const routes = _blogDetail.concat(_blogCategory)
         callback(null, routes)
       }).catch(callback)
     }
@@ -164,15 +173,22 @@ export default {
       return client.getEntries({
         content_type: 'blog'
       }).then(entries => {
-        return entries.items.map(entry => {
+        const l = []
+        const _blogDetail = entries.items.map(entry => {
+          const categoryId = entry.fields.category.sys.id
+          const categoryItem = entries.includes.Entry.find((item) => item.sys.id === categoryId)
           return {
-            route: `blog/${entry.fields.id}`,
+            route: `blog/${categoryItem.fields.categoryId}/${entry.fields.id}/`,
             payload: {
               entry,
               includes: entries.includes
             }
           }
         })
+        const _blogCategory = l.map(category => {
+          return `blog/${category}/`
+        })
+        return _blogDetail.concat(_blogCategory)
       })
     }
   }
