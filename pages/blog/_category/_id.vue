@@ -1,6 +1,9 @@
 <template>
     <div class="blog-id-container line-numbers">
-        <div class="blog-container" v-if="entry && entry.fields">
+        <template v-if="breadCrumbList.length > 0">
+            <bread-crumb :lists="breadCrumbList" class="bread-crumb" />
+        </template>
+        <main class="blog-container" v-if="entry && entry.fields">
             <h1 v-if="entry.fields.title">{{entry.fields.title}}</h1>
             <picture v-if="entry.fields.thumbnail">
                 <!-- WebP用画像 -->
@@ -24,14 +27,14 @@
                     <span class="row text-right" v-show="isUpdate(entry)">更新日：{{entry.sys.updatedAt | filterDate}}</span>
                 </div>
             </div>
-            <div v-if="entry.fields.body" class="body-container" v-html="toHtmlString(entry.fields.body)" />
+            <article v-if="entry.fields.body" class="body-container" v-html="toHtmlString(entry.fields.body)" />
             <div class="tweet-share-btn-container">
                 <button class="tweet-share-btn" @click="share">
                     <svg-container name="twitter" />
                     <span>シェア</span>
                 </button>
             </div>
-        </div>
+        </main>
     </div>
 </template>
 
@@ -47,6 +50,7 @@ import filter from '~/mixins/filter'
 import Prism from '~/plugins/prism'
 import Loader from '~/components/Looder.vue'
 import SvgContainer from '~/components/SvgContainer.vue'
+import BreadCrumb from '~/components/BreadCrumb.vue'
 
 const client = createClient()
 
@@ -55,7 +59,8 @@ export default Vue.extend({
     transition: 'page-fade',
     components: {
         Loader,
-        SvgContainer
+        SvgContainer,
+        BreadCrumb
     },
     data: () => {
         return {
@@ -86,6 +91,15 @@ export default Vue.extend({
     computed: {
         blogCategory() {
             return this.$accessor.blogCategory
+        },
+        breadCrumbList() {
+            if ((this as any).entry) {
+                const category = (this as any).entry.fields.category as CtfBlogCategoryItem
+                const name = category.fields.categoryName
+                const path = category.fields.categoryId
+                return [{name, path}]
+            }
+            return []
         }
     },
     methods: {
@@ -142,15 +156,15 @@ export default Vue.extend({
                         return `<blockquote class="quote-container">${next(node.content)}</blockquote>`
                     },
                     [BLOCKS.EMBEDDED_ENTRY]: (node: any, next: any) => {
-                        console.log(node)
                         const blog: Entry<any> = node.data.target
                         if (blog) {
-                            const title = blog.fields.title
-                            const id = blog.fields.id
-                            const description = blog.fields.description
-                            const thumbnail = blog.fields.thumbnail.fields.file.url
+                            const title: string = blog.fields.title
+                            const id: string = blog.fields.id
+                            const category: string = this.$route.params.category
+                            const description: string = blog.fields.description
+                            const thumbnail: string = blog.fields.thumbnail.fields.file.url
                             return `
-                            <a class="block-embedded-entry" href="${process.env.SITE_URL}/blog/${id}">
+                            <a class="block-embedded-entry" href="${process.env.SITE_URL}/blog/${category}/${id}/">
                                 <img src="https://${thumbnail}" alt="${title}" />
                                 <div class="text-container">
                                     <span class="title">${title}</span>
@@ -163,12 +177,13 @@ export default Vue.extend({
                     [INLINES.ENTRY_HYPERLINK]: (node: any, next: any) => {
                         const value: string = node.content[0].value
                         const id: string = node.data.target.sys.id
+                        const category: string = this.$route.params.category
                         const entries: Entry<CtfBlog>[] = (this as any).includes.Entry
                         const entry = entries.find((_entry: Entry<CtfBlog>) => {
                             return (_entry?.sys?.id === id)
                         })
                         if (entry) {
-                            return `<a href="${process.env.SITE_URL}/blog/${entry.fields.id}">${value}</a>`
+                            return `<a href="${process.env.SITE_URL}/blog/${category}/${entry.fields.id}/">${value}</a>`
                         }
                         return `<a>${value}</a>`
                     },
@@ -186,8 +201,9 @@ export default Vue.extend({
                     },
                     [INLINES.EMBEDDED_ENTRY]: (node: any, next: any) => {
                         const blog: Entry<CtfBlog> = node.data.target
+                        const category: string = this.$route.params.category
                         if (blog) {
-                            return `<a class="inline-embedded-entry" href="${process.env.SITE_URL}/blog/${blog.fields.id}">${blog.fields.title}</a>`
+                            return `<a class="inline-embedded-entry" href="${process.env.SITE_URL}/blog/${category}/${blog.fields.id}/">${blog.fields.title}</a>`
                         }
                         return `<a></a>`
                     }
@@ -199,11 +215,12 @@ export default Vue.extend({
          * twitterに共有
          */
         share() {
-            const url = `https://twitter.com/intent/tweet?text=${(this as any).entry.fields.title}&url=${process.env.SITE_URL}blog/${this.$route.params.id}`
+            const url = `https://twitter.com/intent/tweet?text=${(this as any).entry.fields.title}&url=${process.env.SITE_URL}blog/${this.$route.params.id}/`
             location.href = url
         }
     },
     head() {
+        const category: string = this.$route.params.category ?? ''
         return {
             titleTemplate: '',
             title: `${(this as any).entry?.fields?.title} | RyoTa.`,
@@ -215,7 +232,7 @@ export default Vue.extend({
                     property: 'og:description',
                     content: (this as any).entry?.fields?.description
                 },
-                { hid: 'og:url', property: 'og:url', content: `${process.env.SITE_URL}/blog/${this.$route.params.id}`},
+                { hid: 'og:url', property: 'og:url', content: `${process.env.SITE_URL}/blog/${category}/${this.$route.params.id}/`},
                 {
                     hid: 'og:image',
                     property: 'og:image',
@@ -237,11 +254,14 @@ export default Vue.extend({
     max-width: 600px;
     padding-top: 64px;
     padding-bottom: 100px;
+    .bread-crumb {
+        margin-top: 20px;
+    }
     .blog-container {
-        margin-top: 50px;
+        margin-top: 30px;
         h1 {
             @apply dark:text-white;
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             font-weight: bold;
         }
         picture {

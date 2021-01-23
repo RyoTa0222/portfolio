@@ -12,35 +12,23 @@
             </transition>
         </div>
         <div class="blog-wrapper" ref="blogWrapper">
-            <div
+            <blog-item
             v-for="item in blogList.items"
             :key="item.sys.id"
-            @click="detail(item.fields.id)"
-            class="item-wrapper">
-                <picture v-if="getImagePath(item, blogList) !== null">
-                    <!-- WebP用画像 -->
-                    <source
-                    :srcset="`${getImagePath(item, blogList).url}?w=240&h=120&fm=webp&fit=thumb&q=50`"
-                    type="image/webp">
-                    <!-- 従来画像 -->
-                    <img
-                    :src="`${getImagePath(item, blogList).url}?w=240&h=120&fm=png&fl=png8&fit=thumb&q=50`"
-                    :alt="getImagePath(item, blogList).name"
-                    />
-                </picture>
-                <span class="row clamp">{{item.fields.title}}</span>
-                <span class="row text-right">作成日：{{item.sys.createdAt | filterDate}}</span>
-                <span class="row text-right" v-show="isUpdate(item)">更新日：{{item.sys.updatedAt | filterDate}}</span>
-                <div v-if="getCategory(item, blogList) && latest !== undefined" class="category-wrapper">
-                    <span
-                    :style="getColor(item, blogList)"
-                    class="category"
-                    >{{getCategory(item, blogList)}}</span>
-                </div>
-            </div>
+            @detail="detail"
+            :item="item"
+            :blogList="blogList"
+            :latest="latest"
+            class="item-wrapper"
+            />
         </div>
         <div class="more-btn-container">
-            <button class="more-btn" :style="getColor(blogList, latest)" v-if="isMoreBlogs(latest !== undefined)">もっと見る</button>
+            <button
+            class="more-btn"
+            :style="getColor(blogList, latest)"
+            v-if="isMoreBlogs(latest !== undefined)"
+            @click="more(blogList.items[0])"
+            >もっと見る</button>
         </div>
     </div>
 </template>
@@ -52,11 +40,12 @@ import {CtfBlog} from '~/types/type'
 import filter from '~/mixins/filter'
 import blog from '~/mixins/blog'
 import Scroll from '~/components/Scroll.vue'
+import BlogItem from '~/components/BlogItem.vue'
 import {DateTime} from 'luxon'
 
 export default Vue.extend({
     mixins: [filter, blog],
-    components: {Scroll},
+    components: {Scroll, BlogItem},
     props: {
         blogList: {
             default: null as null | EntryCollection<CtfBlog>
@@ -111,11 +100,23 @@ export default Vue.extend({
             this.scrollable = false
         },
         /**
-         * 詳細画面に遷移
-         * @param {string} id ブログID
+         * 記事詳細に遷移
+         * @param {string | null} id 記事ID
+         * @param {string | null} category カテゴリ
          */
-        detail(id: string) {
-            this.$emit('detail', id)
+        detail(id: string | null, category: string | null) {
+            if (id && category) {
+                this.$router.push(`/blog/${category}/${id}/`)
+            }
+        },
+        /**
+         * カテゴリごとの記事一覧に遷移
+         * @param {Entry<CtfBlog>} item 記事データ
+         */
+        more(item: Entry<CtfBlog>) {
+            const id = item.fields.id
+            const category = (this as any).getCategory(item, this.blogList, id)
+            this.$emit('more', category)
         }
     }
 })
@@ -169,66 +170,16 @@ export default Vue.extend({
         &::-webkit-scrollbar {  /* Chrome, Safari 対応 */
             display:none;
         }
-        .item-wrapper {
-            @apply cursor-pointer;
-            display: inline-block;
-            width: 220px;
-            margin-right: 10px;
-            picture {
-                width: 220px;
-                height: 110px;
-                display: inline-block;
-                margin: 0;
-                overflow: hidden;
-                source, img {
-                    margin: 0;
-                    transition: all 0.2s;
-                }
-            }
-            &:hover {
-                picture {
-                    source, img {
-                        transform: scale(1.08);
-                        transform-origin: center;
-                    }
-                }
-            }
-            .row {
-                @apply dark:text-white;
-                display: block;
-                font-size: 12px;
-                margin-bottom: 5px;
-                &.text-right {
-                    text-align: right;
-                }
-                &.clamp {
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                    white-space: nowrap;
-                }
-            }
-            .category-wrapper {
-                text-align: right;
-                .category {
-                    font-size: 10px;
-                    display: inline-block;
-                    color: white;
-                    background: var(--color);
-                    padding: 2px 5px;
-                    max-width: 100%;
-                    word-break: keep-all;
-                }
-            }
-        }
     }
     .more-btn-container {
         display: flex;
-        justify-content: flex-end;
+        justify-content: flex-start;
     }
     .more-btn {
         width: 240px;
         height: 40px;
         border: solid 1px black;
+        @apply dark:border-white;
         position: relative;
         color: #00000000;
         margin-bottom: 20px;
@@ -255,7 +206,7 @@ export default Vue.extend({
             justify-content: center;
             align-items: center;
             font-size: 15px;
-            color: #000000;
+            @apply text-dark dark:text-white;
         }
         &:focus {
             outline: 0;
@@ -268,15 +219,6 @@ export default Vue.extend({
         }
     }
     @screen lg {
-        .blog-wrapper {
-            .item-wrapper {
-                width: 200px;
-                picture {
-                    width: 200px;
-                    height: 100px;
-                }
-            }
-        }
         .more-btn {
             width: 200px;
         }
@@ -292,14 +234,7 @@ export default Vue.extend({
             flex-wrap: wrap;
             overflow-x: inherit;
             white-space: inherit;
-            .item-wrapper {
-                width: calc(50% - 10px);
-                margin-bottom: 40px;
-                picture {
-                    width: 100%;
-                    height: 50%;
-                }
-            }
+            justify-content: space-between;
         }
         .more-btn {
             width: 100%;
