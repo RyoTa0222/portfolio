@@ -1,12 +1,12 @@
 <template>
-    <div class="flex portrait-container" :style="`min-height: ${screenHeight}px !important;`">
-        <div class="preparing-container">
-            <img src="~/assets/images/portfolio/lr.png" alt="ただ今、準備中です" />
-            <div class="text-container">
-                <p>現在ポートフォリオの制作が<br/>間に合っていません...</p>
-                <p>準備でき次第、公開します！！</p>
-                <p>今しばらくお待ちください...</p>
-            </div>
+    <div class="flex portfolio-container" :style="`min-height: ${screenHeight}px !important;`">
+        <scroll class="scroll-component"/>
+        <div class="top-container" :style="`height: ${screenHeight}px !important;`">
+            <portfolio-title
+            :selectGenre="selectGenre"
+            :dataList="{year, category}"
+            @setGenre="setGenre"
+            />
         </div>
     </div>
 </template>
@@ -15,10 +15,42 @@
 import Vue from 'vue'
 import {Theme} from '~/types/type'
 import screenHeight from '~/mixins/screenHeight'
+import {DateTime} from 'luxon'
+import {Genre} from '~/types/type'
+import PortfolioTitle from '~/components/PortfolioTitle.vue'
+import Scroll from '~/components/Scroll.vue'
 
 export default Vue.extend({
     // screenWidth, screenHeight
     mixins: [screenHeight],
+    components: {
+        PortfolioTitle,
+        Scroll
+    },
+    data: () => {
+        return {
+            year: DateTime.local().toFormat('yyyy') as string,
+            category: 'JavaScript' as string
+        }
+    },
+    methods: {
+        /**
+         * description
+         * @param {Genre} genre ジャンル
+         */
+        setGenre(genre: Genre) {
+            this.$router.push(`/portfolio?genre=${genre}`)
+        }
+    },
+    computed: {
+        selectGenre(): Genre {
+            const genre: Genre | undefined = (this.$route.query as {genre: Genre}).genre
+            if (genre) {
+                return genre
+            }
+            return 'year'
+        }
+    },
     head() {
         return {
             title: 'ポートフォリオ | RyoTa.',
@@ -31,42 +63,22 @@ export default Vue.extend({
 </script>
 
 <style lang="scss" scoped>
-.portrait-container {
+.portfolio-container {
     @apply flex justify-center items-center;
-    .preparing-container {
-        @apply flex justify-start items-center;
-        width: 600px;
-        height: 350px;
-        background: url("~assets/images/portfolio/bg.png");
-        background-size: contain;
-        background-repeat: no-repeat;
-        background-position: center;
-        img {
-            height: 280px;
-        }
-        .text-container {
-            margin-left: 10px;
-            p {
-                line-height: 30px;
-                margin-bottom: 20px;
-            }
+    .scroll-component {
+        @apply fixed;
+        bottom: 10px;
+        left: 10px;
+        @screen sm {
+            transform: scale(0.8);
+            transform-origin: left bottom;
         }
     }
-    @screen sm {
-        .preparing-container {
-        width: 90%;
-        img {
-            height: 130px;
-        }
-        .text-container {
-            margin-left: 0px;
-            p {
-                font-size: 12px;
-                line-height: 20px;
-                margin-bottom: 10px;
-                }
-            }
-        }
+    .top-container {
+        width: 100%;
+        height: 100%;
+        @apply flex justify-center items-center flex-col;
+        
     }
 }
 </style>

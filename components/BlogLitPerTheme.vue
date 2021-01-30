@@ -52,7 +52,6 @@ import {CtfBlog} from '~/types/type'
 import filter from '~/mixins/filter'
 import blog from '~/mixins/blog'
 import Scroll from '~/components/Scroll.vue'
-import {DateTime} from 'luxon'
 
 export default Vue.extend({
     mixins: [filter, blog],

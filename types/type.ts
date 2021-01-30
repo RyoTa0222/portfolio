@@ -18,6 +18,8 @@ export type Status = 'pending' | 'success' | 'error'
 
 export type RoadmapState = 'schedule' | 'develop' | 'merge'
 
+export type Genre = 'year' | 'category'
+
 export type CtfContentItem = {
     sys: CtfItemSys,
     fields: object
