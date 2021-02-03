@@ -64,6 +64,16 @@ li {
   opacity: 0;
 }
 
+.fast-fade-enter-active,
+.fast-fade-leave-active {
+  opacity: 1;
+  transition: opacity 0.5s;
+}
+.fast-fade-enter,
+.fast-fade-leave-to {
+  opacity: 0;
+}
+
 .page-fade-enter-active,
 .page-fade-leave-active {
   opacity: 1;
@@ -72,4 +82,14 @@ li {
 .page-fade-enter,
 .page-fade-leave-to {
   opacity: 0;
+}
+
+body {
+  overflow-y: scroll;
+  -ms-overflow-style: none; /* IE, Edge 対応 */
+  scrollbar-width: none; /* Firefox 対応 */
+}
+body::-webkit-scrollbar {
+  /* Chrome, Safari 対応 */
+  display: none;
 }

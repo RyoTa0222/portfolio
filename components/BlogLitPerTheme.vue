@@ -40,12 +40,10 @@ import {CtfBlog} from '~/types/type'
 import filter from '~/mixins/filter'
 import blog from '~/mixins/blog'
 import Scroll from '~/components/Scroll.vue'
-import BlogItem from '~/components/BlogItem.vue'
-import {DateTime} from 'luxon'
 
 export default Vue.extend({
     mixins: [filter, blog],
-    components: {Scroll, BlogItem},
+    components: {Scroll},
     props: {
         blogList: {
             default: null as null | EntryCollection<CtfBlog>
