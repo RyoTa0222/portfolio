@@ -18,6 +18,8 @@ export type Status = 'pending' | 'success' | 'error'
 
 export type RoadmapState = 'schedule' | 'develop' | 'merge'
 
+export type Genre = 'year' | 'category'
+
 export type CtfContentItem = {
     sys: CtfItemSys,
     fields: object
@@ -75,6 +77,11 @@ export interface CtfBlog {
     }
 }
 
+export interface Skill {
+    id: string,
+    name: string
+}
+
 export interface CtfArchive {
     sys: {
         id: string
@@ -95,4 +102,13 @@ export interface CtfFile {
         fileName: string,
         contentType: string
     }
+}
+
+export interface CtfPortfolio<T> {
+    title: string,
+    created_year: string,
+    description: string,
+    skills: T[],
+    url: string,
+    github?: string
 }

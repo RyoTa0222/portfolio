@@ -1,14 +1,7 @@
 <template>
     <div class="blog-container">
         <transition name="fade" mode="out-in">
-            <div
-            v-if="latestBlog === undefined ||
-            blogCategory === undefined ||
-            blogByCategory === undefined"
-            key="pending">
-                <loader />
-            </div>
-            <div v-else key="success">
+            <div v-if="latestBlog && blogCategory && blogByCategory" key="success">
                 <div class="search-container">
                     <input
                     type="search"

@@ -1,6 +1,6 @@
 <template>
   <div
-  class="bg-white relative w-screen min-h-screen box-border dark:bg-dark"
+  class="bg-white relative min-h-screen box-border dark:bg-dark w-full"
   id="container"
   :style="`min-height: ${screenHeight}px !important;`">
     <template>
@@ -16,6 +16,7 @@
     </transition>
   </div>
 </template>
+
 <script lang="ts">
 import Vue from 'vue'
 import HeaderComponent from '~/components/Header.vue'
@@ -46,6 +47,15 @@ export default Vue.extend({
     }
   }, 
   mounted() {
+    // this.$nextTick(() => {
+    //   console.log('start')
+    //   this.$nuxt.$loading.start()
+
+    //   setTimeout(() => {
+    //     this.$nuxt.$loading.finish()
+    //     console.log('end')
+    //   }, 500)
+    // })
     if (process.client) {
       // TODO: ブラウザのテーマを使用する際コメントイン
       // // ブラウザで設定しているテーマを使う場合
