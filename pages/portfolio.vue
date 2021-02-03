@@ -87,7 +87,7 @@
                         <tooltip
                         class="icon-wrapper"
                         bottom
-                        text="gitHub"
+                        text="GitHub"
                         @clickEvent="github(content.fields.github)">
                             <template v-slot:content>
                                 <client-only>
@@ -289,6 +289,7 @@ export default Vue.extend({
         .screen {
             @apply flex justify-center items-center relative;
             width: 40%;
+            min-width: 420px;
             img {
                 height: 700px;
             }
