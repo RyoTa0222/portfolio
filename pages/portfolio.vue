@@ -237,7 +237,7 @@ export default Vue.extend({
         },
         filterContents(): Entry<CtfPortfolio<LinkedSkill>>[] {
             const contents = (this as unknown as {contents: Entry<CtfPortfolio<LinkedSkill>>[]}).contents
-            if (contents.length > 0) {
+            if (contents && contents.length > 0) {
                 const genre: Genre | undefined = (this.$route.query as {genre: Genre}).genre
                 // 言語の場合
                 if (genre) {

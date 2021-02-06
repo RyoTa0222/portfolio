@@ -40,6 +40,7 @@ const mkHead = (environment = 'production') => {
 export default {
   // Target (https://go.nuxtjs.dev/config-target)
   target: 'static',
+  mode: 'universal',
   // env
   env: {
     CTF_SPACE_ID: process.env.CTF_SPACE_ID,
