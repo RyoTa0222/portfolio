@@ -27,7 +27,7 @@ export default Vue.extend({
             }
         },
         computeDevice() {
-            if (['xs', 'sm'].includes((this as any).$breakpoint.name)) {
+            if (['xs', 'sm'].includes((this as any).$breakpoint?.name)) {
                 return 'sp'
             } else {
                 return 'pc'

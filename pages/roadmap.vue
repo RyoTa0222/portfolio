@@ -178,13 +178,13 @@ export default Vue.extend({
          */
         watchDisplayElement() {
             // スクロールいちを取得
-            const scrollTop = window.pageYOffset
+            const scrollTop = window?.pageYOffset
             const scrollBottom = scrollTop + window.innerHeight
             // 要素が表示領域にいるかどうか
             const _isDisplay = (element: HTMLElement | null): boolean => {
                 if (element) {
                     const rect = element.getBoundingClientRect()
-                    const targetScrollTop = window.pageYOffset || document.documentElement.scrollTop
+                    const targetScrollTop = window?.pageYOffset || document.documentElement.scrollTop
                     let targetTop = rect.top + scrollTop
                     let targetBottom = targetTop + element.clientHeight
                     if (targetBottom > scrollTop && targetBottom <= scrollBottom) {
