@@ -40,6 +40,7 @@ const mkHead = (environment = 'production') => {
 export default {
   // Target (https://go.nuxtjs.dev/config-target)
   target: 'static',
+  mode: 'universal',
   // env
   env: {
     CTF_SPACE_ID: process.env.CTF_SPACE_ID,
@@ -86,7 +87,7 @@ export default {
       },
     ],
   },
-  loading: false,
+  loading: true,
   // Global CSS (https://go.nuxtjs.dev/config-css)
   css: [],
   styleResources: {
@@ -94,7 +95,7 @@ export default {
   },
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
-    {src: '~/plugins/window.ts'},
+    {src: '~/plugins/window.ts', ssr: false},
     {src: '~/plugins/theme.ts', ssr: false},
     {src: '~/plugins/prism.ts'}
   ],

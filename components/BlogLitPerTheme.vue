@@ -123,7 +123,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .bloglist-per-theme-container {
     width: 100%;
-    margin-bottom: 25px;
+    padding-bottom: 25px;
     border-bottom: solid 1px #4b5563;
     @apply border-gray-200 dark:border-gray-600;
     &:last-child {

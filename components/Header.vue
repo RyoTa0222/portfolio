@@ -14,7 +14,7 @@
                             :key="idx"
                             class="font-zooja cursor-pointer"
                             @click="$router.push(`${page.path}`)">
-                                <template v-if="['xs', 'sm'].includes($breakpoint.name)">
+                                <template v-if="computeIsSp">
                                     <svg-container :name="computeIconName(page.icon)" class="svg-container text-black dark:text-white"
                                     :class="computeActive(page.icon)"
                                     />
@@ -80,12 +80,15 @@ export default Vue.extend({
     },
     components: {SvgContainer, Tooltip},
     computed: {
+        computeIsSp() {
+            return ['xs', 'sm'].includes((this as any).$breakpoint?.name)
+        },
         /**
          * 画面がスクロールされていたらtrueを返す
          * @return {Boolean} 画面がスクロールされていたらtrue
          */
         computeIsTop(): boolean {
-            return (this as any).$window.pageYOffset > 0
+            return (this as any).$window?.pageYOffset > 0
         },
         /**
          * アイコンの名前を返す

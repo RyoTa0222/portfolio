@@ -56,7 +56,7 @@
             class="contents-container"
             :style="`height: ${screenHeight}px !important;`">
                 <div
-                v-if="['lg', 'xl', '2xl', '3xl'].includes($breakpoint.name)"
+                v-if="computeIsPc"
                 class="screen">
                     <img src="~/assets/images/portfolio/sp.png" alt="sp" />
                     <div class="iframe-container">
@@ -169,12 +169,15 @@ export default Vue.extend({
     },
     mounted() {
         if (process.client) {       
+            // テーマの取得と変更を検知
             const container = document.getElementById('container')
+            this.theme = (this as any).$theme.getTheme()
             container?.addEventListener('changeTheme', this.setTheme)
         }
     },
     beforeDestroy() {
         if (process.client) {
+            // テーマの取得と変更を検知
             const container = document.getElementById('container')
             container?.addEventListener('changeTheme', this.setTheme)
         }
@@ -222,6 +225,9 @@ export default Vue.extend({
         }
     },
     computed: {
+        computeIsPc(): boolean {
+            return ['lg', 'xl', '2xl', '3xl'].includes((this as any).$breakpoint?.name)
+        },
         selectGenre(): Genre {
             const genre: Genre | undefined = (this.$route.query as {genre: Genre}).genre
             if (genre) {
@@ -231,7 +237,7 @@ export default Vue.extend({
         },
         filterContents(): Entry<CtfPortfolio<LinkedSkill>>[] {
             const contents = (this as unknown as {contents: Entry<CtfPortfolio<LinkedSkill>>[]}).contents
-            if (contents.length > 0) {
+            if (contents && contents.length > 0) {
                 const genre: Genre | undefined = (this.$route.query as {genre: Genre}).genre
                 // 言語の場合
                 if (genre) {

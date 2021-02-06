@@ -8,17 +8,13 @@ export default Vue.extend({
         }
     },
     mounted() {
-        if (process.client) {
-            // スクリーンの幅と高さを取得
-            this.getScreenSize()
-            window.addEventListener('resize', this.getScreenSize)
-        }
+        // スクリーンの幅と高さを取得
+        this.getScreenSize()
+        window.addEventListener('resize', this.getScreenSize)
     },
     beforeDestroy() {
-        if (process.client) {
-            // 画面サイズ取得のイベントを停止
-            window.removeEventListener('resize', this.getScreenSize)
-        }
+        // 画面サイズ取得のイベントを停止
+        window.removeEventListener('resize', this.getScreenSize)
     },
     methods: {
         /**
