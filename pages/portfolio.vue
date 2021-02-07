@@ -1,9 +1,9 @@
 <template>
-    <div class="portfolio-container" :style="`min-height: ${screenHeight}px !important;`">
+    <div class="portfolio-container" :style="`min-height: 100vh !important;`">
         <scroll class="scroll-component"/>
         <div
         class="top-container"
-        :style="`height: ${screenHeight}px !important;`"
+        :style="`height: 100vh !important;`"
         >
             <transition name="fast-fade" mode="out-in">
                 <template v-if="selectGenre === 'year'">
@@ -54,15 +54,18 @@
             v-for="content in filterContents"
             :key="content.sys.id"
             class="contents-container"
-            :style="`height: ${screenHeight}px !important;`">
-                <div
-                v-if="computeIsPc"
-                class="screen">
-                    <img src="~/assets/images/portfolio/sp.png" alt="sp" />
-                    <div class="iframe-container">
-                        <iframe :src="content.fields.url" width="520" />
-                    </div>
-                </div>
+            :style="`height: 100vh;`">
+                <template v-if="computeIsPc">
+                    <client-only>
+                        <div
+                        class="screen">
+                            <img src="~/assets/images/portfolio/sp.png" alt="sp" />
+                            <div class="iframe-container">
+                                <iframe :src="content.fields.url" />
+                            </div>
+                        </div>
+                    </client-only>
+                </template>
                 <div class="text-container">
                     <h2>{{content.fields.title}}</h2>
                     <p>{{content.fields.description}}</p>
@@ -306,6 +309,7 @@ export default Vue.extend({
                 top: 50%;
                 left: 50%;
                 transform: translate(-66%, -63%) scale(0.6);
+                display: inline-block;
             }
             iframe {
                 width: 160%;

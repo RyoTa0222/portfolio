@@ -1,5 +1,5 @@
 <template>
-    <section class="content" v-if="ctfData.length > 0" :style="`height: ${screenHeight}px;`">
+    <section class="content" v-if="ctfData.length > 0" :style="`height: 100vh;`">
         <transition v-if="current === name" name="fade">
             <div class="wrapper">
                 <span class="label">{{name}}</span>
@@ -21,7 +21,7 @@
 <script lang="ts">
 import Vue from 'vue'
 export default Vue.extend({
-    props: ['ctfData', 'title', 'screenHeight', 'name', 'current']
+    props: ['ctfData', 'title', 'name', 'current']
 })
 </script>
 
