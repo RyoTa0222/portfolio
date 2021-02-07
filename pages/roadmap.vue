@@ -74,12 +74,19 @@ export default Vue.extend({
             currentSection: 'schedule' as RoadmapState
         }
     },
-    async asyncData({params}) {
-        const entries = await client.getEntries({
-            content_type: 'roadmap'
-        })
-        return {
-            ctfData: entries.items
+    async asyncData({error, params, payload}) {
+        try {
+            if (payload) {
+                return payload
+            }
+            const entries = await client.getEntries({
+                content_type: 'roadmap'
+            })
+            return {
+                ctfData: entries.items
+            }
+        } catch (err) {
+            error({statusCode: 503, message: 'Data not found'})
         }
     },
     mounted() {

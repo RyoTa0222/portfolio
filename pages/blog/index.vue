@@ -69,8 +69,11 @@ export default Vue.extend({
 
         }
     },
-    async asyncData({error}) {
+    async asyncData({error, payload}) {
         try {
+            if (payload) {
+                return payload
+            }
             let blogCategory = null as null | CtfBlogCategoryItem[]
             let latestBlog = null as null | EntryCollection<CtfBlog>
             let blogByCategory = {} as StringKeyObject
