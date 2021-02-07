@@ -238,6 +238,7 @@ export default Vue.extend({
     computed: {
         computeIsPc(): boolean {
             let bp = (this as any).$breakpoint?.name
+            console.log(bp)
             if (bp === '') {
                 const width = document.documentElement.clientWidth
                 if (Number(width) <= Number(breakpoint['xs'])) {
@@ -256,6 +257,7 @@ export default Vue.extend({
                     bp = '3xl'
                 }
             }
+            console.log(bp)
             return ['lg', 'xl', '2xl', '3xl'].includes(bp)
         },
         selectGenre(): Genre {
