@@ -1,6 +1,6 @@
 <template>
     <div class="blog-category-container">
-        <template v-if="items.length > 0">
+        <template v-if="items && items.length > 0">
             <h2 :style="getColor(entries.items[0], entries)">{{getCategory(items[0], entries)}}</h2>
             <div class="blog-container">
                 <blog-item
@@ -18,9 +18,10 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import {ContentfulCollection, EntryCollection} from 'contentful'
+import {EntryCollection} from 'contentful'
 import createClient from '~/plugins/contentful'
-import {CtfBlogCategoryItem, CtfBlog, CtfArchive} from '~/types/type'
+import {getBlogPerCategory} from '~/utils/blog'
+import {CtfBlog} from '~/types/type'
 import BlogItem from '~/components/BlogItem.vue'
 import BlogListPerTheme from '~/components/BlogLitPerTheme.vue'
 import blog from '~/mixins/blog'
@@ -35,14 +36,9 @@ export default Vue.extend({
     mixins: [blog],
     async asyncData({error, params, payload}) {
         if (payload) {
-            return payload
+            return {entries: payload}
         }
-        const entries: EntryCollection<CtfBlog> = await client.getEntries({
-            content_type: 'blog',
-            order: '-sys.updatedAt',
-            'fields.category.sys.contentType.sys.id': 'blogCategory',
-            'fields.category.fields.categoryId': params.category
-        })
+        const entries: EntryCollection<CtfBlog> = await getBlogPerCategory(params.category)
         if (entries.total === 0) {
             error({statusCode: 503, message: 'Blog not found'})
         }
@@ -69,7 +65,9 @@ export default Vue.extend({
         }
     },
     head() {
-        const category = (this as any).getCategory((this as any).entries?.items[0], (this as any).entries) ?? ''
+        const items: any[] = (this as any).entries?.items ?? []
+        const item: any | null = items.length > 0 ? items[0] : null
+        const category = (this as any).getCategory(item, (this as any).entries) ?? ''
         const title = !!category ? `${category}に関する記事一覧` : '記事一覧'
         return {
             title: `${title} | RyoTa.`,

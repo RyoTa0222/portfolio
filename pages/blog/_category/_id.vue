@@ -42,17 +42,15 @@
 import Vue from 'vue'
 import { CtfBlog, CtfBlogCategoryItem, CtfFile } from '~/types/type'
 import {Entry} from 'contentful'
-import createClient from '~/plugins/contentful'
+import {getBlog} from '~/utils/blog'
 import { documentToHtmlString } from '@contentful/rich-text-html-renderer'
-import { Document, MARKS, BLOCKS, INLINES } from '@contentful/rich-text-types'
+import { Document, BLOCKS, INLINES } from '@contentful/rich-text-types'
 import blog from '~/mixins/blog'
 import filter from '~/mixins/filter'
 import Prism from '~/plugins/prism'
 import Loader from '~/components/Looder.vue'
 import SvgContainer from '~/components/SvgContainer.vue'
 import BreadCrumb from '~/components/BreadCrumb.vue'
-
-const client = createClient()
 
 export default Vue.extend({
     mixins: [blog, filter],
@@ -73,10 +71,7 @@ export default Vue.extend({
                 return payload
             }
             else {
-                const entry = await client.getEntries({
-                    content_type: 'blog',
-                    'fields.id': params.id
-                })
+                const entry = await getBlog(params.id)
                 if (entry) {
                     return { entry: entry.items[0], includes: entry.includes }
                 }

@@ -1,5 +1,6 @@
 require('dotenv').config()
 import createClient from './plugins/contentful'
+import {getBlogCategory, getLatestBlog, getBlogPerCategory, getAllBlog} from './utils/blog'
 
 const client = createClient()
 
@@ -40,7 +41,6 @@ const mkHead = (environment = 'production') => {
 export default {
   // Target (https://go.nuxtjs.dev/config-target)
   target: 'static',
-  mode: 'universal',
   // env
   env: {
     CTF_SPACE_ID: process.env.CTF_SPACE_ID,
@@ -170,27 +170,88 @@ export default {
   },
   generate: {
     fallback: true,
-    routes() {
-      return client.getEntries({
-        content_type: 'blog'
-      }).then(entries => {
-        const l = []
-        const _blogDetail = entries.items.map(entry => {
-          const categoryId = entry.fields.category.sys.id
-          const categoryItem = entries.includes.Entry.find((item) => item.sys.id === categoryId)
-          return {
-            route: `blog/${categoryItem.fields.categoryId}/${entry.fields.id}/`,
-            payload: {
-              entry,
-              includes: entries.includes
-            }
+    async routes() {
+      // 1. blog関連
+      const blog_route = []
+      let blogCategory = null
+      let latestBlog = null
+      let blogByCategory = {}
+      // ブログカテゴリのデータの取得
+      let entries = await getBlogCategory()
+      if (entries.items.length > 0) {
+          blogCategory = entries.items
+      }
+      // ブログ一覧記事のデータの取得
+      const arr = []
+      // 最新の記事
+      latestBlog = await getLatestBlog(4)
+      // カテゴリごとの記事
+      if (blogCategory && blogCategory.length > 0) {
+          for (const category of blogCategory) {
+              const categoryEntries = await getBlogPerCategory(category.fields.categoryId, 4)
+              const entries = await getBlogPerCategory(category.fields.categoryId)
+              arr.push(categoryEntries)
+              // カテゴリごとのblog一覧ページ
+              blog_route.push({
+                route: `/blog/${category.fields.categoryId}/`,
+                payload: entries
+              })
+          }
+      }
+      if (blogCategory && blogCategory.length > 0) {
+          for (let i = 0; i < blogCategory.length; i++) {
+              const categoryId = blogCategory[i].fields.categoryId
+              const item = arr[i]
+              blogByCategory[categoryId] = item
+          }
+      }
+      // blogのトップページ
+      blog_route.push({
+        route: '/blog/',
+        payload: {blogCategory, latestBlog, blogByCategory}
+      })
+      // 記事詳細ページ
+      entries = await getAllBlog()
+      for (const entry of entries.items) {
+        const categoryId = entry.fields.category.sys.id
+        const categoryItem = entries.includes.Entry.find((item) => item.sys.id === categoryId)
+        blog_route.push({
+          route: `/blog/${categoryItem.fields.categoryId}/${entry.fields.id}/`,
+          payload: {
+            entry,
+            includes: entries.includes
           }
         })
-        const _blogCategory = l.map(category => {
-          return `blog/${category}/`
-        })
-        return _blogDetail.concat(_blogCategory)
+      }
+      // 2. portfolio関連
+      const portfolio_route = []
+      const s_entries = await client.getEntries({
+        content_type: 'skillSet'
       })
+      const p_entries = await client.getEntries({
+          content_type: 'portfolio'
+      })
+      portfolio_route.push({
+        route: '/portfolio/',
+        payload: {
+          skills: s_entries.items,
+          contents: p_entries.items
+        }
+      })
+      // 3. roadmap関連
+      const roadmap_route = []
+      entries = await client.getEntries({
+        content_type: 'roadmap'
+      })
+      roadmap_route.push({
+        route: '/roadmap/',
+        payload: {
+          ctfData: entries.items
+        }
+      })
+      return blog_route
+        .concat(portfolio_route)
+        .concat(roadmap_route)
     }
   }
 }
