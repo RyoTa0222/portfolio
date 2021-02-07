@@ -33,7 +33,10 @@ export default Vue.extend({
         BlogItem
     },
     mixins: [blog],
-    async asyncData({error, params}) {
+    async asyncData({error, params, payload}) {
+        if (payload) {
+            return payload
+        }
         const entries: EntryCollection<CtfBlog> = await client.getEntries({
             content_type: 'blog',
             order: '-sys.updatedAt',

@@ -125,6 +125,7 @@ import {Entry} from 'contentful'
 import PortfolioTitle from '~/components/PortfolioTitle.vue'
 import Scroll from '~/components/Scroll.vue'
 import Tooltip from '~/components/Tooltip.vue'
+import {breakpoint} from '~/consts/config'
 // import sal from 'sal.js'
 
 const client = createClient()
@@ -152,16 +153,23 @@ export default Vue.extend({
             theme: 'light' as Theme
         }
     },
-    async asyncData({params}) {
-        const s_entries = await client.getEntries({
-            content_type: 'skillSet'
-        })
-        const p_entries = await client.getEntries({
-            content_type: 'portfolio'
-        })
-        return {
-            skills: s_entries.items,
-            contents: p_entries.items
+    async asyncData({error, params, payload}) {
+        try {
+            if (payload) {
+                return payload
+            }
+            const s_entries = await client.getEntries({
+                content_type: 'skillSet'
+            })
+            const p_entries = await client.getEntries({
+                content_type: 'portfolio'
+            })
+            return {
+                skills: s_entries.items,
+                contents: p_entries.items
+            }
+        } catch (err) {
+            error({statusCode: 503, message: 'Data not found'})
         }
     },
     created() {
@@ -229,7 +237,26 @@ export default Vue.extend({
     },
     computed: {
         computeIsPc(): boolean {
-            return ['lg', 'xl', '2xl', '3xl'].includes((this as any).$breakpoint?.name)
+            let bp = (this as any).$breakpoint?.name
+            if (bp === '') {
+                const width = document.documentElement.clientWidth
+                if (Number(width) <= Number(breakpoint['xs'])) {
+                    bp = 'xs'
+                } else if (Number(width) > Number(breakpoint['xs']) && Number(width) <= Number(breakpoint['sm'])) {
+                    bp = 'sm'
+                } else if (Number(width) > Number(breakpoint['sm']) && Number(width) <= Number(breakpoint['md'])) {
+                    bp = 'md'
+                } else if (Number(width) > Number(breakpoint['md']) && Number(width) <= Number(breakpoint['lg'])) {
+                    bp = 'lg'
+                } else if (Number(width) > Number(breakpoint['lg']) && Number(width) <= Number(breakpoint['xl'])) {
+                    bp = 'xl'
+                } else if (Number(width) > Number(breakpoint['xl']) && Number(width) <= Number(breakpoint['2xl'])) {
+                    bp = '2xl'
+                } else if (Number(width) > Number(breakpoint['2xl'])) {
+                    bp = '3xl'
+                }
+            }
+            return ['lg', 'xl', '2xl', '3xl'].includes(bp)
         },
         selectGenre(): Genre {
             const genre: Genre | undefined = (this.$route.query as {genre: Genre}).genre
