@@ -29,7 +29,7 @@
             </div>
             <article v-if="entry.fields.body" class="body-container" v-html="toHtmlString(entry.fields.body)" />
             <div class="tweet-share-btn-container">
-                <button class="tweet-share-btn" @click="share">
+                <button class="tweet-share-btn" @click="share(entry.fields.title)">
                     <svg-container name="twitter" />
                     <span>シェア</span>
                 </button>
@@ -209,8 +209,8 @@ export default Vue.extend({
         /**
          * twitterに共有
          */
-        share() {
-            const url = `https://twitter.com/intent/tweet?text=${(this as any).entry.fields.title}&url=${process.env.SITE_URL}blog/${this.$route.params.id}/`
+        share(title: string) {
+            const url = `https://twitter.com/intent/tweet?text=${title}&url=${process.env.SITE_URL}blog/${this.$route.params.id}/`
             console.log(url)
             location.href = url
         }
