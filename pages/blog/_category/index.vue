@@ -36,7 +36,7 @@ export default Vue.extend({
     mixins: [blog],
     async asyncData({error, params, payload}) {
         if (payload) {
-            return {entries: payload}
+            return {entries: payload.entries}
         }
         const entries: EntryCollection<CtfBlog> = await getBlogPerCategory(params.category)
         if (entries.total === 0) {
