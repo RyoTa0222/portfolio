@@ -156,7 +156,10 @@ export default Vue.extend({
     async asyncData({error, params, payload}) {
         try {
             if (payload) {
-                return payload
+                return {
+                skills: payload.skills,
+                contents: payload.contents
+            }
             }
             const s_entries = await client.getEntries({
                 content_type: 'skillSet'

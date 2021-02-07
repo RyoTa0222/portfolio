@@ -46,18 +46,12 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import {ContentfulCollection, EntryCollection} from 'contentful'
-import createClient from '~/plugins/contentful'
-import {CtfBlogCategoryItem, CtfBlog, CtfArchive} from '~/types/type'
+import {EntryCollection} from 'contentful'
+import {getBlogCategory, getLatestBlog, getBlogPerCategory} from '~/utils/blog'
+import {CtfBlogCategoryItem, CtfBlog, StringKeyObject} from '~/types/type'
 import SvgContainer from '~/components/SvgContainer.vue'
 import BlogListPerTheme from '~/components/BlogLitPerTheme.vue'
 import Loader from '~/components/Looder.vue'
-interface StringKeyObject {
-    // 今回はstring
-    [categoryId: string]: unknown;
-}
-
-const client = createClient()
 
 export default Vue.extend({
     components: { SvgContainer, BlogListPerTheme, Loader},
@@ -78,32 +72,18 @@ export default Vue.extend({
             let latestBlog = null as null | EntryCollection<CtfBlog>
             let blogByCategory = {} as StringKeyObject
             // ブログカテゴリのデータの取得
-            const entries: ContentfulCollection<CtfBlogCategoryItem> = await client.getEntries({
-                content_type: 'blogCategory',
-                select: 'sys.id,fields',
-                order: 'fields.priority'
-            })
+            const entries = await getBlogCategory()
             if (entries.items.length > 0) {
                 blogCategory = entries.items
             }
             // ブログ一覧記事のデータの取得
             const arr: EntryCollection<CtfBlog>[] = []
             // 最新の記事
-            latestBlog = await client.getEntries({
-                content_type: 'blog',
-                limit: 4,
-                order: '-sys.updatedAt',
-            })
+            latestBlog = await getLatestBlog(4)
             // カテゴリごとの記事
             if (blogCategory && blogCategory.length > 0) {
                 for (const category of blogCategory) {
-                    const categoryEntries: EntryCollection<CtfBlog> = await client.getEntries({
-                        content_type: 'blog',
-                        limit: 4,
-                        order: '-sys.updatedAt',
-                        'fields.category.sys.contentType.sys.id': 'blogCategory',
-                        'fields.category.fields.categoryId': category.fields.categoryId
-                    })
+                    const categoryEntries = await getBlogPerCategory(category.fields.categoryId, 4)
                     arr.push(categoryEntries)
                 }
             }

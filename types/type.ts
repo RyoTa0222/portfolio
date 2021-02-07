@@ -112,3 +112,7 @@ export interface CtfPortfolio<T> {
     url: string,
     github?: string
 }
+
+export interface StringKeyObject {
+    [categoryId: string]: unknown;
+}
