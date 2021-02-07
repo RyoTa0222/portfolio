@@ -240,7 +240,8 @@ export default Vue.extend({
     },
     computed: {
         computeIsPc(): boolean {
-            let bp = (this as any).$breakpoint?.name
+            if (process.client) {
+                let bp = (this as any).$breakpoint?.name
             console.log(bp)
             if (bp === '') {
                 const width = document.documentElement.clientWidth
@@ -262,6 +263,9 @@ export default Vue.extend({
             }
             console.log(bp)
             return ['lg', 'xl', '2xl', '3xl'].includes(bp)
+            } else {
+                return false
+            }
         },
         selectGenre(): Genre {
             const genre: Genre | undefined = (this.$route.query as {genre: Genre}).genre
