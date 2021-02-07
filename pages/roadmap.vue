@@ -1,5 +1,5 @@
 <template>
-    <div class="roadmap-container" :style="`height: ${screenHeight}px !important;`">
+    <div class="roadmap-container" :style="`height: 100vh !important;`">
         <transition name="fade" mode="in-out">
             <div class="illust-container schedule" v-if="currentSection === 'schedule'" key="schedule">
                 <img src="@/assets/images/roadmap/schedule/bg.png" alt="背景" class="bg">
@@ -24,7 +24,6 @@
         title="開発予定"
         name="schedule"
         :ctfData="getRoadmapStateData('schedule')"
-        :screenHeight="screenHeight"
         :current="currentSection"
         class="schedule"
         id="schedule" />
@@ -32,7 +31,6 @@
         title="開発中"
         name="develop"
         :ctfData="getRoadmapStateData('develop')"
-        :screenHeight="screenHeight"
         :current="currentSection"
         class="develop"
         id="develop" />
@@ -40,7 +38,6 @@
         title="反映済み"
         name="merge"
         :ctfData="getRoadmapStateData('merge')"
-        :screenHeight="screenHeight"
         :current="currentSection"
         class="merge"
         id="merge" />

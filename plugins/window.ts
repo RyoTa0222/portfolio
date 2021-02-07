@@ -8,7 +8,7 @@ Vue.use({
             pageYOffset: 0 as number,
         })
         const $breakpoint = Vue.observable({
-                name: '' as string
+                name: 'xs' as string
         })
         const onScroll = () => {
             if (global) {
