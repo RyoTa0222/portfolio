@@ -38,7 +38,7 @@ export default Vue.extend({
   data: () => {
     return {
       settingModal: false as boolean,
-      splashFlg: true as boolean
+      splashFlg: false as boolean
     }
   },
   created() {

@@ -29,10 +29,10 @@
             </div>
             <article v-if="entry.fields.body" class="body-container" v-html="toHtmlString(entry.fields.body)" />
             <div class="tweet-share-btn-container">
-                <button class="tweet-share-btn" @click="share(entry.fields.title)">
+                <a class="tweet-share-btn" target="_blank" :href="`https://twitter.com/intent/tweet?text=${entry.fields.title}&url=${siteUrl}blog/${this.$route.params.id}/`">
                     <svg-container name="twitter" />
                     <span>シェア</span>
-                </button>
+                </a>
             </div>
         </main>
     </div>
@@ -63,6 +63,7 @@ export default Vue.extend({
     data: () => {
         return {
             id: null as null | string,
+            siteUrl: process.env.SITE_URL as string
         }
     },
     async asyncData ({ params, error, payload }) {
@@ -206,14 +207,6 @@ export default Vue.extend({
             }
             return documentToHtmlString(richTextDocument, options)
         },
-        /**
-         * twitterに共有
-         */
-        share(title: string) {
-            const url = `https://twitter.com/intent/tweet?text=${title}&url=${process.env.SITE_URL}blog/${this.$route.params.id}/`
-            console.log(url)
-            location.href = url
-        }
     },
     head() {
         const category: string = this.$route.params.category ?? ''
