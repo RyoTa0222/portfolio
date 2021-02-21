@@ -107,7 +107,6 @@ import { DateTime } from "luxon";
 import createClient from "~/plugins/contentful";
 import { Genre, Skill, CtfPortfolio } from "~/types/type";
 import { Entry } from "contentful";
-import PortfolioTitle from "~/components/PortfolioTitle.vue";
 import Scroll from "~/components/Scroll.vue";
 import Tooltip from "~/components/Tooltip.vue";
 import { breakpoint } from "~/consts/config";
@@ -127,7 +126,6 @@ export default Vue.extend({
   // screenWidth, screenHeight
   mixins: [screenHeight],
   components: {
-    PortfolioTitle,
     Scroll,
     Tooltip,
   },

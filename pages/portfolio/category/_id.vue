@@ -127,7 +127,6 @@ import { DateTime } from "luxon";
 import createClient from "~/plugins/contentful";
 import { Genre, CtfPortfolio } from "~/types/type";
 import { Entry } from "contentful";
-import PortfolioTitle from "~/components/PortfolioTitle.vue";
 import Scroll from "~/components/Scroll.vue";
 import Tooltip from "~/components/Tooltip.vue";
 // import sal from 'sal.js'

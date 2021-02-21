@@ -151,6 +151,7 @@ export default {
     path: "/sitemap.xml",
     hostname: process.env.SITE_URL,
     trailingSlash: true,
+    exclude: ["/portfolio/"],
     routes: async (callback) => {
       // 1. blog関連
       const blog_route = [];
@@ -202,10 +203,7 @@ export default {
       }
       callback(
         null,
-        blog_route
-          .concat(portfolio_route)
-          .concat(portfolio_skill_route)
-          .concat(roadmap_route)
+        blog_route.concat(portfolio_route).concat(portfolio_skill_route)
       );
     },
   },
