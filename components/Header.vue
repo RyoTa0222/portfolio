@@ -62,7 +62,7 @@ export default Vue.extend({
                 },
                 {
                     name: 'PORTFOLIO',
-                    path: '/portfolio/',
+                    path: '/portfolio/year/',
                     icon: 'user'
                 },
                 {

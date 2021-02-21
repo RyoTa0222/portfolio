@@ -1,6 +1,6 @@
 <template>
     <section class="content" v-if="ctfData.length > 0" :style="`height: 100vh;`">
-        <transition v-if="current === name" name="fade">
+        <transition v-show="current === name" name="fade">
             <div class="wrapper">
                 <span class="label">{{name}}</span>
                 <h2 v-show="title">{{title}}</h2>

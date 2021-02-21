@@ -1,6 +1,6 @@
 <template>
     <div class="blog-category-container">
-        <template v-if="items && items.length > 0">
+        <template v-show="items && items.length > 0">
             <h2 :style="getColor(entries.items[0], entries)">{{getCategory(items[0], entries)}}</h2>
             <div class="blog-container">
                 <blog-item
