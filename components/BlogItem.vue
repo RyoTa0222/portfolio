@@ -1,7 +1,7 @@
 <template>
-    <div
+    <nuxt-link
     v-if="item && blogList"
-    @click="clickEvent('detail')"
+    :to="`/blog/${getCategory(item, blogList, item.fields.id)}/${item.fields.id}/`"
     class="blog-item-container">
         <picture v-if="getImagePath(item, blogList) !== null">
             <!-- WebP用画像 -->
@@ -23,7 +23,7 @@
             class="category"
             >{{getCategory(item, blogList)}}</span>
         </div>
-    </div>
+    </nuxt-link>
 </template>
 
 <script lang="ts">
@@ -31,7 +31,7 @@ import Vue from 'vue'
 import blog from '~/mixins/blog'
 import filter from '~/mixins/filter'
 
-type ClickEvnetType = 'detail'
+// type ClickEvnetType = 'detail'
 
 export default Vue.extend({
     props: {
@@ -48,19 +48,6 @@ export default Vue.extend({
         }
     },
     mixins: [filter, blog],
-    methods: {
-        clickEvent(type: ClickEvnetType) {
-            const id = this.item?.fields?.id
-            const category = (this as any).getCategory(this.item, this.blogList, id)
-            switch (type) {
-                case 'detail':
-                    this.$emit('detail', id, category)
-                default:
-                    return
-            }
-            this.$emit('clickEvent', type)
-        }
-    }
 })
 </script>
 

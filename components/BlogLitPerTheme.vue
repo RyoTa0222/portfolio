@@ -15,7 +15,6 @@
             <blog-item
             v-for="item in blogList.items"
             :key="item.sys.id"
-            @detail="detail"
             :item="item"
             :blogList="blogList"
             :latest="latest"
@@ -96,16 +95,6 @@ export default Vue.extend({
                 }
             }
             this.scrollable = false
-        },
-        /**
-         * 記事詳細に遷移
-         * @param {string | null} id 記事ID
-         * @param {string | null} category カテゴリ
-         */
-        detail(id: string | null, category: string | null) {
-            if (id && category) {
-                this.$router.push(`/blog/${category}/${id}/`)
-            }
         },
         /**
          * カテゴリごとの記事一覧に遷移
